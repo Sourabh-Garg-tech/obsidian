@@ -25,6 +25,34 @@ Open an issue and use the Feature Request template. Describe:
 4. Commit with a clear message: `docs:`, `feat:`, or `fix:` prefix
 5. Open a PR against `master`
 
+## Development setup
+
+To install the skill locally for testing, copy or symlink this repository into your Claude Code skills directory:
+
+```bash
+# Copy
+cp -r . ~/.claude/skills/obsidian
+
+# Or symlink
+ln -s $(pwd) ~/.claude/skills/obsidian
+```
+
+## Testing
+
+Validate changes before submitting:
+
+- Check that markdown renders correctly.
+- Verify relative links point to existing files.
+- Test commands against a test Obsidian vault.
+
+## Licensing
+
+All contributions are accepted under the MIT license.
+
+## Issue templates
+
+Issue templates are coming soon. Until then, please follow the guidelines in **Reporting bugs** and **Suggesting features**.
+
 ## Code style
 
 - Markdown: 100-character line wrap
