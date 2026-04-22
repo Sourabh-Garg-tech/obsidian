@@ -23,12 +23,24 @@ This skill turns Claude Code into an intelligent vault assistant. Create notes, 
 
 ## Installation
 
+### Option 1: As a Claude Code plugin (recommended)
+
+1. Clone this repo into your Claude Code plugins directory:
+   ```bash
+   git clone https://github.com/Sourabh-Garg-tech/obsidian.git ~/.claude/plugins/obsidian
+   ```
+2. The `.claude-plugin/plugin.json` manifest registers all sub-skills and commands automatically.
+3. Restart Claude Code or run `/skill refresh`.
+4. The skill auto-triggers on any Obsidian-related request.
+
+### Option 2: As a standalone skill
+
 1. Clone this repo into your Claude Code skills directory:
    ```bash
    git clone https://github.com/Sourabh-Garg-tech/obsidian.git ~/.claude/skills/obsidian
    ```
-2. Restart Claude Code or run `/skill refresh`
-3. The skill auto-triggers on any Obsidian-related request
+2. Restart Claude Code or run `/skill refresh`.
+3. The skill auto-triggers on any Obsidian-related request.
 
 ## Quick start
 

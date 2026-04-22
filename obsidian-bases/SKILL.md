@@ -6,6 +6,9 @@ description: >
   "list view", "map view", "base filters", "base formulas", "base summaries",
   "database view obsidian", "obsidian database", or mentions Bases, filters,
   formulas, or views in Obsidian.
+compatibility:
+  requires: "Obsidian v1.12.7+ with CLI enabled"
+  platforms: "macOS, Windows, Linux"
 ---
 
 # Obsidian Bases Skill

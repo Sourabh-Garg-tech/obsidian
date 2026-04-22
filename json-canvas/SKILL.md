@@ -4,6 +4,9 @@ description: >
   This skill should be used when the user asks to "create a canvas", "edit a canvas",
   "obsidian canvas", ".canvas file", "mind map", "flowchart", "visual canvas",
   "canvas nodes", "canvas edges", "canvas groups", or mentions Canvas files in Obsidian.
+compatibility:
+  requires: "Obsidian v1.12.7+"
+  platforms: "macOS, Windows, Linux"
 ---
 
 # JSON Canvas Skill

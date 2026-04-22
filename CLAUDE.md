@@ -6,10 +6,12 @@ This is a Claude Code skill suite for automating Obsidian vaults via the officia
 
 ## Architecture
 
+- **`.claude-plugin/plugin.json`** — plugin manifest for Claude Code registration
 - **Root SKILL.md** — micro-core that auto-triggers on Obsidian-related requests (~7KB)
 - **Sub-skills** — `obsidian-cli`, `obsidian-markdown`, `obsidian-bases`, `json-canvas`, `defuddle`, `obsidian-workflows`, `obsidian-vault-architect`
 - **References/** — on-demand reference files loaded only when needed (token-efficient)
 - **Commands/** — thinking commands (`/trace`, `/challenge`, `/connect`, `/emerge`) that are read-only
+- **Scripts/** — utility scripts (`vault-health.sh`, `context-builder.sh`)
 
 ## Key Principles
 

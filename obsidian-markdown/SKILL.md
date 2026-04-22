@@ -7,6 +7,9 @@ description: >
   "internal links", "block references", "canvas embeds", "PDF embeds",
   "image embeds", "mermaid diagrams in obsidian", "obsidian comments",
   "obsidian highlighting", or mentions Obsidian Flavored Markdown syntax.
+compatibility:
+  requires: "Obsidian v1.12.7+ with CLI enabled"
+  platforms: "macOS, Windows, Linux"
 ---
 
 # Obsidian Flavored Markdown Skill

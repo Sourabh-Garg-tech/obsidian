@@ -7,6 +7,9 @@ description: >
   "Zettelkasten workflow", "GTD workflow", "vault hygiene", "graph analysis",
   "obsidian daily routine", or mentions PKM, PARA, Zettelkasten, GTD, LYT,
   morning routine, weekly review, vault hygiene, token efficiency, or graph analysis.
+compatibility:
+  requires: "Obsidian v1.12.7+ with CLI enabled"
+  platforms: "macOS, Windows, Linux (see references/platform-setup.md)"
 ---
 
 # Obsidian Workflows
