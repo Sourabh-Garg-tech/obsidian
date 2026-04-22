@@ -167,4 +167,4 @@ Changelog says `vault=` "must be the first argument." Our skill shows it at the 
 CLI v1.12.7 introduced a new dedicated CLI binary that is "significantly faster." Our skill states v1.12.4+ compatibility — should update to recommend v1.12.7+.
 
 ### `silent` parameter deprecated
-`open` replaced `silent` in v1.12.2. Our command-reference.md still shows `obsidian append ... silent` — should use `open` instead.
+`open` replaced `silent` in v1.12.2. Our command-reference.md still shows `obsidian append ... silent` — should use `open` instead. **(Fixed: command-reference.md now uses `open`.)**
