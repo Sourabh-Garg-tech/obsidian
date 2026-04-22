@@ -369,21 +369,7 @@ Vault blueprints, health audits, scoring rubrics, and fix commands.
 
 ### Task 6: Final review and push
 
-- [ ] **Step 1: Review git log**
-
-```bash
-git log --oneline -6
-```
-
-Expected output (6 commits):
-```
-abc1234 docs: add READMEs to all sub-skills
-def5678 docs: rewrite README for public release
-ghi9012 docs: add issue and PR templates
-jkl3456 docs: add contributing guide
-mno7890 docs: add MIT license
-pqr1234 Initial commit: Obsidian skill suite for Claude Code
-```
+- [x] **Step 1: Review git log** ✅ (completed as part of project review)
 
 - [ ] **Step 2: Push to origin**
 
@@ -411,6 +397,32 @@ git push origin master
 **Type consistency:**
 - All relative links are consistent: `SKILL.md`, `references/...`
 - All commit messages follow `docs:` prefix convention.
+
+---
+
+### Task 7: Post-plan improvements (uncommitted)
+
+These changes were made after the original plan was marked complete:
+
+- **SKILL.md**: Expanded `description` from 1 line to 14-line auto-trigger list. Replaced inline Quick Reference with pointer to `references/quick-reference.md`. Added Scripts section and two new reference entries.
+- **intelligence-patterns.md**: Added Patterns 12 (Bootstrap Project Intelligence) and 13 (Project Initiate Workflow). Added Intelligence Folder Scope section. Updated decision trail frontmatter from `type: decision` to `type: intelligence-report`.
+- **token-efficiency.md**: Updated context-loading workflow to include Intelligence/_index step. Expanded _context/ pattern to show global vs project contexts.
+- **New file**: `references/quick-reference.md` — Essential command table for daily use.
+- **New file**: `obsidian-workflows/references/project-onboarding.md` — Project scaffolding, vault-project-init workflow, 3-folder structure.
+- **New directory**: `scripts/` with `vault-health.sh` and `context-builder.sh`.
+
+- [x] **Step 1: Write quick-reference.md** ✅
+- [x] **Step 2: Write project-onboarding.md** ✅
+- [x] **Step 3: Write vault-health.sh and context-builder.sh** ✅
+- [x] **Step 4: Expand SKILL.md description and add scripts section** ✅
+- [x] **Step 5: Expand intelligence-patterns.md and token-efficiency.md** ✅
+- [x] **Step 6: Fix broken links in full-reference.md** ✅ (references/command-reference.md → obsidian-cli/references/command-reference.md, all Reference Files table paths corrected)
+- [x] **Step 7: Fix broken link in obsidian-workflows/SKILL.md** ✅
+- [x] **Step 8: Fix ambiguous reference in obsidian-cli/SKILL.md** ✅
+- [x] **Step 9: Update stale v1.12.4+ → v1.12.7+ in full-reference.md** ✅
+- [x] **Step 10: Add safety rules 9-10 to full-reference.md** ✅
+- [x] **Step 11: Update cli-validation-report.md silent→open fix note** ✅
+- [ ] **Step 12: Commit and push**
 - File paths match the actual directory structure.
 
 **Gap:** GitHub repo topics/tags must be added manually via GitHub UI after push. Suggest adding: `claude-code`, `obsidian`, `obsidian-md`, `pkm`, `cli`, `skill`, `automation`, `second-brain`.

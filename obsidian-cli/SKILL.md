@@ -111,5 +111,5 @@ Run `obsidian help` to see additional developer commands.
    ```
 4. **`files` does not support `format=json`** — use `search format=json` for structured output.
 5. **`daily:prepend` inserts after frontmatter**, not at byte 0.
-6. **Windows**: Must run from normal terminal (not admin). Git Bash needs a wrapper script — see command-reference.md.
+6. **Windows**: Must run from normal terminal (not admin). Git Bash needs a wrapper script — see `references/command-reference.md`.
 7. **Linux headless**: Use `.deb` (not snap), run under xvfb, set `PrivateTmp=false` for systemd.

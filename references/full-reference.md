@@ -18,7 +18,7 @@ compatibility:
 
 # Obsidian Skill for Claude Code
 
-Full vault automation via the **official Obsidian CLI** (v1.12.4+, GA February 2026).
+Full vault automation via the **official Obsidian CLI** (v1.12.7+, GA February 2026).
 Every command routes through Obsidian's internal API: moves auto-update wikilinks, property
 changes reflect in the index immediately, and plugin configs are never silently overwritten.
 
@@ -73,7 +73,7 @@ If `command not found` → Obsidian Settings → General → Command line interf
 | **Vault** | `vaults`, `vault`, `version`, `reload`, `restart`, `recents`, `outline`, `wordcount`, `diff` |
 | **Developer** | `eval`, `dev:screenshot`, `dev:debug`, `dev:console`, `dev:errors`, `dev:css`, `dev:dom`, `devtools` |
 
-→ Full parameter/flag reference: `references/command-reference.md`
+→ Full parameter/flag reference: `obsidian-cli/references/command-reference.md`
 
 ---
 
@@ -213,7 +213,7 @@ obsidian theme:set theme="Minimal"
 obsidian snippet:enable name="my-snippet"
 ```
 
-→ Full command details: `references/command-reference.md`
+→ Full command details: `obsidian-cli/references/command-reference.md`
 
 ---
 
@@ -283,6 +283,8 @@ Write result back to vault
 6. **For >500 files**, use Python with `python-frontmatter` lib, then run `obsidian reload` to reindex.
 7. **Not all commands support `format=json`** — only `search`, `tags`, `tasks`, `backlinks`, `bookmarks`, `unresolved`, `properties`, `plugins`. `files` does NOT support JSON output.
 8. **`tags:rename` and `tags:remove` don't exist** — use `property:set` on individual notes or `eval` for bulk tag changes.
+9. **`search` unreliable on Windows** — returns empty without `path=`. Use Grep tool on vault directory as fallback.
+10. **`backlinks file=` unreliable** — use `path=` instead: `obsidian backlinks path="Folder/Note.md"`
 
 ---
 
@@ -303,7 +305,7 @@ Write result back to vault
 
 | File | When to read |
 |---|---|
-| `references/command-reference.md` | Need a specific flag, obscure command, or JSON output format |
+| `obsidian-cli/references/command-reference.md` | Need a specific flag, obscure command, or JSON output format |
 | `references/frontmatter-schema.md` | Setting up or normalizing vault property schemas |
 | `references/ofm-syntax.md` | Writing Obsidian Flavored Markdown (callouts, embeds, canvas, Dataview) |
 | `obsidian-workflows/references/platform-setup.md` | Windows, Linux headless/systemd, or multi-vault PATH setup |
