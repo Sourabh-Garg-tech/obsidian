@@ -27,6 +27,7 @@ Find notes that should be linked but aren't.
 ```bash
 # Gather: find notes mentioning a topic
 obsidian search query="machine learning" format=json
+# **Windows:** `search` may return empty without `path=`. Include `path="Folder/"` or use Grep tool on vault directory as fallback.
 
 # Reason: for each result, identify entities that match other note names
 # Execute: add wikilinks using append
@@ -51,7 +52,7 @@ Find notes with many connections (potential MOC candidates).
 ### Basic Hub Score
 
 ```bash
-obsidian backlinks file="Key Concept" counts
+obsidian backlinks path="Key Concept.md" counts
 obsidian links file="Key Concept" total
 ```
 

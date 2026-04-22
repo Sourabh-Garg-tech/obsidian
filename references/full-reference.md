@@ -13,7 +13,7 @@ description: >
   note" — because the official CLI has critical link-safety guarantees raw file tools lack.
 compatibility:
   requires: "Obsidian v1.12.7+ with CLI enabled (v1.12.7 has significantly faster CLI binary)"
-  platforms: "macOS, Windows, Linux (see references/platform-setup.md)"
+  platforms: "macOS, Windows, Linux (see obsidian-workflows/references/platform-setup.md)"
 ---
 
 # Obsidian Skill for Claude Code
@@ -46,7 +46,7 @@ obsidian files vault="Work"         # all commands accept vault= parameter
 ```
 
 If `command not found` → Obsidian Settings → General → Command line interface → Enable + Register CLI.
-→ Platform-specific setup: `references/platform-setup.md`
+→ Platform-specific setup: `obsidian-workflows/references/platform-setup.md`
 
 > The CLI is a **remote control** — Obsidian must be running (or it launches automatically).
 
@@ -162,7 +162,7 @@ obsidian task file="NoteName" line=5 toggle          # toggle a task done/undone
 
 ```bash
 obsidian links     file="NoteName"   # outgoing wikilinks
-obsidian backlinks file="NoteName"   # incoming wikilinks
+obsidian backlinks path="NoteName.md"   # incoming wikilinks (use path=, not file=)
 obsidian unresolved                  # all broken/unresolved links in vault
 obsidian orphans                     # notes with no links at all
 obsidian deadends                    # notes with no outgoing links
@@ -249,7 +249,7 @@ Write result back to vault
 **Token budget target:** aim for under 3,000 tokens of loaded context per task.
 
 → Deep dive on vault structure for token savings, RAG-lite patterns, context budget templates:
-`references/token-efficiency.md`
+`obsidian-workflows/references/token-efficiency.md`
 
 ---
 
@@ -295,7 +295,7 @@ Write result back to vault
 | Windows: silent failures | Use a normal terminal (not admin/elevated) |
 | Wrong vault targeted | Pass `vault="VaultName"` explicitly |
 
-→ Platform-specific setup: `references/platform-setup.md`
+→ Platform-specific setup: `obsidian-workflows/references/platform-setup.md`
 
 ---
 
@@ -306,9 +306,9 @@ Write result back to vault
 | `references/command-reference.md` | Need a specific flag, obscure command, or JSON output format |
 | `references/frontmatter-schema.md` | Setting up or normalizing vault property schemas |
 | `references/ofm-syntax.md` | Writing Obsidian Flavored Markdown (callouts, embeds, canvas, Dataview) |
-| `references/platform-setup.md` | Windows, Linux headless/systemd, or multi-vault PATH setup |
-| `references/intelligence-patterns.md` | Auto-linking engine, hub detection, orphan triage, refactor recipes, self-improvement loop |
-| `references/token-efficiency.md` | Vault structure for token savings, RAG-lite patterns, context budget templates |
-| `references/pkm-workflows.md` | Morning planning, weekly review, vault hygiene, GTD inbox processing, graph analysis |
+| `obsidian-workflows/references/platform-setup.md` | Windows, Linux headless/systemd, or multi-vault PATH setup |
+| `obsidian-workflows/references/intelligence-patterns.md` | Auto-linking engine, hub detection, orphan triage, refactor recipes, self-improvement loop |
+| `obsidian-workflows/references/token-efficiency.md` | Vault structure for token savings, RAG-lite patterns, context budget templates |
+| `obsidian-workflows/references/pkm-workflows.md` | Morning planning, weekly review, vault hygiene, GTD inbox processing, graph analysis |
 | `references/advanced-operations.md` | Merge/split notes, normalize messy vault, PKM method detection |
 | `references/daily-workflows.md` | CLI wrapper script, auto-context builder, daily note intelligence |

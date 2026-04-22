@@ -70,6 +70,7 @@ obsidian files total                             # total note count
 
 # Project review
 obsidian search query="tag:#project" format=json # find all projects
+# **Windows:** `search` may return empty without `path=`. Include `path="Folder/"` or use Grep tool on vault directory as fallback.
 obsidian tasks done                              # completed this week
 ```
 

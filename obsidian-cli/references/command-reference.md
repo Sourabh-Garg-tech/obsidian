@@ -404,10 +404,10 @@ obsidian task ref="note.md:8" toggle            # by reference (path:line)
 ## Links
 
 ```bash
-obsidian backlinks file="My Note"              # incoming links
-obsidian backlinks file="My Note" counts        # include link counts
-obsidian backlinks file="My Note" total         # return count
-obsidian backlinks file="My Note" format=json|tsv|csv
+obsidian backlinks path="My Note.md"              # incoming links (use path=, not file=)
+obsidian backlinks path="My Note.md" counts        # include link counts
+obsidian backlinks path="My Note.md" total         # return count
+obsidian backlinks path="My Note.md" format=json|tsv|csv
 
 obsidian links file="My Note"                  # outgoing links
 obsidian links file="My Note" total
