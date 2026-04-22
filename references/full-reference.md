@@ -56,20 +56,20 @@ If `command not found` → Obsidian Settings → General → Command line interf
 
 | Category | Key Commands |
 |---|---|
-| **Files** | `files`, `folders`, `file`, `read`, `create`, `append`, `prepend`, `move`, `rename`, `delete`, `random` |
+| **Files** | `files`, `folders`, `file`, `read`, `create`, `append`, `prepend`, `move`, `rename`, `delete`, `open`, `random` |
 | **Properties** | `properties`, `property:read`, `property:set`, `property:remove`, `aliases` |
 | **Search** | `search`, `search:context` |
 | **Tags** | `tags`, `tag` |
-| **Tasks** | `tasks`, `task` |
+| **Tasks** | `tasks`, `task`, `tasks done`, `tasks todo`, `tasks daily`, `tasks active`, `tasks verbose` |
 | **Links** | `links`, `backlinks`, `unresolved`, `orphans`, `deadends` |
 | **Daily Notes** | `daily`, `daily:read`, `daily:append`, `daily:prepend`, `daily:path` |
 | **Bookmarks** | `bookmarks`, `bookmark` |
 | **Templates** | `templates`, `template:read`, `template:insert` |
 | **Plugins** | `plugins`, `plugins:enabled`, `plugin`, `plugin:enable`, `plugin:disable`, `plugin:install`, `plugin:uninstall`, `plugin:reload` |
-| **Sync** | `sync`, `sync:status`, `sync:history`, `sync:read`, `sync:restore`, `sync:deleted` |
+| **Sync** | `sync`, `sync:status`, `sync:open`, `sync:history`, `sync:read`, `sync:restore`, `sync:deleted` |
 | **Themes** | `themes`, `theme`, `theme:set`, `theme:install`, `theme:uninstall` |
 | **Snippets** | `snippets`, `snippets:enabled`, `snippet:enable`, `snippet:disable` |
-| **Commands** | `commands`, `command` |
+| **Commands** | `commands`, `command`, `hotkeys`, `hotkey` |
 | **Vault** | `vaults`, `vault`, `version`, `reload`, `restart`, `recents`, `outline`, `wordcount`, `diff` |
 | **Developer** | `eval`, `dev:screenshot`, `dev:debug`, `dev:console`, `dev:errors`, `dev:css`, `dev:dom`, `devtools` |
 
@@ -102,6 +102,10 @@ obsidian prepend file="NoteName" content="Status: done\n"
 obsidian move   file="Inbox/Draft" to="Projects/"   # auto-rewrites ALL wikilinks
 obsidian rename file="OldName"     name="NewName"
 obsidian delete file="NoteName"                      # sends to system trash
+
+# Open in Obsidian
+obsidian open   file="NoteName"                       # open note in Obsidian
+obsidian open   file="NoteName" newtab                # open in new tab
 ```
 
 **`file=` vs `path=`:** Use `file=` (wikilink resolution, no extension) in most cases.
@@ -116,9 +120,12 @@ obsidian properties file="NoteName"                           # view all propert
 obsidian property:read file="NoteName" name="status"         # read one property
 obsidian property:set  file="NoteName" name="status" value="done"
 obsidian property:set  file="NoteName" name="tags"  value='["project","active"]'
+obsidian property:set  file="NoteName" name="status" value="active" type=list
 obsidian property:remove file="NoteName" name="deprecated"
 obsidian aliases file="NoteName"
 ```
+
+**`type=` options:** `text`, `list`, `number`, `checkbox`, `date`, `datetime`
 
 → Frontmatter schema conventions: `references/frontmatter-schema.md`
 
@@ -150,10 +157,25 @@ obsidian tag name="#project"                        # notes with this tag
 ## Tasks
 
 ```bash
-obsidian tasks                                       # all open tasks in vault
+# List tasks
+obsidian tasks                                       # all tasks (done + todo)
+obsidian tasks done                                  # completed only
+obsidian tasks todo                                  # incomplete only
+obsidian tasks daily                                 # from daily note
+obsidian tasks active                                # tasks in active file
 obsidian tasks path="Projects/"                      # tasks in a folder
-obsidian task file="NoteName" line=5                # task on specific line
-obsidian task file="NoteName" line=5 toggle          # toggle a task done/undone
+obsidian tasks 'status="?"'                          # filter by status character
+obsidian tasks verbose                               # grouped by file with line numbers
+obsidian tasks total                                 # return count
+obsidian tasks format=json|tsv|csv                   # output format
+
+# Single task
+obsidian task file="NoteName" line=5                 # task info on specific line
+obsidian task file="NoteName" line=5 toggle          # toggle done/undone
+obsidian task file="NoteName" line=5 done            # mark as done [x]
+obsidian task file="NoteName" line=5 todo            # mark as todo [ ]
+obsidian task daily line=3 toggle                    # toggle in daily note
+obsidian task ref="note.md:8" toggle                 # by reference (path:line)
 ```
 
 ---
@@ -195,9 +217,15 @@ obsidian plugin:install id="templater-obsidian"
 obsidian plugin:reload id="my-plugin"    # reload plugin (dev use)
 
 # Sync (Obsidian Sync subscribers)
-obsidian sync                             # trigger manual sync
-obsidian sync:history file="NoteName"    # version history of a note
+obsidian sync                             # show status / trigger sync
+obsidian sync on                          # resume sync
+obsidian sync off                         # pause sync
+obsidian sync:status                       # detailed sync status & usage
+obsidian sync:open file="NoteName"         # open sync history in UI
+obsidian sync:history file="NoteName"     # version history of a note
+obsidian sync:read file="NoteName" version=3   # read a sync version
 obsidian sync:restore file="NoteName" version=3
+obsidian sync:deleted                     # list deleted files in sync
 
 # Templates
 obsidian templates                        # list available templates
@@ -214,6 +242,43 @@ obsidian snippet:enable name="my-snippet"
 ```
 
 → Full command details: `obsidian-cli/references/command-reference.md`
+
+---
+
+## Commands & Hotkeys
+
+```bash
+obsidian commands                                    # list available command IDs
+obsidian commands filter="app:"                     # filter by ID prefix
+obsidian command id="app:reload"                    # execute an Obsidian command
+obsidian command id="editor:toggle-bold"
+obsidian hotkeys                                    # list hotkeys for all commands
+obsidian hotkeys total                              # return count
+obsidian hotkeys verbose                            # show if custom or default
+obsidian hotkey  id="app:open-settings"             # hotkey for a command
+obsidian hotkey  id="app:open-settings" verbose
+```
+
+---
+
+## Vault & System
+
+```bash
+obsidian vault                                      # full vault info
+obsidian vault info=name                            # vault name only
+obsidian vault info=path                            # vault path only
+obsidian vault info=files                           # file count only
+obsidian vault info=folders                         # folder count only
+obsidian vault info=size                            # vault size only
+obsidian vaults                                     # list known vaults
+obsidian vaults total                               # vault count
+obsidian vaults verbose                             # include vault paths
+obsidian version                                    # Obsidian version
+obsidian reload                                    # reload vault
+obsidian restart                                   # full restart
+obsidian recents                                   # recently opened files
+obsidian recents total                              # count only
+```
 
 ---
 

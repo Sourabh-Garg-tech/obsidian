@@ -184,6 +184,14 @@ obsidian move file="week-$WEEK" to="_summaries/"
 
 ---
 
+## Related Sub-skills
+
+| Sub-skill | When to delegate |
+|---|---|
+| `obsidian-workflows` | PKM routines, intelligence patterns, token-efficient loading |
+
+---
+
 ## Reference Files
 
 | File | When to read |

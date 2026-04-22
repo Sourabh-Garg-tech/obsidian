@@ -126,6 +126,15 @@ Use this to frame suggestions in the user's existing framework.
 
 ---
 
+## Related Sub-skills
+
+| Sub-skill | When to delegate |
+|---|---|
+| `obsidian-cli` | CLI command reference, raw vault operations |
+| `obsidian-vault-architect` | Vault audits, health scoring, prioritized fix commands |
+
+---
+
 ## Reference Files
 
 | File | When to read |

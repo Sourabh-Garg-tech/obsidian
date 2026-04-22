@@ -1,6 +1,32 @@
 #!/usr/bin/env bash
+set -euo pipefail
 # vault-health.sh — Comprehensive vault health check
-# Usage: ./vault-health.sh [vault_name]
+# Prerequisites: Obsidian must be running with CLI enabled
+# Usage: ./vault-health.sh [--help] [vault_name]
+
+show_help() {
+  cat <<EOF
+Usage: $(basename "$0") [--help] [vault_name]
+
+Comprehensive vault health check: totals, graph health, orphans, and broken links.
+
+Options:
+  --help    Show this help message and exit
+
+Arguments:
+  vault_name   Optional vault name (defaults to the active vault)
+EOF
+  exit 0
+}
+
+if [ "${1:-}" = "--help" ]; then
+  show_help
+fi
+
+if ! command -v obsidian &>/dev/null; then
+  echo "Error: 'obsidian' CLI not found. Ensure Obsidian is running with CLI enabled." >&2
+  exit 1
+fi
 
 VAULT="${1:-}"
 VAULT_ARG=""

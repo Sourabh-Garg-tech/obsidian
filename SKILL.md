@@ -2,15 +2,16 @@
 name: obsidian
 description: >
   This skill should be used when the user asks to "create a note", "read a note",
-  "edit a note", "search my vault", "move a note", "rename a note", "delete a note",
-  "update frontmatter", "add properties", "manage tags", "find tasks",
-  "check backlinks", "create a daily note", "list plugins", "change themes",
-  "manage snippets", "obsidian sync", "obsidian bases", "canvas files",
-  "PKM workflow", "PARA", "Zettelkasten", "GTD", "LYT", "vault health",
+  "edit a note", "open a note", "search my vault", "move a note", "rename a note",
+  "delete a note", "update frontmatter", "add properties", "manage tags", "find tasks",
+  "check backlinks", "backlinks", "create a daily note", "list plugins", "change themes",
+  "manage snippets", "obsidian sync", "sync history", "obsidian bases", "canvas files",
+  "create canvas", "PKM workflow", "PARA", "Zettelkasten", "GTD", "LYT", "vault health",
   "vault audit", "vault hygiene", "obsidian markdown", "wikilinks", "callouts",
-  "embeds", or mentions "Obsidian", "vault", "notes", ".md", "frontmatter",
-  "dataview", "daily notes", "second brain". Automates Obsidian vaults via the
-  official CLI. Always use this skill over raw file tools for link-safety guarantees.
+  "embeds", "metadata", "run command", or mentions "Obsidian", "vault", "notes",
+  ".md", "frontmatter", "dataview", "daily notes", "second brain". Automates
+  Obsidian vaults via the official CLI. Always use this skill over raw file tools
+  for link-safety guarantees.
 compatibility:
   requires: "Obsidian v1.12.7+ with CLI enabled (v1.12.7 has significantly faster CLI binary)"
   platforms: "macOS, Windows, Linux (see obsidian-workflows/references/platform-setup.md)"
@@ -18,6 +19,7 @@ auto-trigger:
   - "create a note"
   - "read a note"
   - "edit a note"
+  - "open a note"
   - "search my vault"
   - "move a note"
   - "rename a note"
@@ -27,13 +29,16 @@ auto-trigger:
   - "manage tags"
   - "find tasks"
   - "check backlinks"
+  - "backlinks"
   - "create a daily note"
   - "list plugins"
   - "change themes"
   - "manage snippets"
   - "obsidian sync"
+  - "sync history"
   - "obsidian bases"
   - "canvas files"
+  - "create canvas"
   - "PKM workflow"
   - "PARA"
   - "Zettelkasten"
@@ -46,6 +51,8 @@ auto-trigger:
   - "wikilinks"
   - "callouts"
   - "embeds"
+  - "metadata"
+  - "run command"
   - "Obsidian"
   - "vault"
   - "notes"

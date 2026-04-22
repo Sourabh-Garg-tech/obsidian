@@ -683,7 +683,7 @@ tags: [intelligence, ...]
 
 ## Pattern 13: Project Initiate Workflow
 
-Scaffold a new project into the vault with a consistent structure. See full reference: `references/project-onboarding.md`.
+Scaffold a new project into the vault with a consistent structure. See full reference: `project-onboarding.md`.
 
 ### The 3-Folder Rule
 
@@ -720,7 +720,7 @@ obsidian orphans  path="project"
 
 Without structure, every session starts with searching for docs and guessing state. With this pattern, every session loads the same 2-3 context notes and is oriented in under 3,000 tokens.
 
-→ Full workflow, templates, and validation: `references/project-onboarding.md`
+→ Full workflow, templates, and validation: `project-onboarding.md`
 
 ---
 
