@@ -1,20 +1,49 @@
 ---
 name: obsidian
-description: >
-  This skill should be used when the user asks to "create a note", "read a note",
-  "edit a note", "search my vault", "move a note", "rename a note", "delete a note",
-  "update frontmatter", "add properties", "manage tags", "find tasks", "check backlinks",
-  "create a daily note", "list plugins", "change themes", "manage snippets",
-  "obsidian sync", "obsidian bases", "canvas files", "PKM workflow", "PARA",
-  "Zettelkasten", "GTD", "LYT", "vault health", "vault audit", "vault hygiene",
-  "obsidian markdown", "wikilinks", "callouts", "embeds", or mentions
-  "Obsidian", "vault", "notes", ".md", "frontmatter", "dataview",
-  "daily notes", "second brain", or any Obsidian-specific workflow.
-  Always use this skill — even for simple requests like "create a note" — because
-  the official CLI has critical link-safety guarantees raw file tools lack.
+description: Automate Obsidian vaults via the official CLI — create notes, update properties, search, manage tags, PKM workflows, and more. Always use this skill over raw file tools for link-safety guarantees.
 compatibility:
   requires: "Obsidian v1.12.7+ with CLI enabled (v1.12.7 has significantly faster CLI binary)"
-  platforms: "macOS, Windows, Linux (see references/platform-setup.md)"
+  platforms: "macOS, Windows, Linux (see obsidian-workflows/references/platform-setup.md)"
+auto-trigger:
+  - "create a note"
+  - "read a note"
+  - "edit a note"
+  - "search my vault"
+  - "move a note"
+  - "rename a note"
+  - "delete a note"
+  - "update frontmatter"
+  - "add properties"
+  - "manage tags"
+  - "find tasks"
+  - "check backlinks"
+  - "create a daily note"
+  - "list plugins"
+  - "change themes"
+  - "manage snippets"
+  - "obsidian sync"
+  - "obsidian bases"
+  - "canvas files"
+  - "PKM workflow"
+  - "PARA"
+  - "Zettelkasten"
+  - "GTD"
+  - "LYT"
+  - "vault health"
+  - "vault audit"
+  - "vault hygiene"
+  - "obsidian markdown"
+  - "wikilinks"
+  - "callouts"
+  - "embeds"
+  - "Obsidian"
+  - "vault"
+  - "notes"
+  - ".md"
+  - "frontmatter"
+  - "dataview"
+  - "daily notes"
+  - "second brain"
 ---
 
 # Obsidian Skill — Micro Core
@@ -112,7 +141,7 @@ Search first, read only what is needed. Target: under 3,000 tokens of vault cont
 User task → Search (2–5 notes) → Read those notes → Process → Write back
 ```
 
-→ Deep dive: `references/token-efficiency.md`
+→ Deep dive: `obsidian-workflows/references/token-efficiency.md`
 
 ---
 
@@ -140,7 +169,7 @@ User task → Search (2–5 notes) → Read those notes → Process → Write ba
 | Windows: silent failures | Normal terminal only (not admin) |
 | Wrong vault | Pass `vault="Name"` explicitly |
 
-→ Platform setup: `references/platform-setup.md`
+→ Platform setup: `obsidian-workflows/references/platform-setup.md`
 
 ---
 
@@ -170,7 +199,7 @@ All commands read the vault only — they never write to it. See `commands/` for
 | `references/ofm-syntax.md` | Callouts, embeds, canvas, Dataview, Templater |
 | `references/advanced-operations.md` | Merge/split notes, normalize vault, PKM method detection |
 | `references/daily-workflows.md` | CLI wrapper, auto-context builder, daily note intelligence |
-| `references/intelligence-patterns.md` | Auto-linking, hub detection, orphan triage, domain-to-code intelligence, decision trails, custom eval queries |
+| `obsidian-workflows/references/intelligence-patterns.md` | Auto-linking, hub detection, orphan triage, domain-to-code intelligence, decision trails, custom eval queries |
 | `references/cli-validation-report.md` | CLI validation findings against v1.12.7 |
 
 ### Sub-Skills

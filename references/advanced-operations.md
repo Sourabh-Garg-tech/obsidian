@@ -46,7 +46,7 @@ done
 
 ## Merge Duplicate Notes
 
-For content merging decisions, see also `references/intelligence-patterns.md` Pattern 3.
+For content merging decisions, see also `obsidian-workflows/references/intelligence-patterns.md` Pattern 3.
 
 ```bash
 # Read both notes, combine content, create merged note, then delete originals

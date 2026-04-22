@@ -51,7 +51,9 @@ All contributions are accepted under the MIT license.
 
 ## Issue templates
 
-Issue templates are coming soon. Until then, please follow the guidelines in **Reporting bugs** and **Suggesting features**.
+Use the templates in `.github/ISSUE_TEMPLATE/`:
+- **Bug report** — for broken commands or incorrect behavior
+- **Feature request** — for new commands, sub-skills, or workflow improvements
 
 ## Code style
 

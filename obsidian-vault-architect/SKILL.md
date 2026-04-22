@@ -58,7 +58,7 @@ obsidian deadends
 obsidian tags sort=count counts
 
 # 9. Hub detection (backlinks on most-linked notes)
-obsidian backlinks file="<most-linked-note>"
+obsidian backlinks path="<most-linked-note>.md"
 
 # 10. Naming convention scan
 obsidian files | grep -E ' |[A-Z]' | grep -v '^[0-9]{4}-[0-9]{2}-[0-9]{2}'

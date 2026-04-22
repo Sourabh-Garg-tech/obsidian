@@ -63,7 +63,7 @@ obsidian daily:append content="- [ ] New task"
 obsidian property:set name="status" value="done" file="My Note"
 obsidian tasks daily todo
 obsidian tags sort=count counts
-obsidian backlinks file="My Note"
+obsidian backlinks path="My Note.md"
 ```
 
 Use `--copy` on any command to copy output to clipboard.
