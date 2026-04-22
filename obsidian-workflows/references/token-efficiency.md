@@ -26,6 +26,8 @@ Obsidian is external memory — reference it, do not dump it.
 ```
 User task
    ↓
+Load Intelligence/_index (global) + project/Intelligence/_index (project) — <300 tokens
+   ↓
 Search vault for relevant notes (2-5 max)
    ↓
 Read only those notes
@@ -43,7 +45,7 @@ Organize notes by how often AI needs to read them:
 
 | Tier | Load | Examples | Token budget |
 |---|---|---|---|
-| **Always** | Every session | Project context, active goals | <500 tokens |
+| **Always** | Every session | `_context/`, `Intelligence/_index`, project `Intelligence/_index` | <500 tokens |
 | **On demand** | When relevant | Research notes, references | 500-3000 tokens |
 | **Never** | Search only | Archives, raw data | 0 tokens (search only) |
 
@@ -51,16 +53,31 @@ Organize notes by how often AI needs to read them:
 
 ## The `_context/` Pattern
 
-Keep a `_context/` folder with short summary notes that act as lightweight indexes:
+Keep a `_context/` folder at vault root **and** inside each project folder.
 
+**Global `_context/`** (vault root):
 ```
 _context/
-├── active-projects.md     # 1-2 lines per active project
-├── current-goals.md       # this week's focus
-└── vault-map.md           # key folders and their purposes
+├── active-projects.md     # index linking to each project's active-projects
+├── coding-standards.md    # global conventions
+├── vault-map.md           # vault-wide folder map
+└── agent-instructions.md  # global agent behavior
 ```
 
-Read these first instead of scanning the whole vault. Keep each under 100 words.
+**Project `_context/`** (per-project):
+```
+project/_context/
+├── vault-map.md           # project folder map
+├── active-projects.md     # this project's state
+└── coding-standards.md    # project-specific overrides
+```
+
+**Loading order:**
+1. Global `_context/active-projects` — find which project is active
+2. Project `_context/vault-map` — navigate that project's structure
+3. Project `_context/active-projects` — know that project's current state
+
+Keep each under 100 words. Global active-projects is an index; project active-projects is the detail.
 
 ---
 

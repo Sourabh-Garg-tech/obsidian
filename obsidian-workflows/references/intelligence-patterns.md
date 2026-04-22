@@ -18,6 +18,27 @@ CLI is the execution layer; Claude is the intelligence layer.
 
 ---
 
+## Intelligence Folder Scope: Global vs Project
+
+For multi-project vaults, maintain two intelligence layers with a unified frontmatter schema.
+
+**Global** (`Intelligence/` at vault root): cross-project synthesis, vault health, strategic decisions.  
+**Project** (`project/Intelligence/`): architecture decisions, feature rationale, domain-to-code mapping.
+
+**Frontmatter schema (both use same):**
+```yaml
+type: intelligence-report          # unified type for all intelligence
+report-type: decision | health | domain-extraction | gap-analysis
+date: YYYY-MM-DD
+project: project-name              # omit for global
+```
+
+**Hub notes link both ways:**
+- Global: `Intelligence/_index.md` (`type: moc`) links to each project's `_index.md`
+- Project: `project/Intelligence/_index.md` (`type: moc`) links back to global
+
+---
+
 ## Pattern 1: Auto-Linking Engine
 
 Find notes that should be linked but aren't.
@@ -347,8 +368,11 @@ Extract recurring themes and rules from a large body of domain notes.
 ### Step 1: Gather
 
 ```bash
-# List all notes in a domain folder
-obsidian files folder="Domain/Subfolder" format=json
+# List all notes in a domain folder (files does not support format=json)
+obsidian files folder="Domain/Subfolder"
+
+# For structured JSON output, use search instead:
+obsidian search query="" path="Domain/Subfolder" format=json
 
 # Count notes per subfolder
 obsidian eval code='var counts={};app.vault.getFiles().filter(f=>f.path.startsWith("Domain/")&&f.extension==="md").forEach(f=>{var parts=f.path.split("/");var sub=parts.slice(0,3).join("/");counts[sub]=(counts[sub]||0)+1;});JSON.stringify(counts);'
@@ -451,9 +475,10 @@ When making project decisions, link back to vault knowledge to create an audit t
 ```bash
 obsidian create name="Intelligence/YYYY-MM-DD-decision-name" content="---
 date: YYYY-MM-DD
-type: decision
+type: intelligence-report
+report-type: decision
 project: project-name
-tags: [decision, project-name]
+tags: [intelligence, decision, project-name]
 ---
 
 # Decision: What was decided
@@ -475,6 +500,8 @@ context and reasoning.
 ```
 
 **Use case:** Months later, when reviewing why a decision was made, the intelligence note provides full context with links to original domain knowledge.
+
+> **Content safety:** Decision trails contain code references (`ClassName`, `file.py`). Bash interprets backticks as command substitution. For complex content, write the note body to a temp file first, then create: `obsidian create name="..." content="$(cat /tmp/note.md)"`. Or use the `Write` tool for notes with code blocks or tables.
 
 ### Decision Registry
 
@@ -614,7 +641,86 @@ Back to Domain Notes (new learnings)
 
 **The Intelligence folder** acts as the bridge between raw domain knowledge and project implementation. It is the layer where accumulated wisdom becomes actionable.
 
-**Convention:** Store all intelligence reports and decision trails in `Intelligence/` at vault root. This creates a single source of truth for how vault knowledge informed project decisions.
+**Convention:** Store all intelligence reports and decision trails in `Intelligence/` at vault root. For multi-project vaults, see **Intelligence Folder Scope** at the top of this file for the project-level pattern.
+
+---
+
+## Pattern 12: Bootstrap Project Intelligence
+
+When a new project needs its own Intelligence folder:
+
+```bash
+# 1. Create hub
+obsidian create name="project/Intelligence/_index" content="---\ntype: moc\npurpose: intelligence-hub\nproject: project-name\ntags: [intelligence, index]\n---\n\n# Intelligence — Project Name\n\n## Decision Trails\n| Decision | Date | Status |\n|---|---|---|\n\n## Reports\n| Report | Date | Type |\n|---|---|---|\n\n## Global Context\n- [[Intelligence/_index]] — Cross-project synthesis"
+
+# 2. Create first decision from template
+obsidian create name="project/Intelligence/decisions/YYYY-MM-DD-decision-name" content="..."
+
+# 3. Link global hub to project hub
+obsidian append file="Intelligence/_index" content="\n| [[project/Intelligence/_index]] | Active | Project hub |"
+```
+
+**Project Intelligence structure:**
+```
+project/Intelligence/
+├── _index.md              # type: moc — links to global Intelligence/_index
+├── decisions/             # Pattern 11 decision trails
+├── reports/                 # health, domain-extraction, gap-analysis
+├── gaps/                    # knowledge-to-code gap notes
+└── templates/               # copy to create new notes
+```
+
+**Frontmatter convention (all project intelligence):**
+```yaml
+type: intelligence-report          # unified type
+report-type: decision | health | domain-extraction | gap-analysis
+date: YYYY-MM-DD
+project: project-name              # omit for global
+tags: [intelligence, ...]
+```
+
+---
+
+## Pattern 13: Project Initiate Workflow
+
+Scaffold a new project into the vault with a consistent structure. See full reference: `references/project-onboarding.md`.
+
+### The 3-Folder Rule
+
+Every project uses exactly 3 top-level folders:
+
+| Folder | Purpose |
+|---|---|
+| `docs/` | Design specs, plans, architecture |
+| `Intelligence/` | Decision trails, reports, templates |
+| `_context/` | Project state, conventions, vault-map |
+
+Everything else goes into subfolders. No additional top-level folders.
+
+### Quick Init
+
+```bash
+# 1. Create 3-folder scaffold
+mkdir -p project/{docs/{specs,plans},Intelligence/{decisions,reports,gaps,templates},_context}
+
+# 2. Create hub notes
+obsidian create name="project/Intelligence/_index" content="..."
+obsidian create name="project/_context/vault-map" content="..."
+obsidian create name="project/_context/active-projects" content="..."
+
+# 3. Link to global context
+obsidian append file="_context/active-projects" content="| Project | [[project/_context/active-projects]] |"
+
+# 4. Validate
+obsidian unresolved path="project"
+obsidian orphans  path="project"
+```
+
+### Why
+
+Without structure, every session starts with searching for docs and guessing state. With this pattern, every session loads the same 2-3 context notes and is oriented in under 3,000 tokens.
+
+→ Full workflow, templates, and validation: `references/project-onboarding.md`
 
 ---
 
