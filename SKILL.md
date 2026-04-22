@@ -1,6 +1,16 @@
 ---
 name: obsidian
-description: Automate Obsidian vaults via the official CLI — create notes, update properties, search, manage tags, PKM workflows, and more. Always use this skill over raw file tools for link-safety guarantees.
+description: >
+  This skill should be used when the user asks to "create a note", "read a note",
+  "edit a note", "search my vault", "move a note", "rename a note", "delete a note",
+  "update frontmatter", "add properties", "manage tags", "find tasks",
+  "check backlinks", "create a daily note", "list plugins", "change themes",
+  "manage snippets", "obsidian sync", "obsidian bases", "canvas files",
+  "PKM workflow", "PARA", "Zettelkasten", "GTD", "LYT", "vault health",
+  "vault audit", "vault hygiene", "obsidian markdown", "wikilinks", "callouts",
+  "embeds", or mentions "Obsidian", "vault", "notes", ".md", "frontmatter",
+  "dataview", "daily notes", "second brain". Automates Obsidian vaults via the
+  official CLI. Always use this skill over raw file tools for link-safety guarantees.
 compatibility:
   requires: "Obsidian v1.12.7+ with CLI enabled (v1.12.7 has significantly faster CLI binary)"
   platforms: "macOS, Windows, Linux (see obsidian-workflows/references/platform-setup.md)"
@@ -75,59 +85,7 @@ are never silently overwritten.
 
 ## Quick Reference
 
-```bash
-obsidian version                                          # verify CLI
-obsidian vaults                                           # list vaults
-
-# Read / Search
-obsidian read file="NoteName"                             # read note (wikilink name)
-obsidian read path="Folder/Note.md"                      # read by exact path
-obsidian search query="keyword"                          # full-text search
-obsidian search query="tag:#project"                     # tag search
-obsidian search query="keyword" format=json               # JSON output
-
-# Create / Edit
-obsidian create name="NoteName" content="# Title"         # create note
-obsidian create name="NoteName" template="Template"      # from template
-obsidian append  file="NoteName" content="\n- item"      # append content
-obsidian prepend file="NoteName" content="text\n"        # prepend after frontmatter
-
-# Move / Delete
-obsidian move   file="Draft" to="Archive/"               # auto-rewrites wikilinks
-obsidian rename file="Old" name="New"                    # rename + update links
-obsidian delete file="NoteName"                           # to system trash
-
-# Properties
-obsidian properties file="NoteName"                       # view all
-obsidian property:read  file="Note" name="status"         # read one
-obsidian property:set   file="Note" name="status" value="done"
-obsidian property:set   file="Note" name="tags" value='["a","b"]'
-obsidian property:remove file="Note" name="deprecated"
-
-# Daily Notes
-obsidian daily                                            # open today's note
-obsidian daily:append date="today" content="- [ ] task"   # add to today
-obsidian daily:read  date="yesterday"                      # read yesterday
-
-# Tags / Tasks / Links
-obsidian tags                                             # all tags
-obsidian tag name="#project"                              # notes with tag (use name=)
-obsidian tasks                                            # all open tasks
-obsidian task file="Note" line=5 toggle                   # toggle task (line= required)
-obsidian backlinks path="Folder/Note.md"               # incoming links (use path=, not file=)
-obsidian unresolved                                       # broken links
-obsidian orphans                                          # unlinked notes
-
-# Plugins / Themes
-obsidian plugins                                          # list plugins
-obsidian plugin:enable id="dataview"                      # use id= (not plugin=)
-obsidian snippet:enable name="style"                     # use name= (not snippet=)
-
-# Vault
-obsidian vault                                            # vault info
-obsidian recents                                          # recently opened
-obsidian outline file="NoteName"                          # heading structure
-```
+For the full command table: `references/quick-reference.md`
 
 **`file=` vs `path=`:** `file=` resolves by wikilink name (no extension). `path=` is exact from vault root.
 
@@ -201,6 +159,15 @@ All commands read the vault only — they never write to it. See `commands/` for
 | `references/daily-workflows.md` | CLI wrapper, auto-context builder, daily note intelligence |
 | `obsidian-workflows/references/intelligence-patterns.md` | Auto-linking, hub detection, orphan triage, domain-to-code intelligence, decision trails, custom eval queries |
 | `references/cli-validation-report.md` | CLI validation findings against v1.12.7 |
+| `references/quick-reference.md` | Essential command table for daily use |
+| `obsidian-workflows/references/project-onboarding.md` | Project scaffolding, `vault-project-init` workflow, 3-folder structure |
+
+### Scripts
+
+| Script | Purpose |
+|---|---|
+| `scripts/vault-health.sh` | Run comprehensive vault health metrics (orphans, broken links, totals) |
+| `scripts/context-builder.sh` | Build minimal context for a task from vault |
 
 ### Sub-Skills
 
