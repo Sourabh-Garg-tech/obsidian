@@ -7,6 +7,9 @@ description: >
   "obsidian theme development", "reload plugin", "run JavaScript in obsidian",
   "capture obsidian errors", "obsidian screenshot", "inspect obsidian DOM",
   or mentions any obsidian command-line operation.
+compatibility:
+  requires: "Obsidian v1.12.7+ with CLI enabled"
+  platforms: "macOS, Windows, Linux"
 ---
 
 # Obsidian CLI

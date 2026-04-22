@@ -7,6 +7,9 @@ description: >
   web page (not ending in .md) for reading or analysis. Use instead of WebFetch
   for online documentation, articles, blog posts, or any standard web page.
   Do NOT use for URLs ending in .md — those are already markdown, use WebFetch directly.
+compatibility:
+  requires: "npm install -g defuddle"
+  platforms: "macOS, Windows, Linux"
 ---
 
 # Defuddle
