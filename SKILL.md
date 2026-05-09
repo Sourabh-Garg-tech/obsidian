@@ -46,6 +46,9 @@ auto-trigger:
   - "run command"
   - "Obsidian"
   - "vault"
+  - "vault health"
+  - "vault audit"
+  - "vault hygiene"
   - "notes"
   - ".md"
   - "frontmatter"
@@ -154,7 +157,7 @@ After `create`, `append`, `move`, `property:set`, or `daily:append`, update `_co
 
 ```bash
 # Read existing cache (PowerShell for multiline on Windows)
-$cache = powershell -c "obsidian 'read' 'path=_context/.session-cache.md'"
+cache=$(powershell -c "obsidian 'read' 'path=_context/.session-cache.md'")
 
 # If missing or stale (>24h), create fresh
 # Append touch entry
@@ -210,11 +213,11 @@ Every line is actionable. Skip lines with no content. Never waste tokens on empt
 | `evening` | Read today's daily note → summarize accomplishments → append to daily note + `_summaries/week-YYYY-WWW.md` + update project daily note if in PROJECT MODE |
 | `weekly` | `obsidian tags sort=count counts` + intelligence report summary + update `_summaries/week-YYYY-WWW.md` |
 | `health` | Run `scripts/vault-health.sh` (full report), delegate to `obsidian-vault-architect` for scoring |
-| `search <q>` | `obsidian search query="<q>" path="." format=json limit=10 2>/dev/null \|\| obsidian search query="<q>" path="." limit=10` |
+| `search <q>` | `obsidian search query="<q>" path="." format=json limit=10 2>/dev/null || obsidian search query="<q>" path="." limit=10` |
 | `read <name>` | `obsidian read file="<name>"` |
 | `create <name>` | `obsidian create name="<name>" content="---\ntype: note\ncreated: <date>\ntags: []\n---\n\n# <name>\n"` |
 | `daily <text>` | `obsidian daily:append content="<text>"` |
-| `tasks` | PROJECT MODE: `obsidian read file="<project>/_context/active-projects"` then extract next actions · VAULT/EXTERNAL: `obsidian daily:read \| grep "^\- \[ \]" \| head -5` |
+| `tasks` | PROJECT MODE: `obsidian read file="<project>/_context/active-projects"` then extract next actions · VAULT/EXTERNAL: `obsidian daily:read | grep "^\- \[ \]" | head -5` |
 | `project <name>` | `obsidian search query="<name>" path="Projects/" format=json limit=10` |
 | `canvas` | Auto-load `json-canvas` sub-skill |
 | `bases` | Auto-load `obsidian-bases` sub-skill |
@@ -222,7 +225,7 @@ Every line is actionable. Skip lines with no content. Never waste tokens on empt
 | `init <name>` | Run `vault-project-init` workflow (see project-onboarding.md) |
 | `checkpoint <summary>` | Manually log a checkpoint to project daily note: `<project>/Intelligence/daily/YYYY-MM-DD.md` |
 | `cache` | `obsidian read path="_context/.session-cache.md"` |
-| `cache:clear` | `obsidian create name="_context/.session-cache" content="---\ntype: session-cache\ndate: <today>\ntags: [system]\n---\n\n## Touch Log\n\n## Session Narrative\n" overwrite` |
+| `cache:clear` | `obsidian create name="_context/.session-cache.md" content="---\ntype: session-cache\ndate: <today>\nupdated: <today>T00:00:00\ntags: [system]\n---\n\n## Touch Log\n\n## Session Narrative\n" overwrite` |
 | `ingest <source>` | Preview-gated ingestion: extract → analyze → preview → approve → create notes + update source index |
 
 If the keyword does not match any named workflow, treat it as a search query:
@@ -337,7 +340,7 @@ Task:       Search (2–5 notes) → Read those notes → Process → Write back
 | Empty output / hangs | Obsidian not running; start it first |
 | Windows: silent failures | Normal terminal only (not admin) |
 | Wrong vault | Pass `vault="Name"` explicitly |
-| `tasks format=json` empty | Windows — use `tasks \| grep "^\- \[ \]" \| head -5` |
+| `tasks format=json` empty | Windows — use `tasks | grep "^\- \[ \]" | head -5` |
 | `eval` returns empty | O(n²) scaling limit on large vaults — reduce slice size |
 
 → Platform setup: `obsidian-workflows/references/platform-setup.md`
