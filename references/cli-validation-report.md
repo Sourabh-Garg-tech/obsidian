@@ -1,6 +1,6 @@
 # CLI Validation Report
 
-Validated against Obsidian CLI v1.12.7 on Windows, vault "Sourabh Mind Palace" (911 files).
+Validated against Obsidian CLI v1.12.7 on Windows, test vault (911 files).
 Ground truth: `obsidian help` output + live testing. Last validated: 2026-04-22.
 
 ---
