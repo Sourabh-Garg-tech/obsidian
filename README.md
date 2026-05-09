@@ -94,6 +94,20 @@ obsidian property:set file="Project Ideas" name="status" value="active"
 
 See [full safety reference](references/full-reference.md#safety-rules).
 
+## Vault Intelligence (v1.3)
+
+Automated vault health and connectivity features:
+
+| Workflow | What it does |
+|---|---|
+| `/obsidian intelligence` | Full scan: hubs + orphans + broken links + missing backlinks |
+| `/obsidian hubs` | List top 10 hub notes by backlink count |
+| `/obsidian orphans` | Find orphaned notes and suggest connections |
+| `/obsidian fix-links` | Scan broken links and suggest closest matches |
+| `/obsidian backlinks` | Check for missing bidirectional links |
+
+These features auto-run after ingestion and note creation to keep your vault connected and healthy.
+
 ## Thinking commands
 
 Four slash commands that use the vault as context for reasoning — not file management. Copy from `commands/` to your vault's `.claude/commands/`.
