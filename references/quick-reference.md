@@ -58,6 +58,13 @@ obsidian unresolved                                       # broken links
 obsidian orphans                                          # unlinked notes
 obsidian read path="_context/session-cache.md"          # read session hot cache
 
+# Vault Intelligence
+obsidian eval code='app.vault.getMarkdownFiles().map(f=>({name:f.basename,count:app.metadataCache.getBacklinksForFile(f).data.size})).filter(x=>x.count>=10).sort((a,b)=>b.count-a.count).slice(0,10)'  # hub detection (top 10)
+obsidian orphans                                             # orphaned notes
+obsidian unresolved                                          # broken links
+obsidian links path="Folder/Note.md"                         # outgoing links (use path=)
+obsidian backlinks path="Folder/Note.md"                     # incoming links (use path=)
+
 # Plugins / Themes
 obsidian plugins                                          # list plugins
 obsidian plugin:enable id="dataview"                      # use id= (not plugin=)
