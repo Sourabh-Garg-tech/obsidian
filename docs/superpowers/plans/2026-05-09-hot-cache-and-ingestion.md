@@ -4,7 +4,7 @@
 
 **Goal:** Add a session hot cache and a preview-gated ingestion workflow to the Obsidian skill suite.
 
-**Architecture:** Hot cache is a hidden note (`_context/.session-cache.md`) auto-updated after CLI writes. Ingestion is a named workflow that previews proposed notes before creation. Both are skill behaviors, not new sub-skills.
+**Architecture:** Hot cache is a hidden note (`_context/session-cache.md`) auto-updated after CLI writes. Ingestion is a named workflow that previews proposed notes before creation. Both are skill behaviors, not new sub-skills.
 
 **Tech Stack:** Markdown (SKILL.md, references), Bash (`context-builder.sh`), Obsidian CLI.
 
@@ -34,15 +34,15 @@ After the "Auto-checkpoint" paragraph (line ~128-149), insert a new subsection:
 ```markdown
 **Auto-checkpoint — session hot cache (all modes, after any write operation):**
 
-After `create`, `append`, `move`, `property:set`, or `daily:append`, update `_context/.session-cache.md`:
+After `create`, `append`, `move`, `property:set`, or `daily:append`, update `_context/session-cache.md`:
 
 ```bash
 # Read existing cache (PowerShell for multiline on Windows)
-$cache = powershell -c "obsidian 'read' 'path=_context/.session-cache.md'"
+$cache = powershell -c "obsidian 'read' 'path=_context/session-cache.md'"
 
 # If missing or stale (>24h), create fresh
 # Append touch entry
-powershell -c "obsidian 'append' 'path=_context/.session-cache.md' 'content=- + [[Note Name]] (created)'"
+powershell -c "obsidian 'append' 'path=_context/session-cache.md' 'content=- + [[Note Name]] (created)'"
 
 # After 5 entries, roll FIFO
 ```
@@ -77,8 +77,8 @@ Rules:
 Insert two rows in the Named Workflows table (line ~169):
 
 ```markdown
-| `cache` | `obsidian read path="_context/.session-cache.md"` |
-| `cache:clear` | `obsidian create name="_context/.session-cache" content="---\ntype: session-cache\ndate: <today>\ntags: [system]\n---\n\n## Touch Log\n\n## Session Narrative\n" overwrite` |
+| `cache` | `obsidian read path="_context/session-cache.md"` |
+| `cache:clear` | `obsidian create path="_context/session-cache.md" content="---\ntype: session-cache\ndate: <today>\nupdated: <today>T00:00:00\ntags: [system]\n---\n\n## Touch Log\n\n## Session Narrative\n" overwrite` |
 ```
 
 - [ ] **Step 3: Add `ingest <source>` to Named Workflows table**
@@ -124,7 +124,7 @@ After line 43 (`echo "=== Context Builder ==="`), insert:
 ```bash
 if [ "$SHOW_CACHE" = true ]; then
   echo "--- Session Cache ---"
-  obsidian read path="_context/.session-cache.md" $VAULT_ARG 2>/dev/null | grep -E "^-|##|Decision|Thread|Next" | head -10
+  obsidian read path="_context/session-cache.md" $VAULT_ARG 2>/dev/null | grep -E "^-|##|Decision|Thread|Next" | head -10
   echo ""
 fi
 ```
@@ -374,7 +374,7 @@ cat references/quick-reference.md | grep -n "search\|read\|create" | head -20
 Find the command table. Insert two rows:
 
 ```markdown
-| `cache` | Read session hot cache | `obsidian read path="_context/.session-cache.md"` |
+| `cache` | Read session hot cache | `obsidian read path="_context/session-cache.md"` |
 | `ingest <source>` | Preview-gated source ingestion | `/obsidian ingest <url or file>` |
 ```
 
@@ -396,12 +396,12 @@ git commit -m "feat: add cache and ingest to quick reference"
 
 Run:
 ```bash
-obsidian create name="_context/.session-cache" content="---\ntype: session-cache\ndate: 2026-05-09\ntags: [system]\n---\n\n## Touch Log\n\n## Session Narrative\n" overwrite
+obsidian create path="_context/session-cache.md" content="---\ntype: session-cache\ndate: 2026-05-09\nupdated: 2026-05-09T00:00:00\ntags: [system]\n---\n\n## Touch Log\n\n## Session Narrative\n" overwrite
 ```
 
 Then:
 ```bash
-obsidian read path="_context/.session-cache.md"
+obsidian read path="_context/session-cache.md"
 ```
 
 Expected: Shows the created cache note with correct frontmatter.
@@ -465,7 +465,7 @@ git commit -m "feat: v1.2 — hot cache + ingestion workflow"
 - `type: session-cache` used consistently in Task 1
 - `type: entity | concept | source | question` used consistently in Task 4
 - `source:` frontmatter field used consistently
-- Cache path `_context/.session-cache.md` used consistently across all tasks
+- Cache path `_context/session-cache.md` used consistently across all tasks
 
 **4. Gaps found and fixed:**
 - Added `cache:clear` workflow (was implied but not explicit in spec)
