@@ -148,7 +148,7 @@ obsidian search:context query="TODO" lines=3        # show surrounding lines
 ```bash
 obsidian tags                                        # all tags with counts
 obsidian tags sort=count                             # sort by frequency
-obsidian tag name="#project"                        # notes with this tag
+obsidian tag name="project"                         # notes with this tag (no # prefix)
 # Note: tags:rename and tags:remove do NOT exist. Use property:set or eval for bulk tag changes.
 ```
 
@@ -183,7 +183,7 @@ obsidian task ref="note.md:8" toggle                 # by reference (path:line)
 ## Links & Graph Health
 
 ```bash
-obsidian links     file="NoteName"   # outgoing wikilinks
+obsidian links     path="NoteName.md"  # outgoing wikilinks (use path=, not file=)
 obsidian backlinks path="NoteName.md"   # incoming wikilinks (use path=, not file=)
 obsidian unresolved                  # all broken/unresolved links in vault
 obsidian orphans                     # notes with no links at all
@@ -346,10 +346,11 @@ Write result back to vault
 4. **Dry-run destructive bulk ops** by echoing commands first, then removing `echo`.
 5. **Confirm the vault** with `obsidian vaults` if the user has multiple vaults open.
 6. **For >500 files**, use Python with `python-frontmatter` lib, then run `obsidian reload` to reindex.
-7. **Not all commands support `format=json`** — only `search`, `tags`, `tasks`, `backlinks`, `bookmarks`, `unresolved`, `properties`, `plugins`. `files` does NOT support JSON output.
+7. **Not all commands support `format=json`** — only `search`, `tags`, `tasks`, `backlinks`, `bookmarks`, `unresolved`, `properties`, `plugins`. `files` and `tag` do NOT support JSON output.
 8. **`tags:rename` and `tags:remove` don't exist** — use `property:set` on individual notes or `eval` for bulk tag changes.
 9. **`search` unreliable on Windows** — returns empty without `path=`. Use Grep tool on vault directory as fallback.
-10. **`backlinks file=` unreliable** — use `path=` instead: `obsidian backlinks path="Folder/Note.md"`
+10. **`backlinks file=` and `links file=` unreliable** — use `path=` instead: `obsidian backlinks path="Folder/Note.md"`
+11. **Colon commands may fail in Git Bash on Windows** — `property:*`, `daily:*`, `plugin:*`, `base:*`, `history:*`, `theme:*`, `template:*`, `tab:*` return exit code 127. Use `cmd /c "obsidian property:read ..."` or PowerShell.
 
 ---
 

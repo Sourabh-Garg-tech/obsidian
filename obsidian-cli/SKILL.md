@@ -113,6 +113,9 @@ Run `obsidian help` to see additional developer commands.
    obsidian eval code="$(cat /tmp/obs.js)"
    ```
 4. **`files` does not support `format=json`** — use `search format=json` for structured output.
-5. **`daily:prepend` inserts after frontmatter**, not at byte 0.
-6. **Windows**: Must run from normal terminal (not admin). Git Bash needs a wrapper script — see `references/command-reference.md`.
-7. **Linux headless**: Use `.deb` (not snap), run under xvfb, set `PrivateTmp=false` for systemd.
+5. **`tag` does not support `format=json`** — it returns plain text regardless.
+6. **`tag name=` takes the tag name without `#`** — use `name="project"` not `name="#project"`.
+7. **`daily:prepend` inserts after frontmatter**, not at byte 0.
+8. **`backlinks file=` and `links file=` unreliable** — use `path=` instead.
+9. **Windows**: Must run from normal terminal (not admin). Git Bash needs a wrapper script — see `references/command-reference.md`.
+10. **Linux headless**: Use `.deb` (not snap), run under xvfb, set `PrivateTmp=false` for systemd.

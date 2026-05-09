@@ -842,6 +842,7 @@ Update or create `Sources/Article Name.md`:
 obsidian create name="Sources/Article Name" content="---
 type: source
 date: 2026-05-09
+source: https://example.com/article
 url: https://example.com/article
 tags: [source]
 ---
