@@ -2,50 +2,72 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-A comprehensive Claude Code skill suite for automating [Obsidian](https://obsidian.md/) vaults via the official Obsidian CLI.
+Turn Claude Code into an intelligent vault assistant for [Obsidian](https://obsidian.md/). Create notes, search your second brain, manage tasks, and run structured PKM workflows — all through natural conversation.
 
-Every command routes through Obsidian's internal API — so moves auto-rewrite wikilinks, properties reflect immediately, and plugin configs are never silently overwritten.
+**Why this exists:** Raw file tools break wikilinks, corrupt frontmatter, and overwrite plugin configs. This skill routes every operation through Obsidian's official CLI so your vault stays intact.
 
-## What is this?
+---
 
-This skill turns Claude Code into an intelligent vault assistant. Create notes, update properties, search across your entire second brain, toggle tasks, and run structured PKM workflows — all through natural conversation. No raw file manipulation, no broken links, no YAML corruption.
+## Table of Contents
 
-## Who is this for?
+- [What You Get](#what-you-get)
+- [Installation](#installation)
+- [Quick Start](#quick-start)
+- [Daily Workflows](#daily-workflows)
+- [Vault Intelligence](#vault-intelligence)
+- [Project Context (Cross-Directory)](#project-context-cross-directory)
+- [Safety First](#safety-first)
+- [Sub-Skills](#sub-skills)
+- [Contributing](#contributing)
+- [License](#license)
 
-| Claude Code users | Obsidian users | Developers |
-|---|---|---|
-| Install one skill and control your vault with natural language. | Automate repetitive vault tasks without leaving your editor. | Extend the skill suite with new sub-skills or CLI commands. |
+---
 
-## Prerequisites
+## What You Get
 
-- Obsidian v1.12.7+ with CLI enabled ([setup guide](obsidian-workflows/references/platform-setup.md))
-- Claude Code (this is a Claude Code skill)
+| Feature | What it means |
+|---|---|
+| **Intelligence-first context** | Auto-loads your active projects, recent decisions, and open tasks on every invocation |
+| **Cross-directory awareness** | Work on projects outside your vault — the skill finds and loads the right project context automatically |
+| **Session hot cache** | Tracks what you've touched this session across any directory |
+| **Vault intelligence** | Auto-detects hub notes, orphaned notes, broken links, and missing backlinks |
+| **Source ingestion** | Pull articles, URLs, and documents into your vault with preview-gated note creation |
+| **PKM workflows** | Built-in support for PARA, Zettelkasten, GTD, and LYT methods |
+| **Thinking commands** | `/trace`, `/challenge`, `/connect`, `/emerge` — reason over your vault as a knowledge graph |
+
+---
 
 ## Installation
 
-### Option 1: As a Claude Code plugin (recommended)
+### Prerequisites
 
-1. Clone this repo into your Claude Code plugins directory:
-   ```bash
-   git clone https://github.com/Sourabh-Garg-tech/obsidian.git ~/.claude/plugins/obsidian
-   ```
-2. The `.claude-plugin/plugin.json` manifest registers all sub-skills and commands automatically.
-3. Restart Claude Code or run `/skill refresh`.
-4. The skill auto-triggers on any Obsidian-related request.
+- [Obsidian](https://obsidian.md/) v1.12.7+ with CLI enabled
+- [Claude Code](https://claude.ai/code)
 
-### Option 2: As a standalone skill
+Enable the Obsidian CLI: Settings → General → Command line interface → Enable + Register.
 
-1. Clone this repo into your Claude Code skills directory:
-   ```bash
-   git clone https://github.com/Sourabh-Garg-tech/obsidian.git ~/.claude/skills/obsidian
-   ```
-2. Restart Claude Code or run `/skill refresh`.
-3. The skill auto-triggers on any Obsidian-related request.
-
-## Quick start
+### Option 1: Claude Code Plugin (Recommended)
 
 ```bash
-# Verify CLI is available
+git clone https://github.com/Sourabh-Garg-tech/obsidian.git ~/.claude/plugins/obsidian
+```
+
+Restart Claude Code or run `/skill refresh`. The skill auto-triggers on any Obsidian-related request.
+
+### Option 2: Standalone Skill
+
+```bash
+git clone https://github.com/Sourabh-Garg-tech/obsidian.git ~/.claude/skills/obsidian
+```
+
+Restart Claude Code or run `/skill refresh`.
+
+---
+
+## Quick Start
+
+```bash
+# Verify everything is connected
 obsidian version
 obsidian vaults
 
@@ -58,70 +80,86 @@ obsidian search query="deadline:2026-04-30" format=json
 # Append to today's daily note
 obsidian daily:append date="today" content="- [ ] Review Q2 goals"
 
-# Update frontmatter
+# Update frontmatter safely
 obsidian property:set file="Project Ideas" name="status" value="active"
 ```
 
-## Sub-skills
+---
 
-| Sub-skill | What it does |
+## Daily Workflows
+
+Run these with `/obsidian <workflow>`:
+
+| Workflow | When to use |
+|---|---|
+| `morning` | Populate daily note with yesterday's incomplete tasks + today's focus |
+| `evening` | Summarize accomplishments, append to daily and weekly notes |
+| `weekly` | Tag analysis + intelligence report + update weekly summary |
+| `tasks` | See open tasks from your current project or daily note |
+| `search <query>` | Full-text search across the vault |
+| `health` | Full vault health report with scoring |
+
+---
+
+## Vault Intelligence
+
+Automated vault health that runs after ingestion and note creation:
+
+| Check | What it finds |
+|---|---|
+| `intelligence` | Full scan: hubs + orphans + broken links + missing backlinks |
+| `hubs` | Notes with 10+ backlinks — your knowledge graph centers |
+| `orphans` | Notes with zero backlinks — potential disconnects |
+| `fix-links` | Broken wikilinks with suggested fixes |
+| `backlinks` | Missing bidirectional connections |
+
+---
+
+## Project Context (Cross-Directory)
+
+**The problem:** You're coding in `~/Work/project-a/` but your vault notes live in `~/Vault/Projects/project-a/`. Context is lost.
+
+**The fix:** This skill detects when you're working outside the vault and automatically loads the matching project's intelligence — active decisions, open gaps, and next actions. No manual path management.
+
+```bash
+# In ~/Work/project-a/, run:
+/obsidian
+# Skill auto-detects project-a and loads its context
+```
+
+---
+
+## Safety First
+
+1. **Never `mv`/`cp`** vault files — `obsidian move` rewrites wikilinks automatically
+2. **Never write raw YAML** — `property:set` writes safe frontmatter
+3. **Never edit `.obsidian/*.json`** — Obsidian will overwrite your changes
+4. **Dry-run bulk ops** — echo commands first, then remove `echo`
+5. **Confirm vault** with `obsidian vaults` if multiple vaults are open
+
+See [full safety reference](references/full-reference.md#safety-rules) for the complete list.
+
+---
+
+## Sub-Skills
+
+| Sub-skill | Purpose |
 |---|---|
 | [obsidian-cli](obsidian-cli/) | CLI syntax, parameters, and command reference |
-| [obsidian-markdown](obsidian-markdown/) | Obsidian-flavored markdown: wikilinks, embeds, callouts, properties |
-| [obsidian-bases](obsidian-bases/) | Bases `.base` files: filters, formulas, views |
-| [json-canvas](json-canvas/) | Canvas `.canvas` files: nodes, edges, groups |
+| [obsidian-markdown](obsidian-markdown/) | Wikilinks, embeds, callouts, properties, block references |
+| [obsidian-bases](obsidian-bases/) | `.base` files: filters, formulas, table/card/list/map views |
+| [json-canvas](json-canvas/) | `.canvas` files: nodes, edges, groups, visual layouts |
 | [defuddle](defuddle/) | Extract clean markdown from web pages |
 | [obsidian-workflows](obsidian-workflows/) | PKM routines, token-efficient loading, vault intelligence |
-| [obsidian-vault-architect](obsidian-vault-architect/) | Vault blueprints, health audit, fix commands |
+| [obsidian-vault-architect](obsidian-vault-architect/) | Vault blueprints, health audit, fix commands, scoring |
 
-## Why this over raw file tools
-
-| Raw file tools | Obsidian CLI (this skill) |
-|---|---|
-| `mv` breaks wikilinks | `obsidian move` rewrites all links automatically |
-| Writing YAML by hand corrupts frontmatter | `property:set` writes safe YAML |
-| Editing `.obsidian/*.json` gets overwritten | Plugin configs managed through the API |
-| No cross-platform guarantees | Works on macOS, Windows, Linux |
-
-## Safety rules
-
-1. **Never `mv`/`cp`** vault files — use `obsidian move` to preserve wikilinks
-2. **Never write raw YAML** into `.md` files — use `property:set`
-3. **Never edit `.obsidian/*.json`** — Obsidian will overwrite changes
-4. **Dry-run bulk ops** — echo commands first, then remove `echo`
-5. **Confirm vault** with `obsidian vaults` if multiple vaults open
-6. **>500 files** — use Python + `python-frontmatter`, then `obsidian reload`
-
-See [full safety reference](references/full-reference.md#safety-rules).
-
-## Vault Intelligence (v1.3)
-
-Automated vault health and connectivity features:
-
-| Workflow | What it does |
-|---|---|
-| `/obsidian intelligence` | Full scan: hubs + orphans + broken links + missing backlinks |
-| `/obsidian hubs` | List top 10 hub notes by backlink count |
-| `/obsidian orphans` | Find orphaned notes and suggest connections |
-| `/obsidian fix-links` | Scan broken links and suggest closest matches |
-| `/obsidian backlinks` | Check for missing bidirectional links |
-
-These features auto-run after ingestion and note creation to keep your vault connected and healthy.
-
-## Thinking commands
-
-Four slash commands that use the vault as context for reasoning — not file management. Copy from `commands/` to your vault's `.claude/commands/`.
-
-| Command | Input | What it does |
-|---|---|---|
-| `/trace <topic>` | concept or project name | Timeline of how thinking evolved on this topic |
-| `/challenge <belief>` | stated belief or plan | Vault-sourced counterarguments and past patterns |
-| `/connect <A, B>` | two domains | Non-obvious connections between seemingly unrelated topics |
-| `/emerge` | none | Latent ideas the vault implies but hasn't stated |
+---
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md).
+See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
+---
 
 ## License
 
