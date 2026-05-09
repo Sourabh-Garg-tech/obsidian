@@ -60,6 +60,32 @@ obsidian daily:append content="## End of Day
 - Accomplished: $(obsidian tasks daily done | wc -l) tasks"
 ```
 
+## Source Ingestion Workflow
+
+Ingest external sources into the vault with preview-gated note creation.
+
+```text
+# Ingest a URL (delegates to defuddle sub-skill)
+/obsidian ingest https://example.com/article
+
+# Ingest a local file
+/obsidian ingest path="Downloads/article.md"
+```
+
+**Flow:**
+1. Extract — get clean markdown (URL → defuddle, file → obsidian read)
+2. Analyze — identify entities, concepts, decisions, open questions
+3. Preview — show proposed notes, tags, cross-links to user
+4. Approve — user confirms or vetoes individual notes
+5. Execute — `obsidian create` for approved notes
+6. Index — update `Sources/` index note
+
+**Token budget:**
+- Extraction + analysis: ~1,500 tokens
+- Preview display: ~200 tokens
+- Execution: ~100 tokens per note
+- For sources >5,000 words, summarize before entity extraction.
+
 ---
 
 ## Weekly Review
@@ -140,6 +166,6 @@ Use this to frame suggestions in the user's existing framework.
 | File | When to read |
 |---|---|
 | `references/token-efficiency.md` | Vault structure for token savings, RAG-lite patterns, context budgets |
-| `references/intelligence-patterns.md` | Auto-linking, hub detection, orphan triage, refactor recipes |
+| `references/intelligence-patterns.md` | Auto-linking, hub detection, orphan triage, refactor recipes, **source ingestion (Pattern 14)** |
 | `references/pkm-workflows.md` | Morning planning, weekly review, GTD inbox, vault hygiene |
 | `references/platform-setup.md` | Windows, Linux headless/systemd, multi-vault setup |
