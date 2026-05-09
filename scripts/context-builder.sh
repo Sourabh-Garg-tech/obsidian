@@ -62,7 +62,7 @@ echo ""
 
 if [ "$SHOW_CACHE" = true ]; then
   echo "--- Session Cache ---"
-  obsidian read path="_context/.session-cache.md" $VAULT_ARG 2>/dev/null | grep -E "^-|##|Decision|Thread|Next" | head -10
+  obsidian read path="_context/session-cache.md" $VAULT_ARG 2>/dev/null | grep -E "^-|##|Decision|Thread|Next" | head -10
   echo ""
 fi
 

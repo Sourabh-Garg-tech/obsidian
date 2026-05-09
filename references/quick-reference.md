@@ -56,7 +56,7 @@ obsidian backlinks path="Folder/Note.md"               # incoming links (use pat
 obsidian links     path="Folder/Note.md"               # outgoing links (use path=, not file=)
 obsidian unresolved                                       # broken links
 obsidian orphans                                          # unlinked notes
-obsidian read path="_context/.session-cache.md"          # read session hot cache
+obsidian read path="_context/session-cache.md"          # read session hot cache
 
 # Plugins / Themes
 obsidian plugins                                          # list plugins

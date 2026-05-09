@@ -153,17 +153,27 @@ Show: "Checkpoint logged → <project>/Intelligence/daily/YYYY-MM-DD.md"
 
 **Auto-checkpoint — session hot cache (all modes, after any write operation):**
 
-After `create`, `append`, `move`, `property:set`, or `daily:append`, update `_context/.session-cache.md`:
+After `create`, `append`, `move`, `property:set`, or `daily:append`, update `_context/session-cache.md`:
 
 ```bash
-# Read existing cache (PowerShell for multiline on Windows)
-cache=$(powershell -c "obsidian 'read' 'path=_context/.session-cache.md'")
+# After any write operation, rebuild the cache with FIFO enforcement
+# Read current cache
+$cache = powershell -c "obsidian 'read' 'path=_context/session-cache.md'"
 
-# If missing or stale (>24h), create fresh
-# Append touch entry
-powershell -c "obsidian 'append' 'path=_context/.session-cache.md' 'content=- + [[Note Name]] (created)'"
+# Parse touch log (lines starting with "- `+`" or "- `~`" or "- `>`")
+# Append new entry, keep last 5
+echo "$cache" | grep -E "^- \`(\+|~|>)" | tail -4 > /tmp/touch_log.txt
+echo "- + [[Note Name]] (created)" >> /tmp/touch_log.txt
 
-# After 5 entries, roll FIFO
+# Parse narrative (lines starting with "- Decision:" / "- Thread:" / "- Next:")
+echo "$cache" | grep -E "^- (Decision|Thread|Next):" > /tmp/narrative.txt
+
+# Build new cache
+new_cache="---\ntype: session-cache\ndate: $(date +%Y-%m-%d)\nupdated: $(date +%Y-%m-%dT%H:%M:%S)\ntags: [system]\n---\n\n## Touch Log\n$(cat /tmp/touch_log.txt)\n\n## Session Narrative\n$(cat /tmp/narrative.txt)"
+
+# Write back (PowerShell for multiline content on Windows)
+$escaped = $new_cache -replace '"', '\"' -replace "`n", "\n"
+powershell -c "obsidian 'create' 'path=_context/session-cache.md' 'content=$escaped' overwrite"
 ```
 
 Cache format:
@@ -224,8 +234,8 @@ Every line is actionable. Skip lines with no content. Never waste tokens on empt
 | `extract <url>` | Auto-load `defuddle` sub-skill |
 | `init <name>` | Run `vault-project-init` workflow (see project-onboarding.md) |
 | `checkpoint <summary>` | Manually log a checkpoint to project daily note: `<project>/Intelligence/daily/YYYY-MM-DD.md` |
-| `cache` | `obsidian read path="_context/.session-cache.md"` |
-| `cache:clear` | `obsidian create name="_context/.session-cache.md" content="---\ntype: session-cache\ndate: <today>\nupdated: <today>T00:00:00\ntags: [system]\n---\n\n## Touch Log\n\n## Session Narrative\n" overwrite` |
+| `cache` | `obsidian read path="_context/session-cache.md"` |
+| `cache:clear` | `obsidian create name="_context/session-cache.md" content="---\ntype: session-cache\ndate: <today>\nupdated: <today>T00:00:00\ntags: [system]\n---\n\n## Touch Log\n\n## Session Narrative\n" overwrite` |
 | `ingest <source>` | Preview-gated ingestion: extract → analyze → preview → approve → create notes + update source index |
 
 If the keyword does not match any named workflow, treat it as a search query:
@@ -293,6 +303,12 @@ Use the Skill tool with the sub-skill name.
 - `daily:*`, `plugins:*`, `sync:*`, `history:*`, `dev:*` work fine in Git Bash
 - `tasks format=json` may return empty on Windows — use `tasks | grep "^\- \[ \]" | head -5` for items
 - Run from normal terminal (not admin) on Windows
+
+**Additional Windows Gotchas:**
+
+- **`property:set` with `path=` fails in Git Bash** — use `file=` parameter instead, or use PowerShell: `powershell -c "obsidian property:set file='Note' name='status' value='done'"`
+- **Folder creation via `obsidian create` creates a `.md` file, not a folder** — use OS-level `mkdir` or PowerShell `New-Item -ItemType Directory` first, then `obsidian create` or `obsidian move`
+- **Multiline `content=` via PowerShell is fragile** — for complex content with quotes or special chars, write to a temp file first, then use `obsidian create path="..." content="$(cat /tmp/note.md)"`. Or use single-line content with `\n` escapes for simple cases
 
 ---
 
