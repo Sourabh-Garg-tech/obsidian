@@ -1,6 +1,9 @@
 # Obsidian Skill for Claude Code
 
+[![Version](https://img.shields.io/badge/version-1.3.0-blue)](CHANGELOG.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Obsidian](https://img.shields.io/badge/Obsidian-v1.12.7+-8b5cf6?logo=obsidian)](https://obsidian.md/)
+[![Claude Code](https://img.shields.io/badge/Claude%20Code-Skill-1e3a5f)](https://claude.ai/code)
 
 Turn Claude Code into an intelligent vault assistant for [Obsidian](https://obsidian.md/). Create notes, search your second brain, manage tasks, and run structured PKM workflows — all through natural conversation.
 
