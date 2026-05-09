@@ -49,21 +49,30 @@ Turn Claude Code into an intelligent vault assistant for [Obsidian](https://obsi
 
 Enable the Obsidian CLI: Settings → General → Command line interface → Enable + Register.
 
-### Option 1: Claude Code Plugin (Recommended)
+### As a Claude Code Plugin (Recommended)
+
+Install into Claude Code's plugin directory so the manifest auto-registers everything:
 
 ```bash
 git clone https://github.com/Sourabh-Garg-tech/obsidian.git ~/.claude/plugins/obsidian
 ```
 
-Restart Claude Code or run `/skill refresh`. The skill auto-triggers on any Obsidian-related request.
+Restart Claude Code or run `/skill refresh`.
 
-### Option 2: Standalone Skill
+**What gets registered automatically:**
+- **7 sub-skills**: `obsidian-cli`, `obsidian-markdown`, `obsidian-bases`, `json-canvas`, `defuddle`, `obsidian-workflows`, `obsidian-vault-architect`
+- **4 thinking commands**: `/trace`, `/challenge`, `/connect`, `/emerge`
+- **Auto-trigger**: any message mentioning Obsidian, vaults, notes, or PKM workflows activates the skill
+
+### As a Standalone Skill
+
+If you prefer manual control over which sub-skills are active:
 
 ```bash
 git clone https://github.com/Sourabh-Garg-tech/obsidian.git ~/.claude/skills/obsidian
 ```
 
-Restart Claude Code or run `/skill refresh`.
+Restart Claude Code or run `/skill refresh`, then enable individual sub-skills as needed.
 
 ---
 
