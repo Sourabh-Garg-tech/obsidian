@@ -222,6 +222,11 @@ Rules:
 - Narrative: max 3 bullets, summarized by Claude after the operation.
 - If cache is >24h old, clear narrative and start fresh.
 
+**Intelligence auto-run:**
+- After `ingest` → run hub detection on new notes + missing backlinks check
+- After `create` with wikilinks → check if linked notes are hubs
+- During `health` → include orphan count and broken link count
+
 **Summary format (intelligence briefing):**
 
 ```
@@ -259,6 +264,11 @@ Every line is actionable. Skip lines with no content. Never waste tokens on empt
 | `cache` | `obsidian read path="_context/session-cache.md"` |
 | `cache:clear` | `obsidian create path="_context/session-cache.md" content="---\ntype: session-cache\ndate: <today>\nupdated: <today>T00:00:00\ntags: [system]\n---\n\n## Touch Log\n\n## Session Narrative\n" overwrite` |
 | `ingest <source>` | Preview-gated ingestion: extract → analyze → preview → approve → create notes + update source index |
+| `intelligence` | Run full vault intelligence scan: hubs + orphans + broken links + missing backlinks |
+| `hubs` | List top 10 hub notes by backlink count via `eval` |
+| `orphans` | Find orphaned notes + suggest connections via search |
+| `fix-links` | Scan unresolved links + suggest fixes via fuzzy match |
+| `backlinks` | Check for missing bidirectional links: compare `links` vs `backlinks` |
 
 If the keyword does not match any named workflow, treat it as a search query:
 `obsidian search query="<input>" path="." format=json limit=10 2>/dev/null || obsidian search query="<input>" path="." limit=10`
