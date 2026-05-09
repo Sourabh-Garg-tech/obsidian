@@ -2,6 +2,27 @@
 
 All notable changes to the Obsidian Skill Suite are documented here.
 
+## v1.3.0 (2026-05-09)
+
+### Added
+
+- **Vault Intelligence & Auto-Linking** — Four automated vault health features
+  - `intelligence` named workflow — full scan: hubs + orphans + broken links + missing backlinks
+  - `hubs` named workflow — list top 10 hub notes by backlink count
+  - `orphans` named workflow — find orphaned notes and suggest connections
+  - `fix-links` named workflow — scan unresolved links and suggest fixes via fuzzy match
+  - `backlinks` named workflow — check for missing bidirectional links
+- **Patterns 15-18** in `intelligence-patterns.md`
+  - Pattern 15: Hub Detection
+  - Pattern 16: Orphan Triage
+  - Pattern 17: Broken Link Auto-Fix
+  - Pattern 18: Missing Backlinks (Bidirectional Links)
+- **Vault Intelligence section** added to `obsidian-workflows/SKILL.md`
+- **Vault Intelligence commands** added to `references/quick-reference.md`
+- **Vault Intelligence metrics** added to `scripts/vault-health.sh` (orphan count, broken links, top hubs)
+- **Auto-run rules** — intelligence scan triggers after `ingest` and `create` with wikilinks
+- Design spec and implementation plan for v1.3 in `docs/superpowers/`
+
 ## v1.2.0 (2026-05-09)
 
 ### Added

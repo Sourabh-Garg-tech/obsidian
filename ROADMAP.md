@@ -34,7 +34,28 @@ The skill suite is feature-complete with 7 sub-skills, 4 thinking commands, 3 ut
 
 ---
 
-## v1.2 (Future)
+### v1.2 Release (Complete)
+
+- [x] **Session Hot Cache** — `_context/session-cache.md` auto-updates after writes
+- [x] **Source Ingestion Workflow** — `ingest <source>` with preview-gated note creation
+- [x] **Pattern 14** — Source Ingestion in `intelligence-patterns.md`
+- [x] `--cache` flag for `scripts/context-builder.sh`
+- [x] Design spec and implementation plan for v1.2
+
+### v1.3 Release (Complete)
+
+- [x] **Vault Intelligence & Auto-Linking**
+  - [x] `intelligence`, `hubs`, `orphans`, `fix-links`, `backlinks` named workflows
+  - [x] Patterns 15-18 (Hub Detection, Orphan Triage, Broken Link Fix, Missing Backlinks)
+  - [x] Vault Intelligence section in `obsidian-workflows/SKILL.md`
+  - [x] Vault Intelligence commands in `references/quick-reference.md`
+  - [x] Vault Intelligence metrics in `scripts/vault-health.sh`
+- [x] Auto-run rules for intelligence after `ingest` and `create`
+- [x] Design spec and implementation plan for v1.3
+
+---
+
+## v1.4 (Future)
 
 | Item | Description | Priority |
 |---|---|---|
