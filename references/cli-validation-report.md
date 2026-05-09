@@ -165,7 +165,7 @@ Both may work — needs testing.
 Changelog says `vault=` "must be the first argument." Our skill shows it at the end. May work either way but canonical position is first.
 
 ### Version note
-CLI v1.12.7 introduced a new dedicated CLI binary that is "significantly faster." Our skill states v1.12.4+ compatibility — should update to recommend v1.12.7+.
+CLI v1.12.7 introduced a new dedicated CLI binary that is "significantly faster." ~~Our skill states v1.12.4+ compatibility — should update to recommend v1.12.7+.~~ **(Fixed: All SKILL.md files and references updated to v1.12.7+.)**
 
 ### `silent` parameter deprecated
 `open` replaced `silent` in v1.12.2. Our command-reference.md still shows `obsidian append ... silent` — should use `open` instead. **(Fixed: command-reference.md now uses `open`.)**
