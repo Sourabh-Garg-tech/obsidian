@@ -6,7 +6,7 @@ set -euo pipefail
 
 show_help() {
   cat <<EOF
-Usage: $(basename "$0") [--help] "task description" [vault_name]
+Usage: $(basename "$0") [--help] [--cache] "task description" [vault_name]
 
 Build minimal context for a task by searching notes, recents, and standing instructions.
 
@@ -16,16 +16,31 @@ Options:
 Arguments:
   task_description   Description of the task to find context for
   vault_name         Optional vault name (defaults to the active vault)
+
+Flags:
+  --cache   Include session hot cache in output
 EOF
   exit 0
 }
+
+SHOW_CACHE=false
 
 if [ "${1:-}" = "--help" ]; then
   show_help
 fi
 
+if [ "${1:-}" = "--cache" ]; then
+  SHOW_CACHE=true
+  shift
+fi
+
 if ! command -v obsidian &>/dev/null; then
   echo "Error: 'obsidian' CLI not found. Ensure Obsidian is running with CLI enabled." >&2
+  exit 1
+fi
+
+if [ -z "${1:-}" ]; then
+  echo "Usage: $0 [--help] [--cache] \"task description\" [vault_name]" >&2
   exit 1
 fi
 
@@ -37,7 +52,7 @@ if [ -n "$VAULT" ]; then
 fi
 
 if [ -z "$TASK" ]; then
-  echo "Usage: $0 \"task description\" [vault_name]"
+  echo "Usage: $0 [--help] [--cache] \"task description\" [vault_name]"
   exit 1
 fi
 
@@ -45,9 +60,15 @@ echo "=== Context Builder ==="
 echo "Task: $TASK"
 echo ""
 
+if [ "$SHOW_CACHE" = true ]; then
+  echo "--- Session Cache ---"
+  obsidian read path="_context/.session-cache.md" $VAULT_ARG 2>/dev/null | grep -E "^-|##|Decision|Thread|Next" | head -10
+  echo ""
+fi
+
 echo "--- Relevant Notes ---"
 # Note: 'obsidian search' is unreliable on Windows without path= — use path= for targeted queries
-obsidian search query="$TASK" $VAULT_ARG limit=5
+obsidian search query="$TASK" $VAULT_ARG path="." limit=5
 
 echo ""
 echo "--- Recently Touched ---"
@@ -56,7 +77,7 @@ obsidian recents $VAULT_ARG | head -5
 echo ""
 echo "--- Standing Instructions ---"
 obsidian read file="_context/coding-standards" $VAULT_ARG 2>/dev/null | head -20
-obsidian read file="_context/architecture-decisions" $VAULT_ARG 2>/dev/null | head -20
+obsidian read file="_context/architecture" $VAULT_ARG 2>/dev/null | head -20
 
 echo ""
 echo "--- Today's Focus ---"
