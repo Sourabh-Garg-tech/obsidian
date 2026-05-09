@@ -17,7 +17,7 @@ This is a Claude Code skill suite for automating Obsidian vaults via the officia
 
 1. **CLI-first, always** — Never use raw `mv`, `cp`, or direct `.md` writes. Every vault operation goes through `obsidian <cmd>`.
 2. **Token-efficient** — Sub-skills and references are loaded on-demand, not upfront. Target under 3,000 tokens per task.
-3. **Safety rules** — See SKILL.md for the 10 safety rules. Critical ones: never edit `.obsidian/*.json`, never write raw YAML, use `path=` for backlinks.
+3. **Safety rules** — See SKILL.md for the 11 safety rules. Critical ones: never edit `.obsidian/*.json`, never write raw YAML, use `path=` for backlinks.
 4. **Windows compatibility** — `search` is unreliable on Windows without `path=`. Use Grep tool as fallback.
 
 ## File Conventions

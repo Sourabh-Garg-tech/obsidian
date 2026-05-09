@@ -1,8 +1,8 @@
 # Obsidian Skill Suite — Roadmap
 
-## v1.0 Status (Current)
+## v1.3 Status (Current)
 
-The skill suite is feature-complete with 7 sub-skills, 4 thinking commands, 3 utility scripts, full reference documentation, and CLI validation against v1.12.7. Presentation materials (README, CONTRIBUTING, LICENSE, issue/PR templates) are in place.
+v1.3 adds vault intelligence (hubs, orphans, broken links, missing backlinks) with 4 new patterns and auto-run rules. The skill suite has 7 sub-skills, 4 thinking commands, 3 utility scripts, full reference documentation, and CLI validation against v1.12.7. Presentation materials (README, CONTRIBUTING, LICENSE, issue/PR templates) are in place.
 
 ### v1.0 Release (Complete)
 

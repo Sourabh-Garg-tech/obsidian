@@ -58,5 +58,5 @@ Use the templates in `.github/ISSUE_TEMPLATE/`:
 ## Code style
 
 - Markdown: 100-character line wrap
-- Skill frontmatter: keep `description` under 150 characters
+- Skill frontmatter: `description` uses YAML folded style (`>`) for readability; aim for conciseness
 - Reference links: relative paths only

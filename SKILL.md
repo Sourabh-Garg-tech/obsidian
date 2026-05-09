@@ -69,9 +69,8 @@ are never silently overwritten.
 
 ## Invocation Protocol
 
-When `/obsidian` is invoked (or this skill auto-triggers), follow this sequence:
-
 ### Step 1: Liveness Check
+
 Run `obsidian version` silently. If it fails:
 - Tell the user: "Obsidian is not running or CLI is not enabled. Start Obsidian and enable CLI in Settings > General > Command line interface."
 - STOP. Do not run any further commands.
@@ -82,7 +81,7 @@ Run `obsidian version` silently. If it fails:
 2. Compare CWD to vault path to determine mode:
    - **CWD is vault root** → **VAULT MODE**
    - **CWD is a subfolder within vault** → **PROJECT MODE** (subfolder name = project)
-   - **CWD is outside vault** → **EXTERNAL MODE**
+   - **CWD is outside vault** → check `last-project` in session cache, or match CWD basename to a vault project folder → **PROJECT MODE (external)**. If no match → **EXTERNAL MODE**.
 3. Detect time of day:
    - **Morning (6-11)** → auto-populate daily note with yesterday's tasks + today's focus
    - **Afternoon (12-17)** → focus on current work, active project context
@@ -96,7 +95,7 @@ Run `obsidian version` silently. If it fails:
 
 Load highest-signal content first. **Token budget: ~600 tokens.** Every line must be actionable.
 
-**VAULT / EXTERNAL MODE (CWD = vault root or outside vault):**
+**VAULT / EXTERNAL MODE:**
 
 ```bash
 obsidian read file="_context/active-projects"             # P1: project focus + next action
@@ -104,7 +103,7 @@ obsidian eval code='app.vault.getMarkdownFiles().filter(f=>f.path.startsWith("In
 obsidian daily:read 2>/dev/null | grep -E "^- \[ \]" | head -3  # P3: today's open tasks
 ```
 
-**PROJECT MODE (CWD = project subfolder in vault):**
+**PROJECT MODE (vault or external):**
 
 ```bash
 obsidian read file="<project>/_context/active-projects"    # project next action (skip if missing)
@@ -113,176 +112,61 @@ obsidian daily:read 2>/dev/null | grep -E "^- \[ \]" | head -3  # today's open t
 ```
 
 If `<project>/Intelligence/` does not exist → suggest `vault-project-init`.
-If Intelligence reports exist → show most recent title + date (1 line).
 
-**Time-aware behavior:**
+**EXTERNAL → PROJECT promotion logic:**
 
-- **Morning (6-11):** If today's daily note is empty/placeholder, auto-populate it:
-  ```bash
-  # Read yesterday's incomplete tasks (PowerShell for Windows colon commands)
-  powershell -c "obsidian 'daily:read' 'date=-1'" 2>/dev/null | grep "^\- \[ \]" | head -5
-  # Append to today's note (PowerShell for multiline content)
-  powershell -c "obsidian 'daily:append' 'content=- [ ] <yesterday incomplete tasks>'"
-  powershell -c "obsidian 'daily:append' 'content=
-## Focus
-<next action from active-projects>'"
-  ```
-- **Evening (18+):** Show "Run `/obsidian evening` to summarize today's work."
+1. Read `last-project` from `_context/session-cache.md`
+2. If set → ask: "Continue with `<last-project>`?"
+3. If not set → search vault for a folder matching CWD basename: `obsidian search query="path:<cwd-basename>" path="." limit=1`
+4. If match found → treat as PROJECT MODE, set `last-project` in cache
+5. If no match → stay in EXTERNAL MODE, show generic vault context
 
-**Auto-checkpoint — project daily notes (PROJECT MODE, after significant actions):**
-
-When a write operation completes in PROJECT MODE (create, append, property:set, move), check if the action is a **significant checkpoint**:
-- A decision was recorded
-- Project status or phase changed
-- A new intelligence report was created
-- Multiple notes were created/updated in sequence
-
-If checkpoint → auto-generate/update a project daily note:
-```bash
-# Create or append to <project>/Intelligence/daily/YYYY-MM-DD.md
-# Use PowerShell for reliable multiline append on Windows
-powershell -c "obsidian 'append' 'path=<project>/Intelligence/daily/$(date +%Y-%m-%d).md' 'content=
-## <checkpoint summary>
-- What was done
-- Decision: <if any>
-- Next: <what follows>'"
-```
-
-If `<project>/Intelligence/daily/` doesn't exist → create it with `obsidian create`.
-Show: "Checkpoint logged → <project>/Intelligence/daily/YYYY-MM-DD.md"
-
-**Auto-checkpoint — session hot cache (all modes, after any write operation):**
-
-After `create`, `append`, `move`, `property:set`, or `daily:append`, update `_context/session-cache.md`:
-
-```powershell
-# After any write operation, rebuild the cache with FIFO enforcement
-# Save to a temp .ps1 script and execute it (PowerShell handles multiline reliably)
-$cacheRebuildScript = @'
-$cache = & obsidian 'read' 'path=_context/session-cache.md'
-$lines = $cache -split "`r?`n"
-$touch = @()
-$narrative = @()
-foreach ($l in $lines) {
-    if ($l -match '^- \+') { $touch += $l }
-    elseif ($l -match '^- ~') { $touch += $l }
-    elseif ($l -match '^- >') { $touch += $l }
-    elseif ($l -match '^- (Decision|Thread|Next):') { $narrative += $l }
-}
-$touch = @($touch | Select-Object -Last 4)
-$touch += '- + [[Note Name]] (created)'
-$narrative = @($narrative | Select-Object -Last 3)
-$date = Get-Date -Format 'yyyy-MM-dd'
-$updated = Get-Date -Format 'yyyy-MM-ddTHH:mm:ss'
-$touchBlock = if ($touch.Count -gt 0) { [string]::Join("`n", $touch) } else { "" }
-$narrBlock = if ($narrative.Count -gt 0) { [string]::Join("`n", $narrative) } else { "" }
-$content = @"
----
-type: session-cache
-date: $date
-updated: $updated
-tags: [system]
----
-
-## Touch Log
-$touchBlock
-
-## Session Narrative
-$narrBlock
-"@
-& obsidian 'create' 'path=_context/session-cache.md' "content=$content" overwrite
-'@
-$tmpFile = [System.IO.Path]::GetTempFileName() + '.ps1'
-Set-Content -Path $tmpFile -Value $cacheRebuildScript
-& powershell -ExecutionPolicy Bypass -File $tmpFile
-Remove-Item $tmpFile
-```
-
-Cache format:
-```markdown
----
-type: session-cache
-date: 2026-05-09
-updated: 2026-05-09T14:23:00
-tags: [system]
----
-
-## Touch Log
-- `+` [[Note Name]] (created)
-- `~` [[Note Name]] (updated)
-
-## Session Narrative
-- Decision: <summary>
-- Thread: <open thread>
-- Next: <next action>
-```
-
-Rules:
-- Touch log: max 5 entries, FIFO. `+` = created, `~` = updated, `>` = read (decision notes only).
-- Narrative: max 3 bullets, summarized by Claude after the operation.
-- If cache is >24h old, clear narrative and start fresh.
-
-**Intelligence auto-run:**
-- After `ingest` → run hub detection on new notes + missing backlinks check
-- After `create` with wikilinks → check if linked notes are hubs
-- During `health` → include orphan count and broken link count
-
-**Summary format (intelligence briefing):**
-
-```
-## Obsidian [<MODE>] — <date>
-
-**Focus:** <active project> — <phase/milestone> (P<#>)
-**Next:** <next action from active-projects>
-**Decision:** <latest decision + date> (find via eval: files with "decision" in path)
-**Gaps:** <domain gap count> (PROJECT MODE only)
-**Tasks:** <today's open tasks from daily note>
-**Checkpoint:** <project daily note updated> (PROJECT MODE, only if checkpoint fired)
-```
-
-Every line is actionable. Skip lines with no content. Never waste tokens on empty slots.
+→ Auto-context details, checkpoints, and time-aware behavior: `references/named-workflows.md`
+→ Session hot cache: `references/session-cache-workflow.md`
+→ Source ingestion: `references/ingestion-workflow.md`
+→ Vault intelligence: `references/vault-intelligence-workflow.md`
 
 ### Step 4: Named Workflows
 
 | Keyword | What runs |
 |---------|-----------|
-| `morning` | Populate daily note with yesterday's tasks + today's focus from `_context/active-projects` |
-| `evening` | Read today's daily note → summarize accomplishments → append to daily note + `_summaries/week-YYYY-WWW.md` + update project daily note if in PROJECT MODE |
-| `weekly` | `obsidian tags sort=count counts` + intelligence report summary + update `_summaries/week-YYYY-WWW.md` |
-| `health` | Run `scripts/vault-health.sh` (full report), delegate to `obsidian-vault-architect` for scoring |
-| `search <q>` | `obsidian search query="<q>" path="." format=json limit=10 2>/dev/null || obsidian search query="<q>" path="." limit=10` |
-| `read <name>` | `obsidian read file="<name>"` |
-| `create <name>` | `obsidian create name="<name>" content="---\ntype: note\ncreated: <date>\ntags: []\n---\n\n# <name>\n"` |
-| `daily <text>` | `obsidian daily:append content="<text>"` |
-| `tasks` | PROJECT MODE: `obsidian read file="<project>/_context/active-projects"` then extract next actions · VAULT/EXTERNAL: `obsidian daily:read | grep "^\- \[ \]" | head -5` |
-| `project <name>` | `obsidian search query="<name>" path="Projects/" format=json limit=10` |
+| `morning` | Populate daily note with yesterday's tasks + today's focus |
+| `evening` | Summarize today's work → append to daily + weekly summary |
+| `weekly` | Tags count + intelligence report + update weekly summary |
+| `health` | Run `scripts/vault-health.sh`, delegate to `obsidian-vault-architect` |
+| `search <q>` | Full-text search with JSON fallback |
+| `read <name>` | Read note by wikilink name |
+| `create <name>` | Create note with frontmatter |
+| `daily <text>` | Append to today's daily note |
+| `tasks` | Context-aware open tasks list |
+| `project <name>` | Search Projects/ folder, or pin/continue a project when in EXTERNAL MODE |
 | `canvas` | Auto-load `json-canvas` sub-skill |
 | `bases` | Auto-load `obsidian-bases` sub-skill |
 | `extract <url>` | Auto-load `defuddle` sub-skill |
-| `init <name>` | Run `vault-project-init` workflow (see project-onboarding.md) |
-| `checkpoint <summary>` | Manually log a checkpoint to project daily note: `<project>/Intelligence/daily/YYYY-MM-DD.md` |
-| `cache` | `obsidian read path="_context/session-cache.md"` |
-| `cache:clear` | `obsidian create path="_context/session-cache.md" content="---\ntype: session-cache\ndate: <today>\nupdated: <today>T00:00:00\ntags: [system]\n---\n\n## Touch Log\n\n## Session Narrative\n" overwrite` |
-| `ingest <source>` | Preview-gated ingestion: extract → analyze → preview → approve → create notes + update source index |
-| `intelligence` | Run full vault intelligence scan: hubs + orphans + broken links + missing backlinks |
-| `hubs` | List top 10 hub notes by backlink count via `eval` |
-| `orphans` | Find orphaned notes + suggest connections via search |
-| `fix-links` | Scan unresolved links + suggest fixes via fuzzy match |
-| `backlinks` | Check for missing bidirectional links: compare `links` vs `backlinks` |
+| `init <name>` | Run `vault-project-init` workflow |
+| `checkpoint <summary>` | Log checkpoint to project daily note |
+| `cache` | Read session hot cache |
+| `cache:clear` | Reset session cache |
+| `ingest <source>` | Preview-gated source ingestion |
+| `intelligence` | Full vault intelligence scan |
+| `hubs` | List top 10 hub notes |
+| `orphans` | Find orphaned notes + suggest connections |
+| `fix-links` | Scan broken links + suggest fixes |
+| `backlinks` | Check missing bidirectional links |
 
-If the keyword does not match any named workflow, treat it as a search query:
-`obsidian search query="<input>" path="." format=json limit=10 2>/dev/null || obsidian search query="<input>" path="." limit=10`
+If keyword does not match any workflow, treat as search query.
+
+→ Detailed workflow instructions: `references/named-workflows.md`
 
 ### Step 5: Quick Actions
 
 Show 5 contextual suggestions adapted to mode, time, and project state.
 
-Context-aware picks:
 - PROJECT MODE → tasks, checkpoint, read, search, init
 - VAULT MODE → morning/evening, tasks, search, project, read
 - EXTERNAL MODE → morning, search, read, project, tasks
-- Morning hours (6-11) → include `/obsidian morning`
-- Evening hours (18+) → include `/obsidian evening`
+- Morning (6-11) → include `/obsidian morning`
+- Evening (18+) → include `/obsidian evening`
 - After write ops → hot cache auto-updates
 
 Example output:
@@ -299,15 +183,15 @@ Use the Skill tool with the sub-skill name.
 
 | Sub-skill | Auto-load when task involves |
 |-----------|------------------------------|
-| `obsidian-cli` | CLI syntax questions, command parameters, "how do I use obsidian <cmd>", debugging CLI failures, dev commands |
-| `obsidian-markdown` | Writing/editing OFM: wikilinks, embeds, callouts, properties, block references, comments |
+| `obsidian-cli` | CLI syntax, command parameters, debugging CLI failures, dev commands |
+| `obsidian-markdown` | Writing/editing OFM: wikilinks, embeds, callouts, properties |
 | `obsidian-bases` | Creating/editing .base files, filters, formulas, table/card/list/map views |
 | `json-canvas` | Creating/editing .canvas files, nodes, edges, groups, visual layouts |
 | `defuddle` | Extracting clean markdown from web URLs, converting web pages |
 | `obsidian-workflows` | PKM routines (GTD, PARA, Zettelkasten), intelligence patterns, auto-linking, hub detection |
 | `obsidian-vault-architect` | Vault health audit, scoring, fix commands, vault blueprint, frontmatter normalization |
 
-**Avoid double-loading:** Do not load a sub-skill if the parent skill already has sufficient knowledge for the task. Example: "read a note" needs only the parent's CLI knowledge — skip `obsidian-cli`.
+**Avoid double-loading:** Do not load a sub-skill if the parent skill already has sufficient knowledge.
 
 ---
 
@@ -321,116 +205,32 @@ Use the Skill tool with the sub-skill name.
 6. **>500 files** — use Python + `python-frontmatter`, then `obsidian reload`
 7. **`format=json`** only works on: `search`, `tags`, `tasks`, `backlinks`, `bookmarks`, `unresolved`, `properties`, `plugins`. **Not on `files` or `tag`.**
 8. **`tags:rename`/`tags:remove` don't exist** — use `property:set` or `eval`
-9. **`search` unreliable on Windows** — returns empty without `path=`. Use Grep tool on vault directory as fallback: `Grep: pattern="query" path="<vault>" glob="*.md"`
-10. **`backlinks file=` and `links file=` unreliable** — use `path=` instead: `obsidian backlinks path="Folder/Note.md"`
-11. **Windows colon commands** — see Windows-Specific Constraints below
-
----
-
-## Windows-Specific Constraints
-
-- `property:*` and `search:*` colon commands fail in Git Bash (exit 127). Use PowerShell:
-  `powershell -c "obsidian property:read name='type' path='Note.md'"`
-- `obsidian search` needs `path=` on Windows or returns empty
-- `daily:*`, `plugins:*`, `sync:*`, `history:*`, `dev:*` work fine in Git Bash
-- `tasks format=json` may return empty on Windows — use `tasks | grep "^\- \[ \]" | head -5` for items
-- Run from normal terminal (not admin) on Windows
-
-**Additional Windows Gotchas:**
-
-- **`property:set` with `path=` fails in Git Bash** — use `file=` parameter instead, or use PowerShell: `powershell -c "obsidian property:set file='Note' name='status' value='done'"`
-- **Folder creation via `obsidian create` creates a `.md` file, not a folder** — use OS-level `mkdir` or PowerShell `New-Item -ItemType Directory` first, then `obsidian create` or `obsidian move`
-- **Multiline `content=` via PowerShell is fragile** — for complex content with quotes or special chars, write to a temp file first, then use `obsidian create path="..." content="$(cat /tmp/note.md)"`. Or use single-line content with `\n` escapes for simple cases
-
----
-
-## Quick Reference
-
-For the full command table: `references/quick-reference.md`
-
-**`file=` vs `path=`:** `file=` resolves by wikilink name (no extension). `path=` is exact from vault root.
-
----
-
-## Token-Efficient Context Loading
-
-Load highest-signal content first. Target: under 600 tokens per invocation, 3,000 per task.
-
-```
-Invocation: _context/active-projects (150) + Intelligence (100) + daily tasks (50)
-Task:       Search (2–5 notes) → Read those notes → Process → Write back
-```
-
-→ Deep dive: `obsidian-workflows/references/token-efficiency.md`
-
----
-
-## OFM Quick Reference
-
-```markdown
-[[Note Name]]          wikilink
-[[Note|Display]]       aliased link
-![[Note Name]]         embed
-> [!note] Title        callout
-#tag-name              tag
-- [ ] task             checkbox
-```
-
-→ Full syntax: `references/ofm-syntax.md`
-
----
-
-## Troubleshooting
-
-| Problem | Fix |
-|---|---|
-| `command not found` | Re-enable CLI in Settings; restart terminal |
-| Empty output / hangs | Obsidian not running; start it first |
-| Windows: silent failures | Normal terminal only (not admin) |
-| Wrong vault | Pass `vault="Name"` explicitly |
-| `tasks format=json` empty | Windows — use `tasks | grep "^\- \[ \]" | head -5` |
-| `eval` returns empty | O(n²) scaling limit on large vaults — reduce slice size |
-
-→ Platform setup: `obsidian-workflows/references/platform-setup.md`
-
----
-
-## Thinking Commands
-
-Slash commands that use the vault as context for reasoning, not file management. Copy from `commands/` to the vault's `.claude/commands/`.
-
-| Command | Input | What it does |
-|---|---|---|
-| `/trace <topic>` | concept or project name | Timeline of how thinking evolved on this topic |
-| `/challenge <belief>` | stated belief or plan | Vault-sourced counterarguments and past patterns |
-| `/connect <A, B>` | two domains | Non-obvious connections between seemingly unrelated topics |
-| `/emerge` | none | Latent ideas the vault implies but hasn't stated |
-
-All commands read the vault only — they never write to it. See `commands/` for prompt templates.
+9. **`search` unreliable on Windows** — returns empty without `path=`. Use Grep tool as fallback
+10. **`backlinks file=` and `links file=` unreliable** — use `path=` instead
+11. **Windows colon commands** — see `obsidian-workflows/references/platform-setup.md`
 
 ---
 
 ## Reference Files
 
-### Top-Level References
-
 | File | When to read |
 |---|---|
-| `references/full-reference.md` | Complete command overview + all examples (loads this skill's full content) |
-| `references/frontmatter-schema.md` | Property schemas, normalization, Dataview patterns |
-| `references/ofm-syntax.md` | Callouts, embeds, canvas, Dataview, Templater |
-| `references/advanced-operations.md` | Merge/split notes, normalize vault, PKM method detection |
-| `references/daily-workflows.md` | CLI wrapper, auto-context builder, daily note intelligence |
-| `obsidian-workflows/references/intelligence-patterns.md` | Auto-linking, hub detection, orphan triage, domain-to-code intelligence, decision trails, custom eval queries |
-| `references/cli-validation-report.md` | CLI validation findings against v1.12.7 |
 | `references/quick-reference.md` | Essential command table for daily use |
-| `obsidian-workflows/references/project-onboarding.md` | Project scaffolding, `vault-project-init` workflow, 3-folder structure |
+| `references/full-reference.md` | Complete command overview + all examples |
+| `references/named-workflows.md` | Detailed workflow instructions, auto-context, checkpoints |
+| `references/session-cache-workflow.md` | Hot cache rebuild script and rules |
+| `references/ingestion-workflow.md` | Source ingestion 6-step flow |
+| `references/vault-intelligence-workflow.md` | Hubs, orphans, broken links, missing backlinks |
+| `obsidian-workflows/references/token-efficiency.md` | RAG-lite patterns, context budgets |
+| `obsidian-workflows/references/intelligence-patterns.md` | Auto-linking, hub detection, decision trails |
+| `obsidian-workflows/references/platform-setup.md` | Windows, Linux, multi-vault setup |
+| `obsidian-workflows/references/project-onboarding.md` | Project scaffolding, `vault-project-init` |
 
 ### Scripts
 
 | Script | Purpose |
 |---|---|
-| `scripts/vault-health.sh` | Run comprehensive vault health metrics (orphans, broken links, totals) |
+| `scripts/vault-health.sh` | Comprehensive vault health metrics |
 | `scripts/context-builder.sh` | Build minimal context for a task from vault |
 
 ### Sub-Skills
