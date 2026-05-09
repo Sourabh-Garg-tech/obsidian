@@ -912,3 +912,129 @@ obsidian eval code='app.vault.getMarkdownFiles().filter(f=>{(app.metadataCache.g
 ```
 
 **Use case:** Find the 10 largest notes that don't have corresponding summary notes in `_summaries/`. These are candidates for summarization to improve token efficiency.
+
+---
+
+## Pattern 15: Hub Detection
+
+Identify highly-connected notes to prioritize new links.
+
+### When to Use
+- After ingesting new notes
+- When building a project hub or index note
+- During vault health checks
+
+### Method
+
+```bash
+# Query for files with 10+ backlinks
+obsidian eval code='app.vault.getMarkdownFiles().map(f=>({name:f.basename,count:app.metadataCache.getBacklinksForFile(f).data.size})).filter(x=>x.count>=10).sort((a,b)=>b.count-a.count).slice(0,10)'
+```
+
+**Output format:**
+```
+Hub Index:
+1. [[Active Projects]] — 12 backlinks
+2. [[Domain Principles]] — 8 backlinks
+```
+
+### Auto-suggest
+When a new note mentions topics related to a hub, suggest: "Link to hub [[Active Projects]]?"
+
+---
+
+## Pattern 16: Orphan Triage
+
+Find orphaned notes and suggest connections.
+
+### When to Use
+- `obsidian orphans` returns non-empty list
+- Vault health check
+- Monthly cleanup routine
+
+### Method
+
+```bash
+# Step 1: Get orphans
+obsidian orphans
+
+# Step 2: For each orphan, search for related content
+obsidian search query="orphan title keywords" path="." limit=3
+
+# Step 3: Rank by shared words, suggest top match
+```
+
+**Decision tree:**
+- Orphan has content match → suggest backlink from matched note
+- Orphan is stale/draft → suggest move to Archive/
+- Orphan is standalone concept → suggest linking from _mocs/ or index note
+
+### Example Output
+```
+- [[Old Draft]] → Suggest: link from [[Active Projects]] or Archive/
+- [[Random Idea]] → Suggest: move to Concepts/
+```
+
+---
+
+## Pattern 17: Broken Link Auto-Fix
+
+Resolve broken wikilinks by suggesting closest matches.
+
+### When to Use
+- `obsidian unresolved` shows broken links
+- After renaming or moving notes
+- During vault health checks
+
+### Method
+
+```bash
+# Step 1: Get broken links
+obsidian unresolved
+
+# Step 2: For each broken link, search
+obsidian search query="broken link text" path="." limit=5
+
+# Step 3: If exact/partial match, suggest rename or replacement
+```
+
+**Safety Gates:**
+- Never auto-fix — always preview
+- If multiple matches, show all options
+- If no match, offer "create new note" or "remove link"
+
+### Example
+```
+- [[Old Project Name]] not found → Did you mean [[Active Projects]]?
+- [[Typo Nmae]] not found → Did you mean [[Typo Name]]?
+```
+
+---
+
+## Pattern 18: Missing Backlinks (Bidirectional Links)
+
+Ensure cross-referenced notes link back to each other.
+
+### When to Use
+- After `create` or `ingest` generates notes with cross-links
+- When reviewing project notes for connectivity
+- During health checks
+
+### Method
+
+```bash
+# For a newly created note Note A:
+obsidian links path="Note A.md"          # get outgoing links
+obsidian backlinks path="Note B.md"        # check if Note B links back
+
+# If Note A → Note B but not Note B → Note A, suggest backlink
+```
+
+**Domain constraint:** Only suggest for notes in same folder/project. Skip daily notes, archive, Sources/.
+
+### Example
+```
+- [[Concept A]] links to [[Concept B]]
+- [[Concept B]] does NOT link to [[Concept A]]
+- Suggest: Append "See Also: [[Concept A]]" to [[Concept B]]
+```
