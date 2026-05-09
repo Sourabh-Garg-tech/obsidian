@@ -2,6 +2,32 @@
 
 All notable changes to the Obsidian Skill Suite are documented here.
 
+## v1.2.0 (2026-05-09)
+
+### Added
+
+- **Session Hot Cache** — `_context/.session-cache.md` auto-updates after `create`, `append`, `move`, `property:set`, `daily:append`
+  - `cache` named workflow to read session state
+  - `cache:clear` named workflow to reset
+  - FIFO touch log (5 entries), narrative summary (3 bullets), 24h stale auto-reset
+- **Source Ingestion Workflow** — `ingest <source>` with preview-gated note creation
+  - 6-step flow: Extract → Analyze → Preview → Approve → Execute → Index
+  - Supports URLs (via `defuddle` sub-skill), local files, pasted text
+  - Auto-generates entity, concept, source, and question notes with traceable `source:` frontmatter
+  - Source index note updated automatically
+- **Pattern 14: Source Ingestion (Preview-Gated)** in `intelligence-patterns.md`
+- `--cache` flag for `scripts/context-builder.sh` to include session hot cache in output
+- Design spec (`docs/superpowers/specs/`) and implementation plan (`docs/superpowers/plans/`)
+
+### Fixed
+
+- Pre-existing session fixes: settings permissions, CLI tips, tag/links examples, validation report updates
+- `tag` does not support `format=json` — documented in CLI skill tips
+- `tag name=` takes name without `#` prefix — fixed all examples
+- `backlinks file=` and `links file=` unreliable — use `path=` instead
+- Colon commands fail in Git Bash on Windows — documented workaround
+- CLI validation report updated to 911-file vault count and last validated date
+
 ## v1.0.0 (2026-04-22)
 
 ### Added
