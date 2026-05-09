@@ -355,9 +355,9 @@ obsidian tags format=json|tsv|csv               # output format
 Get tag info.
 
 ```bash
-obsidian tag name="#project"                   # notes with this tag (use name=)
-obsidian tag name="#project" total              # return count only
-obsidian tag name="#project" verbose            # include file list
+obsidian tag name="project"                    # notes with this tag (no # prefix)
+obsidian tag name="project" total              # return count only
+obsidian tag name="project" verbose            # include file list
 ```
 
 > **Note:** `tags:rename` and `tags:remove` do NOT exist. Use `property:set` or `eval` for bulk tag changes.
@@ -409,8 +409,8 @@ obsidian backlinks path="My Note.md" counts        # include link counts
 obsidian backlinks path="My Note.md" total         # return count
 obsidian backlinks path="My Note.md" format=json|tsv|csv
 
-obsidian links file="My Note"                  # outgoing links
-obsidian links file="My Note" total
+obsidian links path="My Note.md"                  # outgoing links (use path=)
+obsidian links path="My Note.md" total
 
 obsidian unresolved                             # all broken links
 obsidian unresolved total

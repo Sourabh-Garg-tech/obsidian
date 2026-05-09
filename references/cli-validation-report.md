@@ -1,7 +1,7 @@
 # CLI Validation Report
 
-Validated against Obsidian CLI v1.12.7 on Windows, vault "Sourabh Mind Palace" (2091 files).
-Ground truth: `obsidian help` output + live testing.
+Validated against Obsidian CLI v1.12.7 on Windows, vault "Sourabh Mind Palace" (911 files).
+Ground truth: `obsidian help` output + live testing. Last validated: 2026-04-22.
 
 ---
 
@@ -22,7 +22,7 @@ These are documented in the skill but return "Command not found" or wrong behavi
 
 | Documented Syntax | Actual Syntax | Tested? |
 |---|---|---|
-| `tag tag="#project"` | `tag name="#project"` | YES — confirmed |
+| `tag tag="#project"` | `tag name="project"` | YES — no `#` prefix needed |
 | `plugin plugin="dataview"` | `plugin id="dataview"` | YES — confirmed |
 | `plugin:enable plugin="x"` | `plugin:enable id="x"` | YES — confirmed |
 | `plugin:disable plugin="x"` | `plugin:disable id="x"` | Same pattern |
@@ -49,6 +49,7 @@ These are documented in the skill but return "Command not found" or wrong behavi
 | `properties` | YES | `format=yaml|json|tsv` |
 | `plugins` | YES | `format=json|tsv|csv` |
 | `files` | NO | Not supported — only `folder=`, `ext=`, `total` |
+| `tag` | NO | Returns plain text regardless of format parameter |
 | `outline` | PARTIAL | `format=tree|md|json` (not generic json) |
 
 **Impact:** Scripts using `obsidian files format=json | jq` will fail silently.
@@ -168,3 +169,56 @@ CLI v1.12.7 introduced a new dedicated CLI binary that is "significantly faster.
 
 ### `silent` parameter deprecated
 `open` replaced `silent` in v1.12.2. Our command-reference.md still shows `obsidian append ... silent` — should use `open` instead. **(Fixed: command-reference.md now uses `open`.)**
+
+---
+
+## 2026-04-22 Validation Update
+
+Re-tested against v1.12.7 on Windows (911-file vault). Key findings:
+
+### Windows Git Bash: colon commands fail (exit code 127)
+
+Commands with `:` in the name fail in Git Bash on Windows because `:` is interpreted as a path separator:
+
+- `property:read`, `property:set`, `property:remove`
+- `daily:read`, `daily:append`, `daily:prepend`, `daily:path`
+- `plugin:enable`, `plugin:disable`, `plugin:install`, `plugin:uninstall`, `plugin:reload`
+- `snippet:enable`, `snippet:disable`
+- `base:create`, `base:query`, `base:views`
+- `history:list`, `history:open`, `history:read`, `history:restore`
+- `theme:set`, `theme:install`, `theme:uninstall`
+- `template:insert`, `template:read`
+- `tab:open`
+- `search:context`, `search:open`
+- `sync:status`, `sync:open`, `sync:history`, `sync:read`, `sync:restore`, `sync:deleted`
+- `dev:debug`, `dev:console`, `dev:errors`, `dev:css`, `dev:dom`, `dev:cdp`, `dev:mobile`, `dev:screenshot`
+- `workspace:save`, `workspace:load`, `workspace:delete`
+
+**Workaround:** Run `cmd /c "obsidian property:read ..."` or use PowerShell.
+
+### `tag name=` does not accept `#` prefix
+
+Using `name="#project"` returns empty results. Use `name="project"` without the hash.
+**(Fixed in all docs.)**
+
+### `tag` does not support `format=json`
+
+The `tag` command ignores the `format=json` parameter and returns plain text regardless.
+**(Added to format=json warning in safety rules.)**
+
+### `links file=` unreliable on Windows
+
+Same issue as `backlinks file=` — use `path=` instead.
+**(Added to safety rule 10.)**
+
+### `search` without `path=` is inconsistent on Windows
+
+Returns results for some queries (e.g., "vault") but empty for others (e.g., "test", "trading") without `path=`. Always use `path=` on Windows.
+
+### `commands` returns empty
+
+`obsidian commands` returns empty output, but `obsidian command id="..."` works. Likely requires specific conditions.
+
+### `unresolved` returns empty
+
+May indicate no unresolved links in the test vault, or a Windows-specific issue.
