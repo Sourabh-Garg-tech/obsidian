@@ -88,6 +88,44 @@ Ingest external sources into the vault with preview-gated note creation.
 
 ---
 
+## Vault Intelligence
+
+Automated vault health and connectivity features.
+
+```text
+# Run full intelligence scan
+/obsidian intelligence
+
+# List hub notes (10+ backlinks)
+/obsidian hubs
+
+# Triage orphaned notes
+/obsidian orphans
+
+# Fix broken links
+/obsidian fix-links
+
+# Check missing backlinks
+/obsidian backlinks
+```
+
+**Hub Detection:**
+Identifies notes with 10+ backlinks. These are knowledge graph hubs — new notes should likely connect to them.
+
+**Orphan Triage:**
+Finds notes with 0 backlinks and suggests:
+- A parent note to link from
+- A folder to move to
+- Archive if stale
+
+**Broken Link Fix:**
+Scans `obsidian unresolved` and suggests closest matching existing note via `obsidian search`.
+
+**Missing Backlinks:**
+When Note A links to Note B, suggests adding reverse link if both are in the same domain.
+
+---
+
 ## Weekly Review
 
 ```bash
