@@ -40,10 +40,11 @@ obsidian property:remove file="Note" name="deprecated"
 obsidian daily                                            # open today's note
 obsidian daily:append date="today" content="- [ ] task"   # add to today
 obsidian daily:read  date="yesterday"                      # read yesterday
+# /obsidian ingest <source>                               # preview-gated source ingestion (skill workflow)
 
 # Tags / Tasks / Links
 obsidian tags                                             # all tags
-obsidian tag name="#project"                              # notes with tag (use name=)
+obsidian tag name="project"                               # notes with tag (no # prefix)
 obsidian tasks                                            # all tasks (done + todo)
 obsidian tasks todo                                       # incomplete only
 obsidian tasks done                                       # completed only
@@ -52,8 +53,10 @@ obsidian tasks verbose                                    # grouped by file
 obsidian task file="Note" line=5 toggle                   # toggle task (line= required)
 obsidian task file="Note" line=5 done                     # mark done [x]
 obsidian backlinks path="Folder/Note.md"               # incoming links (use path=, not file=)
+obsidian links     path="Folder/Note.md"               # outgoing links (use path=, not file=)
 obsidian unresolved                                       # broken links
 obsidian orphans                                          # unlinked notes
+obsidian read path="_context/.session-cache.md"          # read session hot cache
 
 # Plugins / Themes
 obsidian plugins                                          # list plugins
