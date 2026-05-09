@@ -50,14 +50,11 @@ echo "Orphans:         $(obsidian orphans total $VAULT_ARG)"
 echo "Dead-ends:       $(obsidian deadends total $VAULT_ARG)"
 
 echo ""
-echo "--- Vault Intelligence ---"
-echo "Orphan count:    $(obsidian orphans $VAULT_ARG | wc -l)"
-echo "Broken links:    $(obsidian unresolved $VAULT_ARG | wc -l)"
 
 # Optional: list top 5 hubs (notes with 5+ backlinks)
 echo ""
 echo "Top hubs (5+ backlinks):"
-obsidian eval code='app.vault.getMarkdownFiles().map(f=>({name:f.basename,count:app.metadataCache.getBacklinksForFile(f).data.size})).filter(x=>x.count>=5).sort((a,b)=>b.count-a.count).slice(0,5).map(x=>x.name+": "+x.count+" backlinks")' $VAULT_ARG 2>/dev/null || echo "  (eval not available)"
+obsidian eval code='app.vault.getMarkdownFiles().slice(0,500).map(f=>({name:f.basename,count:app.metadataCache.getBacklinksForFile(f).data.size})).filter(x=>x.count>=5).sort((a,b)=>b.count-a.count).slice(0,5).map(x=>x.name+": "+x.count+" backlinks")' $VAULT_ARG 2>/dev/null || echo "  (eval not available)"
 
 echo ""
 echo "--- Detailed ---"
