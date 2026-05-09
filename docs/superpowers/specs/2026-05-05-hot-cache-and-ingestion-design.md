@@ -13,7 +13,7 @@ Preserve recent session context across Claude Code invocations so subsequent tas
 
 ### Design
 
-**Location:** `_context/.session-cache.md` (leading dot, hidden from Obsidian UI but CLI-readable)
+**Location:** `_context/session-cache.md` (leading dot, hidden from Obsidian UI but CLI-readable)
 
 **Auto-update trigger:** After any significant write operation in the root skill:
 - `create`, `append`, `move`, `property:set`, `daily:append`
@@ -45,8 +45,8 @@ tags: [system]
 - When the cache is >24h old, clear the narrative and start fresh. Keep the touch log for continuity.
 
 **Named workflow:**
-- `cache` → `obsidian read path="_context/.session-cache.md"`
-- `cache:clear` → `obsidian create name="_context/.session-cache" content="---\ntype: session-cache\ndate: <today>\ntags: [system]\n---\n\n## Touch Log\n\n## Session Narrative\n" overwrite`
+- `cache` → `obsidian read path="_context/session-cache.md"`
+- `cache:clear` → `obsidian create path="_context/session-cache.md" content="---\ntype: session-cache\ndate: <today>\ntags: [system]\n---\n\n## Touch Log\n\n## Session Narrative\n" overwrite`
 
 ### Token Budget
 - Hot cache read: ~80 tokens (small file, cached by CLI)
@@ -87,7 +87,7 @@ Let users say "ingest <source>" and get a preview of generated notes before crea
 4. **Approve** — User confirms (Y) or edits ("skip Entity Name", "merge A and B")
 5. **Execute** — Claude runs `obsidian create` commands for approved notes
 6. **Index** — Update or create `Sources/` index note linking to new notes
-7. **Log** — Append to `_context/.session-cache.md` with "Ingested <source> → N notes"
+7. **Log** — Append to `_context/session-cache.md` with "Ingested <source> → N notes"
 
 **Safety gates:**
 - Preview step is mandatory — no auto-creation
@@ -178,7 +178,7 @@ Update hot cache: "Ingested <source> → N notes"
 
 | Test | How |
 |---|---|
-| Hot cache updates after `create` | Run `obsidian create`, then `obsidian read path="_context/.session-cache.md"` — expect entry |
+| Hot cache updates after `create` | Run `obsidian create`, then `obsidian read path="_context/session-cache.md"` — expect entry |
 | Hot cache clears after >24h | Set `date` in cache to yesterday, run a write op — expect narrative cleared |
 | Ingestion preview shows before create | Ingest a URL, verify no `obsidian create` runs before user approval |
 | Ingestion frontmatter includes `source` | Read created note, verify `source:` field matches input URL |

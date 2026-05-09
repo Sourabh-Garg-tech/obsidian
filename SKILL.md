@@ -155,25 +155,47 @@ Show: "Checkpoint logged → <project>/Intelligence/daily/YYYY-MM-DD.md"
 
 After `create`, `append`, `move`, `property:set`, or `daily:append`, update `_context/session-cache.md`:
 
-```bash
+```powershell
 # After any write operation, rebuild the cache with FIFO enforcement
-# Read current cache
-$cache = powershell -c "obsidian 'read' 'path=_context/session-cache.md'"
+# Save to a temp .ps1 script and execute it (PowerShell handles multiline reliably)
+$cacheRebuildScript = @'
+$cache = & obsidian 'read' 'path=_context/session-cache.md'
+$lines = $cache -split "`r?`n"
+$touch = @()
+$narrative = @()
+foreach ($l in $lines) {
+    if ($l -match '^- \+') { $touch += $l }
+    elseif ($l -match '^- ~') { $touch += $l }
+    elseif ($l -match '^- >') { $touch += $l }
+    elseif ($l -match '^- (Decision|Thread|Next):') { $narrative += $l }
+}
+$touch = @($touch | Select-Object -Last 4)
+$touch += '- + [[Note Name]] (created)'
+$narrative = @($narrative | Select-Object -Last 3)
+$date = Get-Date -Format 'yyyy-MM-dd'
+$updated = Get-Date -Format 'yyyy-MM-ddTHH:mm:ss'
+$touchBlock = if ($touch.Count -gt 0) { [string]::Join("`n", $touch) } else { "" }
+$narrBlock = if ($narrative.Count -gt 0) { [string]::Join("`n", $narrative) } else { "" }
+$content = @"
+---
+type: session-cache
+date: $date
+updated: $updated
+tags: [system]
+---
 
-# Parse touch log (lines starting with "- `+`" or "- `~`" or "- `>`")
-# Append new entry, keep last 5
-echo "$cache" | grep -E "^- \`(\+|~|>)" | tail -4 > /tmp/touch_log.txt
-echo "- + [[Note Name]] (created)" >> /tmp/touch_log.txt
+## Touch Log
+$touchBlock
 
-# Parse narrative (lines starting with "- Decision:" / "- Thread:" / "- Next:")
-echo "$cache" | grep -E "^- (Decision|Thread|Next):" > /tmp/narrative.txt
-
-# Build new cache
-new_cache="---\ntype: session-cache\ndate: $(date +%Y-%m-%d)\nupdated: $(date +%Y-%m-%dT%H:%M:%S)\ntags: [system]\n---\n\n## Touch Log\n$(cat /tmp/touch_log.txt)\n\n## Session Narrative\n$(cat /tmp/narrative.txt)"
-
-# Write back (PowerShell for multiline content on Windows)
-$escaped = $new_cache -replace '"', '\"' -replace "`n", "\n"
-powershell -c "obsidian 'create' 'path=_context/session-cache.md' 'content=$escaped' overwrite"
+## Session Narrative
+$narrBlock
+"@
+& obsidian 'create' 'path=_context/session-cache.md' "content=$content" overwrite
+'@
+$tmpFile = [System.IO.Path]::GetTempFileName() + '.ps1'
+Set-Content -Path $tmpFile -Value $cacheRebuildScript
+& powershell -ExecutionPolicy Bypass -File $tmpFile
+Remove-Item $tmpFile
 ```
 
 Cache format:
@@ -235,7 +257,7 @@ Every line is actionable. Skip lines with no content. Never waste tokens on empt
 | `init <name>` | Run `vault-project-init` workflow (see project-onboarding.md) |
 | `checkpoint <summary>` | Manually log a checkpoint to project daily note: `<project>/Intelligence/daily/YYYY-MM-DD.md` |
 | `cache` | `obsidian read path="_context/session-cache.md"` |
-| `cache:clear` | `obsidian create name="_context/session-cache.md" content="---\ntype: session-cache\ndate: <today>\nupdated: <today>T00:00:00\ntags: [system]\n---\n\n## Touch Log\n\n## Session Narrative\n" overwrite` |
+| `cache:clear` | `obsidian create path="_context/session-cache.md" content="---\ntype: session-cache\ndate: <today>\nupdated: <today>T00:00:00\ntags: [system]\n---\n\n## Touch Log\n\n## Session Narrative\n" overwrite` |
 | `ingest <source>` | Preview-gated ingestion: extract → analyze → preview → approve → create notes + update source index |
 
 If the keyword does not match any named workflow, treat it as a search query:

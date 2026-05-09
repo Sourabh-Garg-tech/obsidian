@@ -6,7 +6,7 @@ All notable changes to the Obsidian Skill Suite are documented here.
 
 ### Added
 
-- **Session Hot Cache** — `_context/.session-cache.md` auto-updates after `create`, `append`, `move`, `property:set`, `daily:append`
+- **Session Hot Cache** — `_context/session-cache.md` auto-updates after `create`, `append`, `move`, `property:set`, `daily:append`
   - `cache` named workflow to read session state
   - `cache:clear` named workflow to reset
   - FIFO touch log (5 entries), narrative summary (3 bullets), 24h stale auto-reset
