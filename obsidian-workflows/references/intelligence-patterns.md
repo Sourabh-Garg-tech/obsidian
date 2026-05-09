@@ -74,7 +74,7 @@ Find notes with many connections (potential MOC candidates).
 
 ```bash
 obsidian backlinks path="Key Concept.md" counts
-obsidian links file="Key Concept" total
+obsidian links path="Key Concept.md" total
 ```
 
 Notes with high backlink + outgoing link counts are hubs — good candidates for Maps of Content or index notes.
@@ -82,7 +82,7 @@ Notes with high backlink + outgoing link counts are hubs — good candidates for
 ### Automated Hub Ranking
 
 ```bash
-obsidian eval code='var notes=app.vault.getMarkdownFiles().map(f=>{var c=app.metadataCache.getFileCache(f);return{name:f.basename,backlinks:(c?.backlinks||[]).length,links:(c?.links||[]).length,score:(c?.backlinks||[]).length+(c?.links||[]).length};}).sort((a,b)=>b.score-a.score).slice(0,20);'
+obsidian eval code='var notes=app.vault.getMarkdownFiles().map(f=>{var c=app.metadataCache.getFileCache(f);var bl=app.metadataCache.getBacklinksForFile(f);return{name:f.basename,backlinks:bl?bl.data.size:0,links:(c?.links||[]).length,score:(bl?bl.data.size:0)+(c?.links||[]).length};}).sort((a,b)=>b.score-a.score).slice(0,20);'
 ```
 
 **Use case:** Identify the top 20 most connected notes in the vault. These are either existing hubs or notes that should become hubs.
@@ -91,7 +91,7 @@ obsidian eval code='var notes=app.vault.getMarkdownFiles().map(f=>{var c=app.met
 
 ```bash
 # After ranking hubs, check if high-connectivity notes have MOCs
-obsidian eval code='var hubs=app.vault.getMarkdownFiles().map(f=>{var c=app.metadataCache.getFileCache(f);return{name:f.basename,score:(c?.backlinks||[]).length+(c?.links||[]).length,type:(c?.frontmatter?.type||"none")};}).filter(h=>h.score>10&&!h.type.includes("moc")).slice(0,10);'
+obsidian eval code='var hubs=app.vault.getMarkdownFiles().map(f=>{var c=app.metadataCache.getFileCache(f);var bl=app.metadataCache.getBacklinksForFile(f);return{name:f.basename,score:(bl?bl.data.size:0)+(c?.links||[]).length,type:(c?.frontmatter?.type||"none")};}).filter(h=>h.score>10&&!h.type.includes("moc")).slice(0,10);'
 ```
 
 **Use case:** Find highly-connected notes that are NOT marked as MOCs. These are candidates for MOC creation.
@@ -120,7 +120,7 @@ For each orphan:
 
 ```bash
 # Find orphans in a specific folder and auto-tag by folder
-obsidian eval code='var orphans=app.vault.getMarkdownFiles().filter(f=>(app.metadataCache.getFileCache(f)?.backlinks||[]).length===0);orphans.filter(f=>f.path.startsWith("Trading/")).forEach(f=>{var c=app.metadataCache.getFileCache(f);if(!c.frontmatter)c.frontmatter={};c.frontmatter.tags=[...(c.frontmatter.tags||[]),"needs-links"];});'
+obsidian eval code='var orphans=app.vault.getMarkdownFiles().filter(f=>app.metadataCache.getBacklinksForFile(f).data.size===0);orphans.filter(f=>f.path.startsWith("Trading/")).forEach(f=>{var c=app.metadataCache.getFileCache(f);if(!c.frontmatter)c.frontmatter={};c.frontmatter.tags=[...(c.frontmatter.tags||[]),"needs-links"];});'
 ```
 
 **Use case:** Auto-tag orphaned notes by folder with a "needs-links" tag, then triage them in batches.
@@ -129,7 +129,7 @@ obsidian eval code='var orphans=app.vault.getMarkdownFiles().filter(f=>(app.meta
 
 ```bash
 # Match orphans to the most relevant MOC based on folder proximity
-obsidian eval code='var mocs=app.vault.getMarkdownFiles().filter(f=>{var c=app.metadataCache.getFileCache(f);return(c?.frontmatter?.type||"").includes("moc");}).map(f=>f.path);var orphans=app.vault.getMarkdownFiles().filter(f=>(app.metadataCache.getFileCache(f)?.backlinks||[]).length===0);orphans.slice(0,10).map(f=>{var folder=f.path.split("/").slice(0,-1).join("/");var nearestMoc=mocs.find(m=>m.startsWith(folder));return{name:f.basename,folder:folder,suggestedMoc:nearestMoc||"None"};});'
+obsidian eval code='var mocs=app.vault.getMarkdownFiles().filter(f=>{var c=app.metadataCache.getFileCache(f);return(c?.frontmatter?.type||"").includes("moc");}).map(f=>f.path);var orphans=app.vault.getMarkdownFiles().filter(f=>app.metadataCache.getBacklinksForFile(f).data.size===0);orphans.slice(0,10).map(f=>{var folder=f.path.split("/").slice(0,-1).join("/");var nearestMoc=mocs.find(m=>m.startsWith(folder));return{name:f.basename,folder:folder,suggestedMoc:nearestMoc||"None"};});'
 ```
 
 **Use case:** For each orphan, suggest the nearest MOC based on folder path. Use the suggestion to add links.
@@ -159,12 +159,35 @@ obsidian move file="Note B" to="Archive/"
 
 ### Automated Duplicate Detection
 
+**Method 1: Exact normalized-name matches** (fast, works on any vault size)
+
 ```bash
-# Find notes with similar titles (potential duplicates)
-obsidian eval code='var files=app.vault.getMarkdownFiles();var dups=[];for(var i=0;i<files.length;i++){for(var j=i+1;j<files.length;j++){var a=files[i].basename.toLowerCase().replace(/[^a-z0-9]/g,"");var b=files[j].basename.toLowerCase().replace(/[^a-z0-9]/g,"");if(a===b||a.includes(b)||b.includes(a))dups.push([files[i].basename,files[j].basename]);}}dups.slice(0,10);'
+# Find notes whose normalized names collide (case-insensitive, no punctuation)
+obsidian eval code="var names={};app.vault.getMarkdownFiles().forEach(function(f){var n=f.basename.replace(/[^a-z0-9]/gi,'').toLowerCase();if(!names[n])names[n]=[];names[n].push(f.basename);});var dups=[];Object.keys(names).forEach(function(k){if(names[k].length>1)dups.push(names[k]);});dups.slice(0,20);"
 ```
 
-**Use case:** Find notes with similar or identical normalized names. These are strong duplicate candidates.
+**Use case:** Find notes with identical normalized names (e.g., `Technical Analysis.md` and `Technical Analysis(1).md` both normalize to `technicalanalysis`). These are near-certain duplicates.
+
+**Method 2: Subset name matches** (one name contains another)
+
+```bash
+# Find notes where one normalized name is a substring of another (batched for large vaults)
+# Adjust .slice() range for vaults >500 notes — process in batches of ~100
+obsidian eval code="var names=app.vault.getMarkdownFiles().map(function(f){return f.basename;}).slice(0,100);var subs=[];for(var i=0;i<names.length;i++){for(var j=i+1;j<names.length;j++){var a=names[i].replace(/[^a-z0-9]/gi,'').toLowerCase();var b=names[j].replace(/[^a-z0-9]/gi,'').toLowerCase();if(a.length>5&&b.length>5&&(a.indexOf(b)!==-1||b.indexOf(a)!==-1))subs.push(names[i]+' <-> '+names[j]);}}subs.slice(0,20).join('; ');"
+```
+
+**Use case:** Find notes where one name is contained in another (e.g., "Motivation" inside "Trader mindset and motivation"). These are possible duplicates — read both before merging.
+
+> **Scaling:** Method 1 is O(n) and works on any vault. Method 2 is O(n²) — for vaults >500 notes, run it in batches by changing `.slice(0,100)` to `.slice(100,200)`, `.slice(200,300)`, etc.
+
+**Method 3: Numbered duplicate scan** (no eval needed)
+
+```bash
+# Find notes with (1), (2), (3) suffixes — these are always duplicates from Google Keep imports
+obsidian files | grep -E '\([0-9]+\)'
+```
+
+**Use case:** The simplest and most reliable detection. Notes like `Nifty.md` and `Nifty(1).md` are always duplicates. No eval required.
 
 ---
 
@@ -217,7 +240,7 @@ Use these metrics to track vault health over time.
 
 ```bash
 # Run all health metrics at once
-obsidian eval code='var total=app.vault.getMarkdownFiles().length;var orphans=app.vault.getMarkdownFiles().filter(f=>(app.metadataCache.getFileCache(f)?.backlinks||[]).length===0).length;var deadends=app.vault.getMarkdownFiles().filter(f=>(app.metadataCache.getFileCache(f)?.links||[]).length===0).length;var unresolved=app.vault.getMarkdownFiles().filter(f=>(app.metadataCache.getFileCache(f)?.frontmatter?.type==="unresolved")).length;var avgLinks=app.vault.getMarkdownFiles().reduce((sum,f)=>sum+(app.metadataCache.getFileCache(f)?.links||[]).length,0)/total;JSON.stringify({total,orphans,deadends,unresolved,avgLinks:avgLinks.toFixed(2),orphanRate:(orphans/total*100).toFixed(1),deadendRate:(deadends/total*100).toFixed(1)});'
+obsidian eval code='var total=app.vault.getMarkdownFiles().length;var orphans=app.vault.getMarkdownFiles().filter(f=>app.metadataCache.getBacklinksForFile(f).data.size===0).length;var deadends=app.vault.getMarkdownFiles().filter(f=>(app.metadataCache.getFileCache(f)?.links||[]).length===0).length;var unresolved=app.vault.getMarkdownFiles().filter(f=>(app.metadataCache.getFileCache(f)?.frontmatter?.type==="unresolved")).length;var avgLinks=app.vault.getMarkdownFiles().reduce((sum,f)=>sum+(app.metadataCache.getFileCache(f)?.links||[]).length,0)/total;JSON.stringify({total,orphans,deadends,unresolved,avgLinks:avgLinks.toFixed(2),orphanRate:(orphans/total*100).toFixed(1),deadendRate:(deadends/total*100).toFixed(1)});'
 ```
 
 **Use case:** Generate a JSON health snapshot with totals, rates, and averages. Store this in `Intelligence/vault-health-YYYY-MM-DD.md` to track trends.
@@ -263,10 +286,12 @@ obsidian eval code='var types={};app.vault.getMarkdownFiles().forEach(f=>{var t=
 obsidian eval code='app.vault.getMarkdownFiles().map(f=>{var c=app.metadataCache.getFileCache(f);return{name:f.basename,links:(c?.links||[]).length};}).sort((a,b)=>b.links-a.links).slice(0,15);'
 
 # Find notes with the most backlinks (authority notes)
-obsidian eval code='app.vault.getMarkdownFiles().map(f=>{var c=app.metadataCache.getFileCache(f);return{name:f.basename,backlinks:(c?.backlinks||[]).length};}).sort((a,b)=>b.backlinks-a.backlinks).slice(0,15);'
+obsidian eval code='app.vault.getMarkdownFiles().map(f=>{var bl=app.metadataCache.getBacklinksForFile(f);return{name:f.basename,backlinks:bl?bl.data.size:0};}).sort((a,b)=>b.backlinks-a.backlinks).slice(0,15);'
 ```
 
 **Pattern:** Use `eval` for one-off data extraction that the CLI does not expose directly. For repeated patterns, prefer CLI commands for readability. For complex multi-step analysis, pipe `eval` output to Claude for reasoning.
+
+> **Scaling limit:** Complex `eval` scripts that iterate all files and call `getBacklinksForFile()` per file may silently return empty on vaults >500 notes. For large vaults, prefer CLI commands (`backlinks total`, `orphans total`) or split eval into smaller batches (`.slice(0,50)`).
 
 ---
 
@@ -459,7 +484,7 @@ obsidian read path="project/src/module.py"
 
 ```bash
 # Build context for a specific file
-obsidian eval code='var target="project/src/module.py";var file=app.vault.getAbstractFileByPath(target);var cache=app.metadataCache.getFileCache(file);var related=cache?.links?.map(l=>l.link).slice(0,5)||[];JSON.stringify({target,related,backlinks:(cache?.backlinks||[]).map(b=>b.link).slice(0,5)});'
+obsidian eval code='var target="project/src/module.py";var file=app.vault.getAbstractFileByPath(target);var cache=app.metadataCache.getFileCache(file);var bl=app.metadataCache.getBacklinksForFile(file);var related=cache?.links?.map(l=>l.link).slice(0,5)||[];var blFiles=bl?Array.from(bl.data.keys()).slice(0,5).map(f=>f.basename):[];JSON.stringify({target,related,backlinks:blFiles});'
 ```
 
 **Use case:** Given a target file, find its 5 most linked-to notes and 5 most linked-from notes. Use these as the context stack.
@@ -721,6 +746,147 @@ obsidian orphans  path="project"
 Without structure, every session starts with searching for docs and guessing state. With this pattern, every session loads the same 2-3 context notes and is oriented in under 3,000 tokens.
 
 → Full workflow, templates, and validation: `project-onboarding.md`
+
+---
+
+## Pattern 14: Source Ingestion (Preview-Gated)
+
+Ingest external sources into the vault as structured notes.
+
+### When to Use
+
+- You found a useful article, paper, or document and want to extract entities/concepts
+- You want cross-referenced notes without manually creating each one
+- You want a traceable link back to the original source
+
+### Prerequisites
+
+- `defuddle` sub-skill loaded (for URLs)
+- `obsidian-cli` sub-skill loaded (for creation)
+- Vault has a `Sources/` folder (create if missing)
+
+### Phase 1: Extract
+
+**For URLs:**
+```bash
+# Delegate to defuddle for clean markdown extraction
+# The skill extracts article content, strips ads/headers
+```
+
+**For local files:**
+```bash
+obsidian read path="Downloads/article.md"
+```
+
+**For pasted text:**
+- Treat as raw markdown source
+
+### Phase 2: Analyze
+
+Claude identifies from the source:
+- **Entities** — named things (people, companies, products, tools)
+- **Concepts** — abstract ideas (patterns, principles, methodologies)
+- **Decisions** — explicit or implicit choices made by the author
+- **Open questions** — gaps or unresolved points
+
+### Phase 3: Preview
+
+Show the user a structured preview before creating anything:
+
+```
+=== Ingestion Preview ===
+Source: https://example.com/article
+Notes to create: 4
+- [[Entity Name]] (entity)
+- [[Concept Name]] (concept)
+- [[Open Question]] (question)
+- [[Sources/Article Name|Source: Article Name]] (source index)
+Proposed tags: #ingested #topic-name
+Cross-links: [[Existing Note A]] [[Existing Note B]]
+===
+```
+
+**User can:**
+- Approve all (Y)
+- Veto individual notes ("skip Entity Name")
+- Rename notes ("call it 'Better Name'")
+- Cancel entirely (N)
+
+### Phase 4: Execute
+
+For each approved note:
+```bash
+obsidian create name="Entity Name" content="---
+type: entity
+date: 2026-05-09
+source: https://example.com/article
+tags: [ingested]
+---
+
+# Entity Name
+
+## Source
+From [[Sources/Article Name|Source: Article Name]]
+
+## Key Points
+- ...
+
+## See Also
+- [[Concept Name]]"
+```
+
+### Phase 5: Index
+
+Update or create `Sources/Article Name.md`:
+```bash
+obsidian create name="Sources/Article Name" content="---
+type: source
+date: 2026-05-09
+url: https://example.com/article
+tags: [source]
+---
+
+# Article Name
+
+## Entities
+- [[Entity Name]]
+
+## Concepts
+- [[Concept Name]]
+
+## Decisions
+- ...
+
+## Open Questions
+- ...
+"
+```
+
+### Safety Gates
+
+| Scenario | Gate |
+|---|---|
+| Note name collision | Append `(Source)` or ask user to rename |
+| Source >10,000 words | Truncate to 5,000, ask if rest needed |
+| 0 extractable notes | Stop, explain why |
+| User rejects preview | Log cancellation to hot cache, stop |
+
+### Frontmatter Convention
+
+All ingested notes:
+```yaml
+---
+type: entity | concept | source | question
+date: YYYY-MM-DD
+source: <original URL or file path>
+tags: [ingested]
+---
+```
+
+Source index notes additionally use:
+```yaml
+url: <original URL>
+```
 
 ---
 
