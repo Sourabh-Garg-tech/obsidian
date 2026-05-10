@@ -1,3 +1,8 @@
+---
+description: Trace how thinking on a topic has evolved across the vault
+argument-hint: "topic"
+---
+
 # /trace — Idea Evolution Tracker
 
 Trace how thinking on a topic has evolved across the vault. Uses ONLY what the user wrote — no outside perspective.

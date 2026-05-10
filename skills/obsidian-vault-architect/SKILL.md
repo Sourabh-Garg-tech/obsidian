@@ -10,7 +10,7 @@ description: >
   (A-F grade) with prioritized fix commands.
 compatibility:
   requires: "Obsidian v1.12.7+ with CLI enabled"
-  platforms: "macOS, Windows, Linux (see obsidian-workflows/references/platform-setup.md)"
+  platforms: "macOS, Windows, Linux (see skills/obsidian-workflows/references/platform-setup.md)"
 ---
 
 # Vault Architect — Micro Core

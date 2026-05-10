@@ -17,7 +17,7 @@ compatibility:
 Operational PKM routines and intelligence patterns that combine the Obsidian CLI with
 Claude's reasoning. Uses CLI as execution layer, Claude as intelligence layer.
 
-→ CLI command reference: See the `obsidian-cli` skill and `obsidian-cli/references/command-reference.md`
+→ CLI command reference: See the `obsidian-cli` skill and `skills/obsidian-cli/references/command-reference.md`
 → Markdown syntax: See the `obsidian-markdown` skill
 
 ---

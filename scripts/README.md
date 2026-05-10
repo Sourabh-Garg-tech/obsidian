@@ -43,7 +43,11 @@ Validate skill definitions, link resolution, command references, and frontmatter
 ```
 
 Checks:
+- `skills/` directory exists (required for Claude Code discovery)
+- No `.claude/` directory at plugin root (triggers bug #44120)
+- No `README.md` in `commands/` (registers as unintended command)
 - YAML frontmatter in all SKILL.md files (name, description fields)
+- Frontmatter in all command files (description for /help)
+- Valid JSON in `.claude-plugin/plugin.json` and `marketplace.json`
 - Relative link resolution (backtick-quoted `.md` paths)
 - CLI command references match command-reference.md
-- Compatibility frontmatter on all sub-skills

@@ -13,7 +13,7 @@ description: >
   note" — because the official CLI has critical link-safety guarantees raw file tools lack.
 compatibility:
   requires: "Obsidian v1.12.7+ with CLI enabled (v1.12.7 has significantly faster CLI binary)"
-  platforms: "macOS, Windows, Linux (see obsidian-workflows/references/platform-setup.md)"
+  platforms: "macOS, Windows, Linux (see skills/obsidian-workflows/references/platform-setup.md)"
 ---
 
 # Obsidian Skill for Claude Code
@@ -46,7 +46,7 @@ obsidian files vault="Work"         # all commands accept vault= parameter
 ```
 
 If `command not found` → Obsidian Settings → General → Command line interface → Enable + Register CLI.
-→ Platform-specific setup: `obsidian-workflows/references/platform-setup.md`
+→ Platform-specific setup: `skills/obsidian-workflows/references/platform-setup.md`
 
 > The CLI is a **remote control** — Obsidian must be running (or it launches automatically).
 
@@ -73,7 +73,7 @@ If `command not found` → Obsidian Settings → General → Command line interf
 | **Vault** | `vaults`, `vault`, `version`, `reload`, `restart`, `recents`, `outline`, `wordcount`, `diff` |
 | **Developer** | `eval`, `dev:screenshot`, `dev:debug`, `dev:console`, `dev:errors`, `dev:css`, `dev:dom`, `devtools` |
 
-→ Full parameter/flag reference: `obsidian-cli/references/command-reference.md`
+→ Full parameter/flag reference: `skills/obsidian-cli/references/command-reference.md`
 
 ---
 
@@ -127,7 +127,7 @@ obsidian aliases file="NoteName"
 
 **`type=` options:** `text`, `list`, `number`, `checkbox`, `date`, `datetime`
 
-→ Frontmatter schema conventions: `obsidian-vault-architect/references/frontmatter-schema.md`
+→ Frontmatter schema conventions: `skills/obsidian-vault-architect/references/frontmatter-schema.md`
 
 ---
 
@@ -241,7 +241,7 @@ obsidian theme:set theme="Minimal"
 obsidian snippet:enable name="my-snippet"
 ```
 
-→ Full command details: `obsidian-cli/references/command-reference.md`
+→ Full command details: `skills/obsidian-cli/references/command-reference.md`
 
 ---
 
@@ -314,7 +314,7 @@ Write result back to vault
 **Token budget target:** aim for under 3,000 tokens of loaded context per task.
 
 → Deep dive on vault structure for token savings, RAG-lite patterns, context budget templates:
-`obsidian-workflows/references/token-efficiency.md`
+`skills/obsidian-workflows/references/token-efficiency.md`
 
 ---
 
@@ -363,7 +363,7 @@ Write result back to vault
 | Windows: silent failures | Use a normal terminal (not admin/elevated) |
 | Wrong vault targeted | Pass `vault="VaultName"` explicitly |
 
-→ Platform-specific setup: `obsidian-workflows/references/platform-setup.md`
+→ Platform-specific setup: `skills/obsidian-workflows/references/platform-setup.md`
 
 ---
 
@@ -371,12 +371,12 @@ Write result back to vault
 
 | File | When to read |
 |---|---|
-| `obsidian-cli/references/command-reference.md` | Need a specific flag, obscure command, or JSON output format |
-| `obsidian-vault-architect/references/frontmatter-schema.md` | Setting up or normalizing vault property schemas |
+| `skills/obsidian-cli/references/command-reference.md` | Need a specific flag, obscure command, or JSON output format |
+| `skills/obsidian-vault-architect/references/frontmatter-schema.md` | Setting up or normalizing vault property schemas |
 | `obsidian-markdown/SKILL.md` | Writing Obsidian Flavored Markdown (callouts, embeds, canvas, Dataview) |
-| `obsidian-workflows/references/platform-setup.md` | Windows, Linux headless/systemd, or multi-vault PATH setup |
-| `obsidian-workflows/references/intelligence-patterns.md` | Auto-linking engine, hub detection, orphan triage, refactor recipes, self-improvement loop |
-| `obsidian-workflows/references/token-efficiency.md` | Vault structure for token savings, RAG-lite patterns, context budget templates |
-| `obsidian-workflows/references/pkm-workflows.md` | Morning planning, weekly review, vault hygiene, GTD inbox processing, graph analysis |
-| `obsidian-vault-architect/references/vault-operations.md` | Merge/split notes, normalize messy vault, PKM method detection |
-| `obsidian-workflows/references/daily-workflows.md` | CLI wrapper script, auto-context builder, daily note intelligence |
+| `skills/obsidian-workflows/references/platform-setup.md` | Windows, Linux headless/systemd, or multi-vault PATH setup |
+| `skills/obsidian-workflows/references/intelligence-patterns.md` | Auto-linking engine, hub detection, orphan triage, refactor recipes, self-improvement loop |
+| `skills/obsidian-workflows/references/token-efficiency.md` | Vault structure for token savings, RAG-lite patterns, context budget templates |
+| `skills/obsidian-workflows/references/pkm-workflows.md` | Morning planning, weekly review, vault hygiene, GTD inbox processing, graph analysis |
+| `skills/obsidian-vault-architect/references/vault-operations.md` | Merge/split notes, normalize messy vault, PKM method detection |
+| `skills/obsidian-workflows/references/daily-workflows.md` | CLI wrapper script, auto-context builder, daily note intelligence |

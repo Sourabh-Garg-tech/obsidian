@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
-# validate-skills.sh — Validate skill definitions, links, and command references
+# validate-skills.sh — Validate plugin structure, skill definitions, links, and manifests
 # Usage: ./scripts/validate-skills.sh [--fix]
-#   --fix  Attempt to fix common issues (currently: none auto-fixed)
 
 set -euo pipefail
 
@@ -19,9 +18,60 @@ echo "=== Obsidian Skill Suite Validation ==="
 echo "Repo: $REPO_ROOT"
 echo ""
 
-# 1. Check YAML frontmatter in all SKILL.md files
+# 1. Check plugin structure
+echo "--- Plugin Structure ---"
+
+# 1a. Check skills/ directory exists
+if [[ ! -d "$REPO_ROOT/skills" ]]; then
+  echo "  ERROR: skills/ directory missing — Claude Code will not discover any skills"
+  ((ERRORS++))
+else
+  echo "  OK: skills/ directory exists"
+fi
+
+# 1b. Check .claude/ directory is not tracked by git (triggers bug #44120)
+if git -C "$REPO_ROOT" ls-files --error-unmatch .claude/ 2>/dev/null | grep -q .; then
+  echo "  ERROR: .claude/ directory is tracked by git — this breaks skill discovery"
+  ((ERRORS++))
+else
+  echo "  OK: .claude/ directory is not tracked by git"
+fi
+
+# 1c. Check commands/ has no README.md
+if [[ -f "$REPO_ROOT/commands/README.md" ]]; then
+  echo "  ERROR: commands/README.md exists — Claude Code registers it as /obsidian:README"
+  ((ERRORS++))
+else
+  echo "  OK: commands/README.md not present"
+fi
+
+# 1d. Check plugin.json exists and is valid JSON
+if [[ ! -f "$REPO_ROOT/.claude-plugin/plugin.json" ]]; then
+  echo "  ERROR: .claude-plugin/plugin.json missing"
+  ((ERRORS++))
+else
+  if python3 -c "import json,sys; f=open(sys.argv[1]); json.load(f)" "$REPO_ROOT/.claude-plugin/plugin.json" 2>/dev/null; then
+    echo "  OK: .claude-plugin/plugin.json is valid JSON"
+  else
+    echo "  ERROR: .claude-plugin/plugin.json is invalid JSON"
+    ((ERRORS++))
+  fi
+fi
+
+# 1e. Check marketplace.json exists and is valid JSON
+if [[ -f "$REPO_ROOT/.claude-plugin/marketplace.json" ]]; then
+  if python3 -c "import json,sys; f=open(sys.argv[1]); json.load(f)" "$REPO_ROOT/.claude-plugin/marketplace.json" 2>/dev/null; then
+    echo "  OK: .claude-plugin/marketplace.json is valid JSON"
+  else
+    echo "  ERROR: .claude-plugin/marketplace.json is invalid JSON"
+    ((ERRORS++))
+  fi
+fi
+echo ""
+
+# 2. Check YAML frontmatter in all SKILL.md files
 echo "--- YAML Frontmatter ---"
-for skill_file in "$REPO_ROOT"/SKILL.md "$REPO_ROOT"/*/SKILL.md; do
+for skill_file in "$REPO_ROOT"/skills/*/SKILL.md; do
   if [[ ! -f "$skill_file" ]]; then
     continue
   fi
@@ -62,17 +112,47 @@ for skill_file in "$REPO_ROOT"/SKILL.md "$REPO_ROOT"/*/SKILL.md; do
 done
 echo ""
 
-# 2. Check that relative links in markdown resolve to existing files
+# 3. Check command files have frontmatter
+echo "--- Command Frontmatter ---"
+for cmd_file in "$REPO_ROOT"/commands/*.md; do
+  if [[ ! -f "$cmd_file" ]]; then
+    continue
+  fi
+  rel_path="${cmd_file#$REPO_ROOT/}"
+
+  # Skip README (shouldn't exist, but just in case)
+  if [[ "$(basename "$cmd_file")" == "README.md" ]]; then
+    continue
+  fi
+
+  # Check frontmatter
+  first_line=$(head -1 "$cmd_file")
+  if [[ "$first_line" != "---" ]]; then
+    echo "  WARN: $rel_path — missing frontmatter (commands need description for /help)"
+    ((WARNINGS++))
+    continue
+  fi
+
+  # Check description field
+  if ! grep -q "^description:" "$cmd_file"; then
+    echo "  WARN: $rel_path — missing 'description' in frontmatter"
+    ((WARNINGS++))
+  else
+    echo "  OK: $rel_path"
+  fi
+done
+echo ""
+
+# 4. Check that relative links in markdown resolve to existing files
 echo "--- Link Resolution ---"
-for md_file in "$REPO_ROOT"/SKILL.md "$REPO_ROOT"/*/SKILL.md "$REPO_ROOT"/references/*.md "$REPO_ROOT"/*/references/*.md; do
+for md_file in "$REPO_ROOT"/skills/*/SKILL.md "$REPO_ROOT"/skills/*/references/*.md "$REPO_ROOT"/references/*.md; do
   if [[ ! -f "$md_file" ]]; then
     continue
   fi
   rel_path="${md_file#$REPO_ROOT/}"
   file_dir="$(dirname "$md_file")"
 
-  # Find backtick-quoted paths (used for reference file pointers)
-  # Use sed instead of grep -P for Windows compatibility
+  # Find backtick-quoted paths
   while IFS= read -r link; do
     # Skip URLs (http/https)
     if [[ "$link" =~ ^https?:// ]]; then
@@ -93,20 +173,19 @@ for md_file in "$REPO_ROOT"/SKILL.md "$REPO_ROOT"/*/SKILL.md "$REPO_ROOT"/refere
         ((WARNINGS++))
       fi
     fi
-  # Only check paths that look like real references (start with known prefixes or contain /)
-  # Skip placeholder examples like "folder/note.md"
-  done < <(sed -n 's/.*`\([a-zA-Z][a-zA-Z0-9_./-]*\.md\)`.*/\1/p' "$md_file" | grep -E '^(references|obsidian|scripts|commands|defuddle|json)' | sort -u 2>/dev/null || true)
+  # Only check paths that look like real references
+  done < <(sed -n 's/.*`\([a-zA-Z][a-zA-Z0-9_./-]*\.md\)`.*/\1/p' "$md_file" | grep -E '^(references|skills|scripts|commands|defuddle|json)' | sort -u 2>/dev/null || true)
 done
 echo ""
 
-# 3. Check that CLI commands mentioned in docs exist in command-reference
+# 5. Check that CLI commands mentioned in docs exist in command-reference
 echo "--- Command Reference ---"
-CMD_REF="$REPO_ROOT/obsidian-cli/references/command-reference.md"
+CMD_REF="$REPO_ROOT/skills/obsidian-cli/references/command-reference.md"
 if [[ ! -f "$CMD_REF" ]]; then
   echo "  ERROR: command-reference.md not found at $CMD_REF"
   ((ERRORS++))
 else
-  # Extract command names from command-reference (sed instead of grep -P for portability)
+  # Extract command names from command-reference
   declared_commands=$(sed -n 's/.*obsidian \([a-z][a-z:]*\).*/\1/p' "$CMD_REF" | sort -u)
 
   # Check key commands exist
@@ -118,23 +197,6 @@ else
   done
   echo "  OK: Key commands verified in command-reference.md"
 fi
-echo ""
-
-# 4. Check compatibility frontmatter
-echo "--- Compatibility Frontmatter ---"
-for skill_file in "$REPO_ROOT"/SKILL.md "$REPO_ROOT"/*/SKILL.md; do
-  if [[ ! -f "$skill_file" ]]; then
-    continue
-  fi
-  rel_path="${skill_file#$REPO_ROOT/}"
-
-  if grep -q "^compatibility:" "$skill_file"; then
-    echo "  OK: $rel_path — has compatibility field"
-  else
-    echo "  WARN: $rel_path — missing compatibility field"
-    ((WARNINGS++))
-  fi
-done
 echo ""
 
 # Summary

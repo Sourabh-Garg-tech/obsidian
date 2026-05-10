@@ -1,3 +1,8 @@
+---
+description: Stress-test a belief or plan using evidence from the vault's own history
+argument-hint: "belief or plan"
+---
+
 # /challenge — Belief Pressure-Tester
 
 Stress-test a belief or plan using evidence from the vault's own history. The challenge comes from the user's past writing, not generic devil's advocacy.

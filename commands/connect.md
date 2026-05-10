@@ -1,3 +1,8 @@
+---
+description: Find non-obvious connections between two domains from the vault
+argument-hint: "topic A, topic B"
+---
+
 # /connect — Cross-Domain Bridge
 
 Find non-obvious connections between two seemingly unrelated domains, projects, or concepts from the vault.

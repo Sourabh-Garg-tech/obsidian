@@ -1,8 +1,9 @@
 {
   "name": "obsidian",
-  "version": "1.0.0",
+  "version": "1.3.0",
   "description": "Obsidian vault automation via the official CLI — create, read, edit, search, move notes; manage frontmatter, tags, tasks, backlinks; PKM workflows; vault health audits",
   "author": {
+    "name": "Sourabh-Garg-tech",
     "url": "https://github.com/Sourabh-Garg-tech"
   },
   "repository": "https://github.com/Sourabh-Garg-tech/obsidian",
@@ -23,13 +24,7 @@
     "bases"
   ],
   "skills": [
-    "./obsidian-cli",
-    "./obsidian-markdown",
-    "./obsidian-bases",
-    "./json-canvas",
-    "./defuddle",
-    "./obsidian-workflows",
-    "./obsidian-vault-architect"
+    "./skills"
   ],
   "commands": [
     "./commands"

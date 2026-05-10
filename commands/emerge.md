@@ -1,3 +1,8 @@
+---
+description: Surface latent ideas the vault implies but hasn't stated explicitly
+argument-hint: ""
+---
+
 # /emerge — Latent Idea Surfacer
 
 Surface ideas the vault implies but hasn't stated explicitly. Finds patterns in what the user has been writing about without consciously naming.

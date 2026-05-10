@@ -6,55 +6,11 @@ description: >
   actionable briefing, not a data dump. Detects invocation context (vault root,
   project folder, or external) and adapts. Auto-populates daily notes on first
   invocation. Always use this skill over raw file tools for link-safety.
-compatibility:
-  requires: "Obsidian v1.12.7+ with CLI enabled (v1.12.7 has significantly faster CLI binary)"
-  platforms: "macOS, Windows, Linux (see obsidian-workflows/references/platform-setup.md)"
-auto-trigger:
-  - "create a note"
-  - "read a note"
-  - "edit a note"
-  - "open a note"
-  - "search my vault"
-  - "move a note"
-  - "rename a note"
-  - "delete a note"
-  - "update frontmatter"
-  - "add properties"
-  - "manage tags"
-  - "find tasks"
-  - "check backlinks"
-  - "backlinks"
-  - "create a daily note"
-  - "list plugins"
-  - "change themes"
-  - "manage snippets"
-  - "obsidian sync"
-  - "sync history"
-  - "obsidian bases"
-  - "canvas files"
-  - "create canvas"
-  - "PKM workflow"
-  - "PARA"
-  - "Zettelkasten"
-  - "GTD"
-  - "LYT"
-  - "obsidian markdown"
-  - "wikilinks"
-  - "callouts"
-  - "embeds"
-  - "metadata"
-  - "run command"
-  - "Obsidian"
-  - "vault"
-  - "vault health"
-  - "vault audit"
-  - "vault hygiene"
-  - "notes"
-  - ".md"
-  - "frontmatter"
-  - "dataview"
-  - "daily notes"
-  - "second brain"
+  Triggers on: create/read/edit/open a note, search vault, move/rename/delete
+  notes, update frontmatter/properties/tags, find tasks, check backlinks, daily
+  notes, plugins, themes, snippets, sync, bases, canvas, PKM workflows (PARA,
+  Zettelkasten, GTD, LYT), wikilinks, callouts, embeds, metadata, vault health,
+  audit, hygiene, dataview, second brain, or any mention of Obsidian.
 ---
 
 # Obsidian Skill — Intelligence-First
@@ -207,7 +163,7 @@ Use the Skill tool with the sub-skill name.
 8. **`tags:rename`/`tags:remove` don't exist** — use `property:set` or `eval`
 9. **`search` unreliable on Windows** — returns empty without `path=`. Use Grep tool as fallback
 10. **`backlinks file=` and `links file=` unreliable** — use `path=` instead
-11. **Windows colon commands** — see `obsidian-workflows/references/platform-setup.md`
+11. **Windows colon commands** — see `skills/obsidian-workflows/references/platform-setup.md`
 
 ---
 
@@ -221,10 +177,10 @@ Use the Skill tool with the sub-skill name.
 | `references/session-cache-workflow.md` | Hot cache rebuild script and rules |
 | `references/ingestion-workflow.md` | Source ingestion 6-step flow |
 | `references/vault-intelligence-workflow.md` | Hubs, orphans, broken links, missing backlinks |
-| `obsidian-workflows/references/token-efficiency.md` | RAG-lite patterns, context budgets |
-| `obsidian-workflows/references/intelligence-patterns.md` | Auto-linking, hub detection, decision trails |
-| `obsidian-workflows/references/platform-setup.md` | Windows, Linux, multi-vault setup |
-| `obsidian-workflows/references/project-onboarding.md` | Project scaffolding, `vault-project-init` |
+| `skills/obsidian-workflows/references/token-efficiency.md` | RAG-lite patterns, context budgets |
+| `skills/obsidian-workflows/references/intelligence-patterns.md` | Auto-linking, hub detection, decision trails |
+| `skills/obsidian-workflows/references/platform-setup.md` | Windows, Linux, multi-vault setup |
+| `skills/obsidian-workflows/references/project-onboarding.md` | Project scaffolding, `vault-project-init` |
 
 ### Scripts
 
@@ -237,10 +193,10 @@ Use the Skill tool with the sub-skill name.
 
 | Sub-skill | When to use |
 |---|---|
-| `obsidian-cli/SKILL.md` | CLI syntax, parameters, command reference |
-| `obsidian-markdown/SKILL.md` | OFM syntax: wikilinks, embeds, callouts, properties |
-| `obsidian-bases/SKILL.md` | Bases .base files: filters, formulas, views |
-| `json-canvas/SKILL.md` | Canvas .canvas files: nodes, edges, groups |
-| `defuddle/SKILL.md` | Extract clean markdown from web pages |
-| `obsidian-workflows/SKILL.md` | PKM routines, token-efficient loading, vault intelligence |
-| `obsidian-vault-architect/SKILL.md` | Vault blueprint, health audit, fix commands |
+| `skills/obsidian-cli/SKILL.md` | CLI syntax, parameters, command reference |
+| `skills/obsidian-markdown/SKILL.md` | OFM syntax: wikilinks, embeds, callouts, properties |
+| `skills/obsidian-bases/SKILL.md` | Bases .base files: filters, formulas, views |
+| `skills/json-canvas/SKILL.md` | Canvas .canvas files: nodes, edges, groups |
+| `skills/defuddle/SKILL.md` | Extract clean markdown from web pages |
+| `skills/obsidian-workflows/SKILL.md` | PKM routines, token-efficient loading, vault intelligence |
+| `skills/obsidian-vault-architect/SKILL.md` | Vault blueprint, health audit, fix commands |
