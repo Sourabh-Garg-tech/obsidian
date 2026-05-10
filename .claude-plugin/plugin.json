@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Obsidian vault automation via the official CLI — create, read, edit, search, move notes; manage frontmatter, tags, tasks, backlinks; PKM workflows; vault health audits",
   "author": {
-    "name": "Sourabh Garg",
     "url": "https://github.com/Sourabh-Garg-tech"
   },
   "repository": "https://github.com/Sourabh-Garg-tech/obsidian",

@@ -16,7 +16,7 @@ report it responsibly:
 
 1. **Do not open a public issue.** Public issues may expose the vulnerability
    before a fix is available.
-2. Email the details to `garg04sourabh@gmail.com` with the subject
+2. Open a private security advisory on the GitHub repository with the subject
    `[Security] obsidian-skill — <brief description>`.
 3. Include:
    - A description of the vulnerability
