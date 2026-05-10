@@ -121,16 +121,22 @@ Priority fix: Add tags to 12 notes -- `obsidian property:set file="Note" name="t
 
 Enable the Obsidian CLI: Settings -> General -> Command line interface -> Enable + Register.
 
-### Option A: Claude Code Plugin Install (Recommended)
+### Option A: Claude Code "Add Marketplace" (Recommended)
 
 ```bash
-/plugin install https://github.com/Sourabh-Garg-tech/obsidian
+/plugin install
 ```
+
+1. In the Claude Code plugin menu, select **Add Marketplace**
+2. Enter: `https://github.com/Sourabh-Garg-tech/obsidian`
+3. Choose **Install**
 
 Restart Claude Code. The manifest auto-registers:
 - **8 skills**: main `obsidian` + 7 sub-skills
 - **5 commands**: `/obsidian` gateway + 4 thinking commands
 - **Auto-trigger**: any message mentioning Obsidian, vaults, notes, or PKM
+
+> **Note:** Newer Claude Code versions can also use `/plugin install https://github.com/Sourabh-Garg-tech/obsidian` directly.
 
 ### Option B: Manual Clone
 
