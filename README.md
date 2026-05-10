@@ -1,6 +1,6 @@
 # Obsidian Skill for Claude Code
 
-[![Version](https://img.shields.io/badge/version-1.3.0-blue)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-1.3.0-blue)]()
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Obsidian](https://img.shields.io/badge/Obsidian-v1.12.7+-8b5cf6?logo=obsidian)](https://obsidian.md/)
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-Skill-1e3a5f)](https://claude.ai/code)
@@ -36,7 +36,7 @@ Turn Claude Code into an intelligent vault assistant for [Obsidian](https://obsi
 | **Vault intelligence** | Auto-detects hub notes, orphaned notes, broken links, and missing backlinks |
 | **Source ingestion** | Pull articles, URLs, and documents into your vault with preview-gated note creation |
 | **PKM workflows** | Built-in support for PARA, Zettelkasten, GTD, and LYT methods |
-| **Thinking commands** | `/trace`, `/challenge`, `/connect`, `/emerge` — reason over your vault as a knowledge graph |
+| **Thinking commands** | `/obsidian`, `/obsidian-trace`, `/obsidian-challenge`, `/obsidian-connect`, `/obsidian-emerge` — reason over your vault as a knowledge graph |
 
 ---
 
@@ -56,8 +56,8 @@ Enable the Obsidian CLI: Settings → General → Command line interface → Ena
 ```
 
 Restart Claude Code. The manifest auto-registers everything:
-- **7 sub-skills**: `obsidian-cli`, `obsidian-markdown`, `obsidian-bases`, `json-canvas`, `defuddle`, `obsidian-workflows`, `obsidian-vault-architect`
-- **4 thinking commands**: `/trace`, `/challenge`, `/connect`, `/emerge`
+- **8 skills**: main `obsidian` + `obsidian-cli`, `obsidian-markdown`, `obsidian-bases`, `json-canvas`, `defuddle`, `obsidian-workflows`, `obsidian-vault-architect`
+- **5 commands**: `/obsidian` gateway + `/obsidian-trace`, `/obsidian-challenge`, `/obsidian-connect`, `/obsidian-emerge`
 - **Auto-trigger**: any message mentioning Obsidian, vaults, notes, or PKM workflows
 
 ### Manual Install
@@ -153,19 +153,19 @@ See [full safety reference](references/full-reference.md#safety-rules) for the c
 
 | Sub-skill | Purpose |
 |---|---|
-| [obsidian-cli](obsidian-cli/) | CLI syntax, parameters, and command reference |
-| [obsidian-markdown](obsidian-markdown/) | Wikilinks, embeds, callouts, properties, block references |
-| [obsidian-bases](obsidian-bases/) | `.base` files: filters, formulas, table/card/list/map views |
-| [json-canvas](json-canvas/) | `.canvas` files: nodes, edges, groups, visual layouts |
-| [defuddle](defuddle/) | Extract clean markdown from web pages |
-| [obsidian-workflows](obsidian-workflows/) | PKM routines, token-efficient loading, vault intelligence |
-| [obsidian-vault-architect](obsidian-vault-architect/) | Vault blueprints, health audit, fix commands, scoring |
+| [obsidian-cli](skills/obsidian-cli/) | CLI syntax, parameters, and command reference |
+| [obsidian-markdown](skills/obsidian-markdown/) | Wikilinks, embeds, callouts, properties, block references |
+| [obsidian-bases](skills/obsidian-bases/) | `.base` files: filters, formulas, table/card/list/map views |
+| [json-canvas](skills/json-canvas/) | `.canvas` files: nodes, edges, groups, visual layouts |
+| [defuddle](skills/defuddle/) | Extract clean markdown from web pages |
+| [obsidian-workflows](skills/obsidian-workflows/) | PKM routines, token-efficient loading, vault intelligence |
+| [obsidian-vault-architect](skills/obsidian-vault-architect/) | Vault blueprints, health audit, fix commands, scoring |
 
 ---
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+Pull requests welcome. Use `docs:`, `feat:`, or `fix:` prefix for commits.
 
 ---
 

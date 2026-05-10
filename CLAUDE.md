@@ -2,15 +2,15 @@
 
 ## Project Overview
 
-This is a Claude Code skill suite for automating Obsidian vaults via the official Obsidian CLI (v1.12.7+). It consists of a root `SKILL.md` with 7 sub-skills, 4 thinking commands, and tiered reference files.
+This is a Claude Code skill suite for automating Obsidian vaults via the official Obsidian CLI (v1.12.7+). It consists of a main skill (`skills/obsidian/SKILL.md`) with 7 sub-skills, 5 commands, and tiered reference files.
 
 ## Architecture
 
 - **`.claude-plugin/plugin.json`** — plugin manifest for Claude Code registration
-- **Root SKILL.md** — micro-core that auto-triggers on Obsidian-related requests (~7KB)
+- **Main skill** — `skills/obsidian/SKILL.md`, auto-triggers on Obsidian-related requests (~7KB)
 - **Sub-skills** — `obsidian-cli`, `obsidian-markdown`, `obsidian-bases`, `json-canvas`, `defuddle`, `obsidian-workflows`, `obsidian-vault-architect`
 - **References/** — on-demand reference files loaded only when needed (token-efficient)
-- **Commands/** — thinking commands (`/trace`, `/challenge`, `/connect`, `/emerge`) that are read-only
+- **Commands/** — `/obsidian` gateway + `/obsidian-trace`, `/obsidian-challenge`, `/obsidian-connect`, `/obsidian-emerge`
 - **Scripts/** — utility scripts (`vault-health.sh`, `context-builder.sh`)
 
 ## Key Principles
