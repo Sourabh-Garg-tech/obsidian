@@ -123,6 +123,8 @@ Enable the Obsidian CLI: Settings -> General -> Command line interface -> Enable
 
 ### Option A: Manual Clone (Recommended -- Works Everywhere)
 
+**Step 1:** Clone the plugin into Claude Code's plugins directory.
+
 **macOS / Linux:**
 ```bash
 git clone https://github.com/Sourabh-Garg-tech/obsidian.git "$HOME/.claude/plugins/obsidian"
@@ -135,22 +137,44 @@ git clone https://github.com/Sourabh-Garg-tech/obsidian.git "$env:USERPROFILE\.c
 
 > **Note:** On Windows, do **not** use `~` -- git creates a literal `~` folder instead of expanding it.
 
-Then run `/reload-plugins`. The manifest auto-registers:
-- **8 skills**: main `obsidian` + 7 sub-skills
-- **5 commands**: `/obsidian` gateway + 4 thinking commands
+**Step 2:** Copy the slash commands into your user commands directory.
+
+**macOS / Linux:**
+```bash
+cp "$HOME/.claude/plugins/obsidian/commands/"*.md "$HOME/.claude/commands/"
+```
+
+**Windows (PowerShell):**
+```powershell
+Copy-Item "$env:USERPROFILE\.claude\plugins\obsidian\commands\*.md" "$env:USERPROFILE\.claude\commands\"
+```
+
+**Step 3:** Reload plugins.
+
+```bash
+/reload-plugins
+```
+
+What loads:
+- **8 skills** from `plugins/obsidian/skills/` — auto-discovered
+- **5 commands** from `~/.claude/commands/` — the obsidian slash commands
 - **Auto-trigger**: any message mentioning Obsidian, vaults, notes, or PKM
 
 ### Option B: Claude Code "Add Marketplace"
+
+> **Currently broken on Windows** due to Claude Code using SSH for GitHub clones. Track progress [here](https://github.com/anthropics/claude-code/issues).
+
+If you are on macOS/Linux with a working SSH `known_hosts` for `github.com`:
 
 ```bash
 /plugin install
 ```
 
-1. In the Claude Code plugin menu, select **Add Marketplace**
+1. Select **Add Marketplace**
 2. Enter: `https://github.com/Sourabh-Garg-tech/obsidian`
 3. Choose **Install**
 
-> **Note:** This requires Claude Code v2.1.139+ and a working SSH `known_hosts` for `github.com`. If it fails, use **Option A** instead.
+If it fails with "Permission denied (publickey)", use **Option A** instead.
 
 ---
 
