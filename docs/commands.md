@@ -4,27 +4,32 @@ Slash commands that use the vault as context for reasoning. These are **read-onl
 
 ## Installation
 
-Copy the commands into your vault's `.claude/commands/` directory:
+These commands are included automatically when you install the Obsidian skill plugin via `/plugin install` or "Add Marketplace". They appear as `/obsidian-trace`, `/obsidian-challenge`, `/obsidian-connect`, and `/obsidian-emerge` in the `/` command menu.
+
+If you prefer to install commands manually, copy them into your vault's `.claude/commands/` directory:
 
 ```bash
 # Replace VAULT_PATH with your Obsidian vault path
-cp commands/*.md VAULT_PATH/.claude/commands/
+cp commands/obsidian-*.md VAULT_PATH/.claude/commands/
 ```
 
 Or use the Obsidian CLI:
 
 ```bash
-obsidian create name=".claude/commands/trace" template="trace"
-obsidian create name=".claude/commands/challenge" template="challenge"
-obsidian create name=".claude/commands/connect" template="connect"
-obsidian create name=".claude/commands/emerge" template="emerge"
+obsidian create name=".claude/commands/obsidian-trace" template="obsidian-trace"
+obsidian create name=".claude/commands/obsidian-challenge" template="obsidian-challenge"
+obsidian create name=".claude/commands/obsidian-connect" template="obsidian-connect"
+obsidian create name=".claude/commands/obsidian-emerge" template="obsidian-emerge"
 ```
 
 ## Commands
 
 | Command | Input | What it does |
 |---|---|---|
-| `/trace <topic>` | Concept or project name | Timeline of how thinking evolved on this topic |
-| `/challenge <belief>` | Stated belief or plan | Vault-sourced counterarguments and past patterns |
-| `/connect <A, B>` | Two domains | Non-obvious connections between seemingly unrelated topics |
-| `/emerge` | None | Latent ideas the vault implies but hasn't stated |
+| `/obsidian-trace <topic>` | Concept or project name | Timeline of how thinking evolved on this topic |
+| `/obsidian-challenge <belief>` | Stated belief or plan | Vault-sourced counterarguments and past patterns |
+| `/obsidian-connect <A, B>` | Two domains | Non-obvious connections between seemingly unrelated topics |
+| `/obsidian-emerge` | None | Latent ideas the vault implies but hasn't stated |
+| `/obsidian` | Optional keyword | Main gateway — auto-routes to vault mode, project mode, or quick actions |
+
+All commands are prefixed with `obsidian-` so typing `/obsidian` in the command menu shows the full list.
