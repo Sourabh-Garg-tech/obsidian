@@ -32,6 +32,9 @@
     "./obsidian-vault-architect"
   ],
   "commands": [
-    "./commands"
+    "./commands/trace.md",
+    "./commands/challenge.md",
+    "./commands/connect.md",
+    "./commands/emerge.md"
   ]
 }

@@ -68,7 +68,7 @@ If you prefer cloning directly:
 git clone https://github.com/Sourabh-Garg-tech/obsidian.git ~/.claude/plugins/obsidian
 ```
 
-Restart Claude Code or run `/skill refresh`.
+Restart Claude Code or run `/reload-plugins`.
 
 ---
 
