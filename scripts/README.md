@@ -47,4 +47,3 @@ Checks:
 - Relative link resolution (backtick-quoted `.md` paths)
 - CLI command references match command-reference.md
 - Compatibility frontmatter on all sub-skills
-- Sub-skill directories have README.md

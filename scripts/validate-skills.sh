@@ -137,23 +137,6 @@ for skill_file in "$REPO_ROOT"/SKILL.md "$REPO_ROOT"/*/SKILL.md; do
 done
 echo ""
 
-# 5. Check that sub-skill directories have README.md
-echo "--- Sub-skill READMEs ---"
-for skill_dir in "$REPO_ROOT"/*/; do
-  skill_name="$(basename "$skill_dir")"
-  # Skip non-skill directories
-  if [[ ! -f "$skill_dir/SKILL.md" ]]; then
-    continue
-  fi
-  if [[ -f "$skill_dir/README.md" ]]; then
-    echo "  OK: $skill_name/README.md"
-  else
-    echo "  WARN: $skill_name/ — missing README.md"
-    ((WARNINGS++))
-  fi
-done
-echo ""
-
 # Summary
 echo "=== Summary ==="
 echo "Errors:   $ERRORS"

@@ -95,7 +95,7 @@ Max: 100.
 obsidian property:set file="NoteName" name="tags" value='["untagged"]'
 obsidian property:set file="NoteName" name="created" value="2026-04-21"
 
-# Bulk fix (>5 notes): use Python script from references/frontmatter-schema.md
+# Bulk fix (>5 notes): use Python script from frontmatter-schema.md
 ```
 
 ---
@@ -277,7 +277,7 @@ Overall: <grade> (<score>/100)
 2. ...
 
 ### Bulk Operations (Python script required)
-1. <issue> — see `references/frontmatter-schema.md` for script
+1. <issue> — see `frontmatter-schema.md` for script
 ```
 
 Priority is sorted by: (category weight x points available) descending. Fix the category with the most impact first.

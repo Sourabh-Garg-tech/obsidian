@@ -127,7 +127,7 @@ obsidian aliases file="NoteName"
 
 **`type=` options:** `text`, `list`, `number`, `checkbox`, `date`, `datetime`
 
-→ Frontmatter schema conventions: `references/frontmatter-schema.md`
+→ Frontmatter schema conventions: `obsidian-vault-architect/references/frontmatter-schema.md`
 
 ---
 
@@ -334,7 +334,7 @@ Write result back to vault
 - [x] Completed task
 ```
 
-→ Full OFM syntax (callouts, embeds, canvas, Dataview, Templater): `references/ofm-syntax.md`
+→ Full OFM syntax (callouts, embeds, canvas, Dataview, Templater): `obsidian-markdown/SKILL.md`
 
 ---
 
@@ -372,11 +372,11 @@ Write result back to vault
 | File | When to read |
 |---|---|
 | `obsidian-cli/references/command-reference.md` | Need a specific flag, obscure command, or JSON output format |
-| `references/frontmatter-schema.md` | Setting up or normalizing vault property schemas |
-| `references/ofm-syntax.md` | Writing Obsidian Flavored Markdown (callouts, embeds, canvas, Dataview) |
+| `obsidian-vault-architect/references/frontmatter-schema.md` | Setting up or normalizing vault property schemas |
+| `obsidian-markdown/SKILL.md` | Writing Obsidian Flavored Markdown (callouts, embeds, canvas, Dataview) |
 | `obsidian-workflows/references/platform-setup.md` | Windows, Linux headless/systemd, or multi-vault PATH setup |
 | `obsidian-workflows/references/intelligence-patterns.md` | Auto-linking engine, hub detection, orphan triage, refactor recipes, self-improvement loop |
 | `obsidian-workflows/references/token-efficiency.md` | Vault structure for token savings, RAG-lite patterns, context budget templates |
 | `obsidian-workflows/references/pkm-workflows.md` | Morning planning, weekly review, vault hygiene, GTD inbox processing, graph analysis |
-| `references/advanced-operations.md` | Merge/split notes, normalize messy vault, PKM method detection |
-| `references/daily-workflows.md` | CLI wrapper script, auto-context builder, daily note intelligence |
+| `obsidian-vault-architect/references/vault-operations.md` | Merge/split notes, normalize messy vault, PKM method detection |
+| `obsidian-workflows/references/daily-workflows.md` | CLI wrapper script, auto-context builder, daily note intelligence |
