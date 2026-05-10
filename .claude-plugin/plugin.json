@@ -24,7 +24,14 @@
     "bases"
   ],
   "skills": [
-    "./skills"
+    "./skills/obsidian",
+    "./skills/obsidian-cli",
+    "./skills/obsidian-markdown",
+    "./skills/obsidian-bases",
+    "./skills/json-canvas",
+    "./skills/defuddle",
+    "./skills/obsidian-workflows",
+    "./skills/obsidian-vault-architect"
   ],
   "commands": [
     "./commands"

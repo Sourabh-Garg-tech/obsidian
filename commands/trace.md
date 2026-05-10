@@ -1,5 +1,5 @@
 ---
-description: Trace how thinking on a topic has evolved across the vault
+description: (Obsidian) Trace how thinking on a topic has evolved across your vault
 argument-hint: "topic"
 ---
 

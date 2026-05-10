@@ -1,5 +1,5 @@
 ---
-description: Stress-test a belief or plan using evidence from the vault's own history
+description: (Obsidian) Stress-test a belief using evidence from your vault's own history
 argument-hint: "belief or plan"
 ---
 

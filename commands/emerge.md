@@ -1,5 +1,5 @@
 ---
-description: Surface latent ideas the vault implies but hasn't stated explicitly
+description: (Obsidian) Surface latent ideas your vault implies but hasn't stated explicitly
 argument-hint: ""
 ---
 

@@ -1,5 +1,5 @@
 ---
-description: Find non-obvious connections between two domains from the vault
+description: (Obsidian) Find non-obvious connections between two domains in your vault
 argument-hint: "topic A, topic B"
 ---
 
