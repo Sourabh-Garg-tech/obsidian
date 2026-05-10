@@ -123,7 +123,7 @@ Enable the Obsidian CLI: Settings -> General -> Command line interface -> Enable
 
 ### Installation Steps
 
-> **Note:** The Claude Code "Add Marketplace" install path is currently broken on Windows (Claude Code forces SSH even for HTTPS URLs). Until this is fixed, use the manual clone method below.
+> **Platform note:** The Claude Code `/plugin install` command works on macOS and Linux, but **fails on Windows** with `Permission denied (publickey)`. This is a [Claude Code client bug](https://github.com/anthropics/claude-code/issues) — it forces SSH for all GitHub clones regardless of URL. On Windows, use the manual clone steps below.
 
 **Step 1:** Clone the plugin into Claude Code's plugins directory.
 
