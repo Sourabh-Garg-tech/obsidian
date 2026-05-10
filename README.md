@@ -121,7 +121,26 @@ Priority fix: Add tags to 12 notes -- `obsidian property:set file="Note" name="t
 
 Enable the Obsidian CLI: Settings -> General -> Command line interface -> Enable + Register.
 
-### Option A: Claude Code "Add Marketplace" (Recommended)
+### Option A: Manual Clone (Recommended -- Works Everywhere)
+
+**macOS / Linux:**
+```bash
+git clone https://github.com/Sourabh-Garg-tech/obsidian.git "$HOME/.claude/plugins/obsidian"
+```
+
+**Windows (PowerShell):**
+```powershell
+git clone https://github.com/Sourabh-Garg-tech/obsidian.git "$env:USERPROFILE\.claude\plugins\obsidian"
+```
+
+> **Note:** On Windows, do **not** use `~` -- git creates a literal `~` folder instead of expanding it.
+
+Then run `/reload-plugins`. The manifest auto-registers:
+- **8 skills**: main `obsidian` + 7 sub-skills
+- **5 commands**: `/obsidian` gateway + 4 thinking commands
+- **Auto-trigger**: any message mentioning Obsidian, vaults, notes, or PKM
+
+### Option B: Claude Code "Add Marketplace"
 
 ```bash
 /plugin install
@@ -131,20 +150,7 @@ Enable the Obsidian CLI: Settings -> General -> Command line interface -> Enable
 2. Enter: `https://github.com/Sourabh-Garg-tech/obsidian`
 3. Choose **Install**
 
-Restart Claude Code. The manifest auto-registers:
-- **8 skills**: main `obsidian` + 7 sub-skills
-- **5 commands**: `/obsidian` gateway + 4 thinking commands
-- **Auto-trigger**: any message mentioning Obsidian, vaults, notes, or PKM
-
-> **Note:** Newer Claude Code versions can also use `/plugin install https://github.com/Sourabh-Garg-tech/obsidian` directly.
-
-### Option B: Manual Clone
-
-```bash
-git clone https://github.com/Sourabh-Garg-tech/obsidian.git ~/.claude/plugins/obsidian
-```
-
-Then run `/reload-plugins`.
+> **Note:** This requires Claude Code v2.1.139+ and a working SSH `known_hosts` for `github.com`. If it fails, use **Option A** instead.
 
 ---
 

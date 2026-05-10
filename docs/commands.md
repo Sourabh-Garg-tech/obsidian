@@ -4,9 +4,9 @@ Slash commands that use the vault as context for reasoning. These are **read-onl
 
 ## Installation
 
-These commands are included automatically when you install the Obsidian skill plugin via `/plugin install` or "Add Marketplace". They appear as `/obsidian-trace`, `/obsidian-challenge`, `/obsidian-connect`, and `/obsidian-emerge` in the `/` command menu.
+These commands are included automatically when you install the Obsidian skill plugin. They appear as `/obsidian-trace`, `/obsidian-challenge`, `/obsidian-connect`, and `/obsidian-emerge` in the `/` command menu.
 
-If you prefer to install commands manually, copy them into your vault's `.claude/commands/` directory:
+If you prefer to install only the commands (without the full skill suite), copy them into your vault's `.claude/commands/` directory:
 
 ```bash
 # Replace VAULT_PATH with your Obsidian vault path
