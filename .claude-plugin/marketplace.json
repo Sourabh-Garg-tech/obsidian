@@ -1,13 +1,22 @@
 {
   "name": "obsidian-skill",
   "owner": {
-    "name": "Sourabh-Garg-tech"
+    "name": "Sourabh-Garg-tech",
+    "url": "https://github.com/Sourabh-Garg-tech"
+  },
+  "metadata": {
+    "description": "obsidian: Obsidian vault automation for Claude Code",
+    "version": "1.3.0"
   },
   "plugins": [
     {
       "name": "obsidian",
-      "source": ".",
-      "description": "Obsidian vault automation via the official CLI — create, read, edit, search, move notes; manage frontmatter, tags, tasks, backlinks; PKM workflows; vault health audits. Auto-registers 7 sub-skills and 4 thinking commands.",
+      "source": {
+        "source": "github",
+        "repo": "Sourabh-Garg-tech/obsidian",
+        "ref": "master"
+      },
+      "description": "Obsidian vault automation via the official CLI. Create, read, edit, search, move notes; manage frontmatter, tags, tasks, backlinks; PKM workflows; vault health audits.",
       "version": "1.3.0",
       "author": {
         "name": "Sourabh-Garg-tech",
