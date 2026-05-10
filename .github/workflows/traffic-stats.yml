@@ -1,0 +1,59 @@
+name: Update Traffic Stats
+
+on:
+  schedule:
+    - cron: '0 3 * * *'   # daily at 03:00 UTC
+  workflow_dispatch:        # manual trigger
+
+permissions:
+  contents: write
+
+jobs:
+  update-stats:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch traffic data
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Fetch clone count (14-day window, requires push access)
+          CLONES=$(gh api repos/${{ github.repository }}/traffic/clones \
+            --jq '.count // 0')
+
+          # Fetch view count (14-day window)
+          VIEWS=$(gh api repos/${{ github.repository }}/traffic/views \
+            --jq '.count // 0' 2>/dev/null || echo '0')
+
+          # Fetch stargazers count
+          STARS=$(gh api repos/${{ github.repository }} \
+            --jq '.stargazers_count // 0')
+
+          # Write endpoint JSON for Shields.io
+          cat > docs/stats.json <<EOF
+          {
+            "schemaVersion": 1,
+            "label": "clones",
+            "message": "$CLONES",
+            "color": "blue"
+          }
+          EOF
+
+          # Also write a combined stats file for reference
+          cat > docs/stats-detail.json <<EOF
+          {
+            "clones_14d": $CLONES,
+            "views_14d": $VIEWS,
+            "stars": $STARS,
+            "updated": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          }
+          EOF
+
+      - name: Commit stats
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/stats.json docs/stats-detail.json
+          git diff --cached --quiet || git commit -m "docs: update traffic stats"
+          git push
