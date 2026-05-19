@@ -11,13 +11,13 @@ This is a Claude Code skill suite for automating Obsidian vaults via the officia
 - **Sub-skills** — `obsidian-cli`, `obsidian-markdown`, `obsidian-bases`, `json-canvas`, `defuddle`, `obsidian-workflows`, `obsidian-vault-architect`
 - **References/** — on-demand reference files loaded only when needed (token-efficient)
 - **Commands/** — `/obsidian` gateway + `/obsidian-trace`, `/obsidian-challenge`, `/obsidian-connect`, `/obsidian-emerge`
-- **Scripts/** — utility scripts (`vault-health.sh`, `context-builder.sh`)
+- **Scripts/** — utility scripts (`vault-health.sh`/`.ps1`, `context-builder.sh`/`.ps1`, `validate-skills.sh`/`.ps1`)
 
 ## Key Principles
 
 1. **CLI-first, always** — Never use raw `mv`, `cp`, or direct `.md` writes. Every vault operation goes through `obsidian <cmd>`.
 2. **Token-efficient** — Sub-skills and references are loaded on-demand, not upfront. Target under 3,000 tokens per task.
-3. **Safety rules** — See SKILL.md for the 11 safety rules. Critical ones: never edit `.obsidian/*.json`, never write raw YAML, use `path=` for backlinks.
+3. **Safety rules** — See SKILL.md for the 12 safety rules. Critical ones: never edit `.obsidian/*.json`, never write raw YAML, use `path=` for backlinks, canvas files are a safe exception for direct writes.
 4. **Windows compatibility** — `search` is unreliable on Windows without `path=`. Use Grep tool as fallback.
 
 ## File Conventions

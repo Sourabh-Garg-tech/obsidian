@@ -97,7 +97,7 @@ obs orphans
 ## Auto-Context Builder
 
 A helper that builds a lean context package for any task. See also
-`obsidian-workflows/references/token-efficiency.md` for the full context-loading strategy.
+`token-efficiency.md` for the full context-loading strategy.
 
 ```bash
 #!/usr/bin/env bash

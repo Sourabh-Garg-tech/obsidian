@@ -262,3 +262,4 @@ obsidian move file="week-$WEEK" to="_summaries/"
 | `references/vault-blueprint.md` | Full folder hierarchy, naming rules, tier assignments, anti-patterns |
 | `references/frontmatter-schema.md` | Required properties, type validation, invalid property names, bulk fix script |
 | `references/scoring-rubric.md` | Exact scoring formulas, weightings, output template |
+| `references/vault-operations.md` | Bulk vault operations: normalize schema, merge duplicates, split notes, PKM detection |

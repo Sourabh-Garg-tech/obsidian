@@ -138,7 +138,7 @@ Every line actionable. Skip empty slots.
 | `canvas` | Auto-load `json-canvas` sub-skill | Delegate to canvas skill |
 | `bases` | Auto-load `obsidian-bases` sub-skill | Delegate to bases skill |
 | `extract <url>` | Auto-load `defuddle` sub-skill | URL → clean markdown extraction |
-| `init <name>` | Run `vault-project-init` workflow | See `obsidian-workflows/references/project-onboarding.md` |
+| `init <name>` | Run `vault-project-init` workflow | See `skills/obsidian-workflows/references/project-onboarding.md` |
 | `checkpoint <summary>` | Manually log a checkpoint to `<project>/Intelligence/daily/YYYY-MM-DD.md` | PROJECT MODE only |
 | `cache` | `obsidian read path="_context/session-cache.md"` | Read session hot cache |
 | `cache:clear` | Create empty session cache | Resets touch log and narrative |

@@ -148,7 +148,7 @@ obsidian tasks done                              # completed this week
 ```bash
 # Process inbox
 obsidian files folder="Inbox/"                   # list inbox items
-obsidian tasks folder="Inbox/" todo              # incomplete tasks in inbox
+obsidian tasks path="Inbox/" todo               # incomplete tasks in inbox
 
 # After processing, move to appropriate folder
 obsidian move file="InboxItem" to="Projects/"

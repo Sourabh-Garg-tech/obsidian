@@ -22,6 +22,11 @@ if ($Help) {
     exit 0
 }
 
+if (-not $Task) {
+    Write-Error "Error: -Task is required. Use -Help for usage."
+    exit 1
+}
+
 if (-not (Get-Command obsidian -ErrorAction SilentlyContinue)) {
     Write-Error "Error: obsidian CLI not found. Ensure Obsidian is running with CLI enabled."
     exit 1

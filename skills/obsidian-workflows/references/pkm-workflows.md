@@ -43,7 +43,7 @@ obsidian sync:status
 ```bash
 # List inbox contents
 obsidian files folder="Inbox/"
-obsidian tasks folder="Inbox/" todo
+obsidian tasks path="Inbox/" todo
 
 # For each item, decide: Do, Delegate, Defer, or Archive
 # Move processed items to appropriate folder

@@ -81,4 +81,4 @@ echo "Orphans:         $(obsidian orphans total $VAULT_ARG)"
 echo "Dead-ends:       $(obsidian deadends total $VAULT_ARG)"
 ```
 
-→ See `obsidian-workflows/references/intelligence-patterns.md` for Patterns 15-18
+→ See `skills/obsidian-workflows/references/intelligence-patterns.md` for Patterns 15-18

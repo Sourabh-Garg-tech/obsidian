@@ -334,7 +334,7 @@ Write result back to vault
 - [x] Completed task
 ```
 
-→ Full OFM syntax (callouts, embeds, canvas, Dataview, Templater): `obsidian-markdown/SKILL.md`
+→ Full OFM syntax (callouts, embeds, canvas, Dataview, Templater): `skills/obsidian-markdown/SKILL.md`
 
 ---
 
@@ -351,6 +351,7 @@ Write result back to vault
 9. **`search` unreliable on Windows** — returns empty without `path=`. Use Grep tool on vault directory as fallback.
 10. **`backlinks file=` and `links file=` unreliable** — use `path=` instead: `obsidian backlinks path="Folder/Note.md"`
 11. **Colon commands may fail in Git Bash on Windows** — `property:*`, `daily:*`, `plugin:*`, `base:*`, `history:*`, `theme:*`, `template:*`, `tab:*` return exit code 127. Use `cmd /c "obsidian property:read ..."` or PowerShell.
+12. **`.canvas` files are an exception** — no CLI command exists for canvas creation, so direct writes are safe (no wikilinks or frontmatter to corrupt). Always validate JSON after writing.
 
 ---
 
@@ -373,7 +374,7 @@ Write result back to vault
 |---|---|
 | `skills/obsidian-cli/references/command-reference.md` | Need a specific flag, obscure command, or JSON output format |
 | `skills/obsidian-vault-architect/references/frontmatter-schema.md` | Setting up or normalizing vault property schemas |
-| `obsidian-markdown/SKILL.md` | Writing Obsidian Flavored Markdown (callouts, embeds, canvas, Dataview) |
+| `skills/obsidian-markdown/SKILL.md` | Writing Obsidian Flavored Markdown (callouts, embeds, canvas, Dataview) |
 | `skills/obsidian-workflows/references/platform-setup.md` | Windows, Linux headless/systemd, or multi-vault PATH setup |
 | `skills/obsidian-workflows/references/intelligence-patterns.md` | Auto-linking engine, hub detection, orphan triage, refactor recipes, self-improvement loop |
 | `skills/obsidian-workflows/references/token-efficiency.md` | Vault structure for token savings, RAG-lite patterns, context budget templates |

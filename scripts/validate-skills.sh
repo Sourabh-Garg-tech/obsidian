@@ -174,7 +174,7 @@ for md_file in "$REPO_ROOT"/skills/*/SKILL.md "$REPO_ROOT"/skills/*/references/*
       fi
     fi
   # Only check paths that look like real references
-  done < <(sed -n 's/.*`\([a-zA-Z][a-zA-Z0-9_./-]*\.md\)`.*/\1/p' "$md_file" | grep -E '^(references|skills|scripts|commands|defuddle|json)' | sort -u 2>/dev/null || true)
+  done < <(sed -n 's/.*`\([a-zA-Z][a-zA-Z0-9_./-]*\.md\)`.*/\1/p' "$md_file" | grep -E '^(references|skills|scripts|commands|defuddle|json|obsidian)' | sort -u 2>/dev/null || true)
 done
 echo ""
 

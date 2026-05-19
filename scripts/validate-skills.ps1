@@ -149,7 +149,7 @@ foreach ($mdFile in $allMdFiles) {
         $link = $m.Groups[1].Value
         if ($link -match "^https?://") { continue }
         if ($link -match "^#") { continue }
-        if ($link -notmatch "^(references|skills|scripts|commands|defuddle|json)") { continue }
+        if ($link -notmatch "^(references|skills|scripts|commands|defuddle|json|obsidian)") { continue }
 
         $resolved = Join-Path $fileDir $link
         if (-not (Test-Path $resolved)) {

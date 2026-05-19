@@ -45,4 +45,4 @@ After successful ingestion:
 2. Check for missing backlinks between new notes and existing vault
 3. Update `Sources/` index note
 
-→ See `obsidian-workflows/references/intelligence-patterns.md` for Pattern 14: Source Ingestion
+→ See `skills/obsidian-workflows/references/intelligence-patterns.md` for Pattern 14: Source Ingestion
