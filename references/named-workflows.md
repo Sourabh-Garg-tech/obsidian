@@ -4,6 +4,54 @@ Detailed instructions for all `/obsidian <keyword>` workflows.
 
 ---
 
+## Workflow Decision Tree
+
+Use this tree to quickly find the right workflow:
+
+```
+What do you need?
+│
+├─ Start the day ──────────────────────── morning
+├─ End the day ────────────────────────── evening
+├─ Weekly review ──────────────────────── weekly
+│
+├─ Find something ────────────────────── search <query>
+├─ Read a note ────────────────────────── read <name>
+├─ Create a note ──────────────────────── create <name>
+├─ Add to today's note ───────────────── daily <text>
+├─ See my tasks ──────────────────────── tasks
+├─ Work on a project ─────────────────── project <name>
+│
+├─ Ingest a web page/URL ─────────────── extract <url>
+├─ Ingest a file into vault ──────────── ingest <source>
+├─ Start a new project ───────────────── init <name>
+├─ Log progress ──────────────────────── checkpoint <summary>
+│
+├─ Check vault health ─────────────────── health
+├─ Find hub notes ────────────────────── hubs
+├─ Find orphaned notes ───────────────── orphans
+├─ Fix broken links ───────────────────── fix-links
+├─ Check bidirectional links ──────────── backlinks
+├─ Full intelligence scan ─────────────── intelligence
+│
+├─ Create a canvas ────────────────────── canvas
+├─ Create a base ─────────────────────── bases
+│
+├─ View session cache ────────────────── cache
+├─ Reset session cache ───────────────── cache:clear
+│
+└─ Something else ────────────────────── treated as search query
+```
+
+**Thinking commands** (separate slash commands, not workflows):
+
+| Command | Purpose |
+|---------|---------|
+| `/obsidian-trace <topic>` | How thinking evolved on a topic |
+| `/obsidian-challenge <belief>` | Stress-test a belief with vault evidence |
+| `/obsidian-connect <A, B>` | Find non-obvious connections between two domains |
+| `/obsidian-emerge` | Surface latent ideas the vault implies |
+
 ## Auto-Context Behaviors
 
 These fire automatically based on mode, time, and project state.
@@ -42,7 +90,13 @@ Significant = decision recorded, status changed, new intelligence report, or mul
 
 ### Session Hot Cache
 
-After any write, update `_context/session-cache.md`. See `references/session-cache-workflow.md` for the full rebuild script.
+After any write, append a single line to `_context/session-cache.md`:
+
+```bash
+obsidian append path="_context/session-cache.md" content="- $(date +%Y-%m-%dT%H:%M) <symbol> <note-name> (<action>)"
+```
+
+Symbols: `+` created, `~` updated, `>` read (decision notes only). Max 10 entries; trim on stale reset. See `references/session-cache-workflow.md` for format details.
 
 ### Intelligence Auto-Run
 

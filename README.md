@@ -255,6 +255,7 @@ Automated vault health that runs after ingestion and note creation:
 5. **Confirm vault** with `obsidian vaults` if multiple vaults are open
 6. **Windows:** `search` may return empty without `path=` -- use `path="Folder/"`
 7. **Backlinks:** use `path="Folder/Note.md"` instead of `file="Note"`
+8. **Canvas files:** direct writes are safe (no wikilinks or frontmatter to corrupt) -- validate JSON after writing
 
 See [full safety reference](references/full-reference.md) for the complete list.
 

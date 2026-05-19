@@ -164,6 +164,7 @@ Use the Skill tool with the sub-skill name.
 9. **`search` unreliable on Windows** — returns empty without `path=`. Use Grep tool as fallback
 10. **`backlinks file=` and `links file=` unreliable** — use `path=` instead
 11. **Windows colon commands** — see `skills/obsidian-workflows/references/platform-setup.md`
+12. **`.canvas` files are an exception** — no CLI command exists for canvas creation, so direct writes are safe (no wikilinks or frontmatter to corrupt). Always validate JSON after writing.
 
 ---
 
@@ -186,8 +187,12 @@ Use the Skill tool with the sub-skill name.
 
 | Script | Purpose |
 |---|---|
-| `scripts/vault-health.sh` | Comprehensive vault health metrics |
-| `scripts/context-builder.sh` | Build minimal context for a task from vault |
+| `scripts/vault-health.sh` | Bash: comprehensive vault health metrics |
+| `scripts/vault-health.ps1` | PowerShell: comprehensive vault health metrics (Windows) |
+| `scripts/context-builder.sh` | Bash: build minimal context for a task from vault |
+| `scripts/context-builder.ps1` | PowerShell: build minimal context for a task from vault (Windows) |
+| `scripts/validate-skills.sh` | Bash: validate plugin structure and skill definitions |
+| `scripts/validate-skills.ps1` | PowerShell: validate plugin structure and skill definitions (Windows) |
 
 ### Sub-Skills
 

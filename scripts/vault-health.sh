@@ -52,9 +52,10 @@ echo "Dead-ends:       $(obsidian deadends total $VAULT_ARG)"
 echo ""
 
 # Optional: list top 5 hubs (notes with 5+ backlinks)
+# Note: eval scans up to 1000 files. For vaults >1000 files, results may be incomplete.
 echo ""
 echo "Top hubs (5+ backlinks):"
-obsidian eval code='app.vault.getMarkdownFiles().slice(0,500).map(f=>({name:f.basename,count:app.metadataCache.getBacklinksForFile(f).data.size})).filter(x=>x.count>=5).sort((a,b)=>b.count-a.count).slice(0,5).map(x=>x.name+": "+x.count+" backlinks")' $VAULT_ARG 2>/dev/null || echo "  (eval not available)"
+obsidian eval code='app.vault.getMarkdownFiles().slice(0,1000).map(f=>({name:f.basename,count:app.metadataCache.getBacklinksForFile(f).data.size})).filter(x=>x.count>=5).sort((a,b)=>b.count-a.count).slice(0,5).map(x=>x.name+": "+x.count+" backlinks")' $VAULT_ARG 2>/dev/null || echo "  (eval not available)"
 
 echo ""
 echo "--- Detailed ---"

@@ -207,3 +207,5 @@ Use this to frame suggestions in the user's existing framework.
 | `references/intelligence-patterns.md` | Auto-linking, hub detection, orphan triage, refactor recipes, **source ingestion (Pattern 14)** |
 | `references/pkm-workflows.md` | Morning planning, weekly review, GTD inbox, vault hygiene |
 | `references/platform-setup.md` | Windows, Linux headless/systemd, multi-vault setup |
+| `references/daily-workflows.md` | CLI wrapper scripts, daily note format convention, morning/evening routines |
+| `references/project-onboarding.md` | Project scaffolding, `vault-project-init` |

@@ -154,27 +154,90 @@ for the bulk fix template). After running the script, execute `obsidian reload`.
 
 ## Vault Setup
 
-If the vault is empty or newly created, offer to scaffold the ideal structure:
+If the vault is empty or newly created, ask which PKM method the user prefers (or detect from existing structure). Then scaffold the matching template.
+
+### Method Selection
+
+Ask: "Which organizational method fits your workflow?"
+
+| Method | Best for | Key folders |
+|---------|----------|-------------|
+| **PARA** | Project-driven knowledge workers | Projects/, Areas/, Resources/, Archive/ |
+| **Zettelkasten** | Researchers, writers, idea-linkers | 01 Fleeting/, 02 Literature/, 03 Permanent/ |
+| **GTD** | Task-focused, inbox-driven workers | Inbox/, Next Actions/, Waiting/, Someday/ |
+| **LYT** | Map-of-content builders | MOC/, Atlas/, Sources/, Spaces/ |
+
+If the user isn't sure, use **PARA** — it's the most forgiving default.
+
+### Base Folders (all methods)
 
 ```bash
-# Create required folders
-mkdir _context _summaries Projects Archive "Daily Notes" Inbox Templates
+# These folders are always created regardless of method
+mkdir _context _summaries "Daily Notes" Templates
+```
 
-# Create _context/ seed files
+### PARA Template
+
+```bash
+mkdir Projects Areas Resources Archive
+obsidian create name="projects-index" content="# Projects Index\n\nActive projects and their status.\n\n---\ntags: [moc, projects]\n---"
+obsidian move file="projects-index" to="Projects/"
+obsidian create name="areas-index" content="# Areas Index\n\nOngoing areas of responsibility.\n\n---\ntags: [moc, areas]\n---"
+obsidian move file="areas-index" to="Areas/"
+```
+
+### Zettelkasten Template
+
+```bash
+mkdir "01 Fleeting" "02 Literature" "03 Permanent"
+obsidian create name="fleeting-index" content="# Fleeting Notes Index\n\nQuick captures. Process daily.\n\n---\ntags: [moc, fleeting]\n---"
+obsidian move file="fleeting-index" to="01 Fleeting/"
+obsidian create name="literature-index" content="# Literature Notes Index\n\nSource-derived notes with references.\n\n---\ntags: [moc, literature]\n---"
+obsidian move file="literature-index" to="02 Literature/"
+obsidian create name="permanent-index" content="# Permanent Notes Index\n\nRefined, evergreen ideas.\n\n---\ntags: [moc, permanent]\n---"
+obsidian move file="permanent-index" to="03 Permanent/"
+```
+
+### GTD Template
+
+```bash
+mkdir Inbox "Next Actions" Waiting Someday Projects Reference
+obsidian create name="inbox-index" content="# Inbox\n\nCaptured items. Process to zero daily.\n\n---\ntags: [gtd, inbox]\n---"
+obsidian move file="inbox-index" to="Inbox/"
+obsidian create name="next-actions-index" content="# Next Actions\n\nConcrete, doable tasks.\n\n---\ntags: [gtd, next-actions]\n---"
+obsidian move file="next-actions-index" to="Next Actions/"
+```
+
+### LYT Template
+
+```bash
+mkdir MOC Atlas Sources Spaces
+obsidian create name="home" content="# Home\n\nWelcome to your vault.\n\n## Maps of Content\n- [[MOC Index]]\n\n## Quick Links\n- [[Atlas Index]]\n\n---\ntags: [moc, home]\n---"
+obsidian create name="moc-index" content="# MOC Index\n\nMaps of content — your vault's navigation layer.\n\n---\ntags: [moc]\n---"
+obsidian move file="moc-index" to="MOC/"
+obsidian create name="atlas-index" content="# Atlas Index\n\nPeople, places, and things.\n\n---\ntags: [moc, atlas]\n---"
+obsidian move file="atlas-index" to="Atlas/"
+```
+
+### _context/ Seed Files (all methods)
+
+```bash
 obsidian create name="coding-standards" content="# Coding Standards\n\n<!-- Fill in your standards -->"
 obsidian create name="architecture" content="# Architecture (Current State)\n\n<!-- Keep under 300 words -->"
 obsidian create name="agent-instructions" content="# Agent Instructions\n\n<!-- Standing instructions for AI -->"
 obsidian create name="glossary" content="# Glossary\n\n<!-- Domain terms -->"
 obsidian create name="current-sprint" content="# Current Sprint\n\n<!-- What's in focus this week -->"
 
-# Move seed files into _context/
 obsidian move file="coding-standards" to="_context/"
 obsidian move file="architecture" to="_context/"
 obsidian move file="agent-instructions" to="_context/"
 obsidian move file="glossary" to="_context/"
 obsidian move file="current-sprint" to="_context/"
+```
 
-# Create _summaries/ seed files
+### _summaries/ Seed Files (all methods)
+
+```bash
 WEEK=$(date +%Y-W%V)
 obsidian create name="decisions-log" content="# Decisions Log\n\n<!-- Append-only -->"
 obsidian create name="week-$WEEK" content="# Week $WEEK Summary\n\n<!-- Daily 1-liners -->"

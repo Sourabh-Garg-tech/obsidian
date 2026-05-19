@@ -81,6 +81,8 @@ Use `total` on list commands to get a count.
 5. **Confirm vault** with `obsidian vaults` if multiple vaults open
 6. **>500 files** — use Python + `python-frontmatter`, then `obsidian reload`
 
+**Exception:** `.canvas` files can be written directly (no `obsidian` command exists for canvas creation). Canvas files don't have wikilinks or frontmatter indexes, so direct writes are safe. Always validate JSON after writing.
+
 ## Plugin development
 
 ### Develop/test cycle

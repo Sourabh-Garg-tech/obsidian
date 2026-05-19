@@ -5,6 +5,57 @@ match your setup.
 
 ---
 
+## Daily Note Format Convention
+
+Daily notes should live in a `Daily Notes/` folder (not the vault root) and follow this
+template. Configure Obsidian to use this path: Settings -> Daily notes -> New file location:
+`Daily Notes`.
+
+### Template
+
+```markdown
+---
+date: {{date:YYYY-MM-DD}}
+tags: [daily]
+---
+
+# {{date:YYYY-MM-DD}} — {{title}}
+
+## One Big Thing
+- [ ] <!-- The single most important task today -->
+
+## Tasks
+- [ ] <!-- Tasks for today -->
+
+## Notes
+- <!-- Captures, decisions, links -->
+
+## End of Day
+- Accomplished: <!-- Fill in at end of day -->
+- Tomorrow: <!-- Carry-forward tasks -->
+```
+
+### Key rules
+
+- **`Daily Notes/` folder**: Daily notes go in a dedicated folder, never the vault root.
+- **Date filename**: `YYYY-MM-DD.md` format — matches `obsidian daily:read` and `daily:append`.
+- **One Big Thing**: A single priority task that defines the day's focus.
+- **End of Day**: Fill in at end of day. The `morning` workflow carries forward incomplete tasks.
+- **Minimal frontmatter**: Only `date` and `tags`. Don't over-specify — daily notes are for capture, not metadata.
+
+### Morning workflow integration
+
+The `/obsidian morning` workflow populates the daily note from yesterday's incomplete tasks:
+
+```bash
+# Read yesterday's incomplete tasks
+obsidian daily:read date="-1" | grep "^- \[ \]"
+# Append them to today's note
+obsidian daily:append content="- [ ] <carried-forward task>"
+```
+
+---
+
 ## `obs` — Recommended CLI Wrapper
 
 For frequent use, create a thin wrapper that sets your vault path and common defaults.
