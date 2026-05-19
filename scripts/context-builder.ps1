@@ -1,10 +1,9 @@
-# context-builder.ps1 — Build minimal context for a task (Windows PowerShell)
+# context-builder.ps1 - Build minimal context for a task (Windows PowerShell)
 # Prerequisites: Obsidian must be running with CLI enabled
 # Usage: .\context-builder.ps1 -Task "task description" [[-Vault] <string>] [-Cache] [-Help]
 
 param(
-    [Parameter(Mandatory=$true)]
-    [string]$Task,
+    [string]$Task = "",
     [string]$Vault = "",
     [switch]$Cache,
     [switch]$Help
@@ -24,7 +23,7 @@ if ($Help) {
 }
 
 if (-not (Get-Command obsidian -ErrorAction SilentlyContinue)) {
-    Write-Error "Error: 'obsidian' CLI not found. Ensure Obsidian is running with CLI enabled."
+    Write-Error "Error: obsidian CLI not found. Ensure Obsidian is running with CLI enabled."
     exit 1
 }
 
@@ -47,8 +46,16 @@ Write-Host "--- Relevant Notes ---"
 # Try obsidian search first; fall back to file search if results are empty
 # (search is unreliable on Windows without path=)
 $searchResults = obsidian search query="$Task" $VaultArg path="." limit=5 2>$null
-if (-not $searchResults -or ($searchResults -match "^\s*$")) {
-    Write-Host "(obsidian search returned no results — using file search fallback)"
+$hasResults = $false
+if ($searchResults) {
+    $trimmed = $searchResults.ToString().Trim()
+    if ($trimmed.Length -gt 0) {
+        $hasResults = $true
+    }
+}
+
+if (-not $hasResults) {
+    Write-Host "(obsidian search returned no results -- using file search fallback)"
     $vaultPath = obsidian vault $VaultArg 2>$null | Select-Object -First 1
     if ($vaultPath -and (Test-Path $vaultPath)) {
         Get-ChildItem -Path $vaultPath -Filter "*.md" -Recurse |
