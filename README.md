@@ -5,6 +5,8 @@
 [![Obsidian](https://img.shields.io/badge/Obsidian-v1.12.7+-8b5cf6?logo=obsidian)](https://obsidian.md/)
 [![Claude Code](https://img.shields.io/badge/Claude%20Code-Skill-1e3a5f)](https://claude.ai/code)
 [![Clones](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/Sourabh-Garg-tech/obsidian/master/docs/stats.json)](https://github.com/Sourabh-Garg-tech/obsidian)
+[![Stars](https://img.shields.io/github/stars/Sourabh-Garg-tech/obsidian)](https://github.com/Sourabh-Garg-tech/obsidian)
+[![Forks](https://img.shields.io/github/forks/Sourabh-Garg-tech/obsidian)](https://github.com/Sourabh-Garg-tech/obsidian)
 
 > Turn Claude Code into an intelligent vault assistant for [Obsidian](https://obsidian.md/).
 > Create notes, search your second brain, manage tasks, and run structured PKM workflows -- all through natural conversation.
