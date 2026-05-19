@@ -2,7 +2,7 @@ name: Update Traffic Stats
 
 on:
   schedule:
-    - cron: '0 3 * * *'   # daily at 03:00 UTC
+    - cron: '7 3 * * *'   # daily at 03:07 UTC
   workflow_dispatch:        # manual trigger
 
 permissions:
@@ -11,12 +11,13 @@ permissions:
 jobs:
   update-stats:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Fetch traffic data
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.PAT_TOKEN }}
         run: |
           # Fetch clone count (14-day window, requires push access)
           CLONES=$(gh api repos/${{ github.repository }}/traffic/clones \
