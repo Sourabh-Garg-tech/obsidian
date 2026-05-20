@@ -33,7 +33,7 @@ What do you need?
 ├─ Fix broken links ───────────────────── fix-links
 ├─ Check bidirectional links ──────────── backlinks
 ├─ Full intelligence scan ─────────────── intelligence
-│
+├─ Validate plugin structure ───────────── validate
 ├─ Create a canvas ────────────────────── canvas
 ├─ Create a base ─────────────────────── bases
 │
@@ -128,7 +128,8 @@ Every line actionable. Skip empty slots.
 | `morning` | Populate daily note with yesterday's tasks + today's focus from `_context/active-projects` | Runs morning auto-context |
 | `evening` | Read today's daily note → summarize → append to daily + `_summaries/week-YYYY-WWW.md` | Also updates project daily note if PROJECT MODE |
 | `weekly` | `obsidian tags sort=count counts` + intelligence report summary + update `_summaries/week-YYYY-WWW.md` | Weekly review automation |
-| `health` | Run `scripts/vault-health.sh` (full report), delegate to `obsidian-vault-architect` for scoring | Includes vault intelligence metrics |
+| `health` | Run `scripts/vault-health.sh` (macOS/Linux) or `scripts/vault-health.ps1` (Windows), delegate to `obsidian-vault-architect` for scoring | Includes vault intelligence metrics |
+| `validate` | Run `scripts/validate-skills.sh` (macOS/Linux) or `scripts/validate-skills.ps1` (Windows) | Validates plugin structure, frontmatter, links, and commands |
 | `search <q>` | `obsidian search query="<q>" path="." format=json limit=10` | Falls back to plain text if JSON fails |
 | `read <name>` | `obsidian read file="<name>"` | Resolves by wikilink name |
 | `create <name>` | `obsidian create name="<name>" content="---\ntype: note\ncreated: <date>\ntags: []\n---\n\n# <name>\n"` | Creates with frontmatter |

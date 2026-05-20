@@ -89,7 +89,8 @@ If `<project>/Intelligence/` does not exist → suggest `vault-project-init`.
 | `morning` | Populate daily note with yesterday's tasks + today's focus |
 | `evening` | Summarize today's work → append to daily + weekly summary |
 | `weekly` | Tags count + intelligence report + update weekly summary |
-| `health` | Run `scripts/vault-health.sh`, delegate to `obsidian-vault-architect` |
+| `health` | Run `scripts/vault-health.sh` (macOS/Linux) or `scripts/vault-health.ps1` (Windows), delegate to `obsidian-vault-architect` |
+| `validate` | Run `scripts/validate-skills.sh` (macOS/Linux) or `scripts/validate-skills.ps1` (Windows) to check plugin structure, frontmatter, and links |
 | `search <q>` | Full-text search with JSON fallback |
 | `read <name>` | Read note by wikilink name |
 | `create <name>` | Create note with frontmatter |
@@ -105,6 +106,7 @@ If `<project>/Intelligence/` does not exist → suggest `vault-project-init`.
 | `cache:clear` | Reset session cache |
 | `ingest <source>` | Preview-gated source ingestion |
 | `intelligence` | Full vault intelligence scan |
+| `validate` | Validate plugin structure, frontmatter, and reference links |
 | `hubs` | List top 10 hub notes |
 | `orphans` | Find orphaned notes + suggest connections |
 | `fix-links` | Scan broken links + suggest fixes |
@@ -185,14 +187,14 @@ Use the Skill tool with the sub-skill name.
 
 ### Scripts
 
-| Script | Purpose |
-|---|---|
-| `scripts/vault-health.sh` | Bash: comprehensive vault health metrics |
-| `scripts/vault-health.ps1` | PowerShell: comprehensive vault health metrics (Windows) |
-| `scripts/context-builder.sh` | Bash: build minimal context for a task from vault |
-| `scripts/context-builder.ps1` | PowerShell: build minimal context for a task from vault (Windows) |
-| `scripts/validate-skills.sh` | Bash: validate plugin structure and skill definitions |
-| `scripts/validate-skills.ps1` | PowerShell: validate plugin structure and skill definitions (Windows) |
+| Script | Purpose | When to use |
+|---|---|---|
+| `scripts/vault-health.sh` | Bash: comprehensive vault health metrics | `/obsidian health` on macOS/Linux |
+| `scripts/vault-health.ps1` | PowerShell: comprehensive vault health metrics | `/obsidian health` on Windows |
+| `scripts/context-builder.sh` | Bash: build minimal context for a task from vault | `/obsidian` auto-context on macOS/Linux |
+| `scripts/context-builder.ps1` | PowerShell: build minimal context for a task from vault | `/obsidian` auto-context on Windows |
+| `scripts/validate-skills.sh` | Bash: validate plugin structure, frontmatter, and links | `/obsidian validate` or CI on macOS/Linux |
+| `scripts/validate-skills.ps1` | PowerShell: validate plugin structure, frontmatter, and links | `/obsidian validate` or CI on Windows |
 
 ### Sub-Skills
 

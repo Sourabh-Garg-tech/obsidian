@@ -7,6 +7,10 @@ argument-hint: "topic"
 
 Trace how thinking on a topic has evolved across the vault. Uses ONLY what the user wrote — no outside perspective.
 
+## Prerequisite
+
+Run `obsidian version` to verify Obsidian is running and CLI is enabled. If it fails, tell the user: "Obsidian is not running or CLI is not enabled. Start Obsidian and enable CLI in Settings > General > Command line interface." — then STOP.
+
 ## Input
 
 Topic: $ARGUMENTS

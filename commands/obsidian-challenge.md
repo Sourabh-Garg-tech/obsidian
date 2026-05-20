@@ -7,6 +7,10 @@ argument-hint: "belief or plan"
 
 Stress-test a belief or plan using evidence from the vault's own history. The challenge comes from the user's past writing, not generic devil's advocacy.
 
+## Prerequisite
+
+Run `obsidian version` to verify Obsidian is running and CLI is enabled. If it fails, tell the user: "Obsidian is not running or CLI is not enabled. Start Obsidian and enable CLI in Settings > General > Command line interface." — then STOP.
+
 ## Input
 
 Belief or plan: $ARGUMENTS

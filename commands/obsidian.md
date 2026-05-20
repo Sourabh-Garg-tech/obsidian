@@ -46,11 +46,16 @@ Intelligence-first entry point for Obsidian vault operations.
 | `bases` | Bases queries |
 | `extract <url>` | Extract clean markdown from web URL |
 | `init <name>` | Initialize a new project |
+| `checkpoint <summary>` | Log progress to project daily note |
+| `cache` | Read session hot cache |
+| `cache:clear` | Reset session cache |
+| `ingest <source>` | Preview-gated source ingestion (URL or file) |
 | `intelligence` | Full vault intelligence scan |
 | `hubs` | List top 10 hub notes |
 | `orphans` | Find orphaned notes + suggest connections |
 | `fix-links` | Scan broken links + suggest fixes |
 | `backlinks` | Check missing bidirectional links |
+| `validate` | Validate plugin structure, frontmatter, and reference links |
 
 If the keyword does not match, the input is treated as a search query.
 

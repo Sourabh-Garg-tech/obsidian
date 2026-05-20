@@ -170,7 +170,7 @@ Copy-Item "$env:USERPROFILE\.claude\plugins\obsidian\commands\*.md" "$env:USERPR
 
 - **8 skills** from `skills/` — auto-discovered (obsidian, obsidian-cli, obsidian-markdown, obsidian-bases, json-canvas, defuddle, obsidian-workflows, obsidian-vault-architect)
 - **5 slash commands** from `commands/` — `/obsidian`, `/obsidian-trace`, `/obsidian-challenge`, `/obsidian-connect`, `/obsidian-emerge`
-- **3 scripts** — `vault-health.sh`/`.ps1`, `context-builder.sh`/`.ps1`, `validate-skills.sh`/`.ps1`
+- **3 scripts** — `vault-health` (health audits), `context-builder` (auto-context), `validate-skills` (plugin validation) — each with `.sh` and `.ps1` variants
 - **Auto-trigger**: any message mentioning Obsidian, vaults, notes, or PKM
 
 ---

@@ -9,7 +9,9 @@ Surface ideas the vault implies but hasn't stated explicitly. Finds patterns in 
 
 ## Prerequisite
 
-This command needs at least 2-3 weeks of daily notes to produce meaningful results. If the vault has fewer, say so and suggest running again after building more writing habit.
+Run `obsidian version` to verify Obsidian is running and CLI is enabled. If it fails, tell the user: "Obsidian is not running or CLI is not enabled. Start Obsidian and enable CLI in Settings > General > Command line interface." — then STOP.
+
+This command also needs at least 2-3 weeks of daily notes to produce meaningful results. If the vault has fewer, say so and suggest running again after building more writing habit.
 
 ## Steps
 

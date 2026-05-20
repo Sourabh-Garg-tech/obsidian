@@ -6,10 +6,10 @@ Planned development for the Obsidian Skill Suite. Items are phased by version. C
 
 ### P0 — Broken Functionality
 
-- [ ] **Add missing workflow keywords to `commands/obsidian.md`** — `checkpoint`, `cache`, `cache:clear`, `ingest` exist in named-workflows.md but not in the slash command file. Users typing these get search fallback instead of the workflow.
-- [ ] **Add liveness check and skill loading to thinking commands** — `/obsidian-trace`, `/obsidian-challenge`, `/obsidian-connect`, `/obsidian-emerge` use `obsidian <cmd>` directly without loading the main skill. No liveness check, no safety rules, no Windows workarounds.
-- [ ] **Fix health workflow for Windows** — `health` workflow hardcodes `scripts/vault-health.sh`. Add platform detection to call `.ps1` on Windows. Same for `vault-health.sh` references in SKILL.md and named-workflows.md.
-- [ ] **Remove or integrate dead scripts** — `context-builder.sh/.ps1` and `validate-skills.sh/.ps1` are listed as available but never invoked by any workflow. Either integrate them into workflows or remove them from the reference table.
+- [x] **Add missing workflow keywords to `commands/obsidian.md`** — `checkpoint`, `cache`, `cache:clear`, `ingest` exist in named-workflows.md but not in the slash command file. Users typing these get search fallback instead of the workflow.
+- [x] **Add liveness check and skill loading to thinking commands** — `/obsidian-trace`, `/obsidian-challenge`, `/obsidian-connect`, `/obsidian-emerge` use `obsidian <cmd>` directly without loading the main skill. No liveness check, no safety rules, no Windows workarounds.
+- [x] **Fix health workflow for Windows** — `health` workflow hardcodes `scripts/vault-health.sh`. Add platform detection to call `.ps1` on Windows. Same for `vault-health.sh` references in SKILL.md and named-workflows.md.
+- [x] **Remove or integrate dead scripts** — `context-builder.sh/.ps1` and `validate-skills.sh/.ps1` are listed as available but never invoked by any workflow. Either integrate them into workflows or remove them from the reference table.
 
 ### P1 — Friction & Inconsistency
 

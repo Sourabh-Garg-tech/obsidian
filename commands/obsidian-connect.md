@@ -7,6 +7,10 @@ argument-hint: "topic A, topic B"
 
 Find non-obvious connections between two seemingly unrelated domains, projects, or concepts from the vault.
 
+## Prerequisite
+
+Run `obsidian version` to verify Obsidian is running and CLI is enabled. If it fails, tell the user: "Obsidian is not running or CLI is not enabled. Start Obsidian and enable CLI in Settings > General > Command line interface." — then STOP.
+
 ## Input
 
 Two topics: $ARGUMENTS (comma-separated, e.g., "filmmaking, startup fundraising")
