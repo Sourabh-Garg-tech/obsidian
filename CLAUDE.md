@@ -34,6 +34,10 @@ This is a Claude Code skill suite for automating Obsidian vaults via the officia
 - Validation report: `references/cli-validation-report.md`
 - Known bugs documented in SKILL.md safety rules (items 7-10)
 
+## Roadmap
+
+- See [ROADMAP.md](ROADMAP.md) for planned development by version
+
 ## Git Workflow
 
 - Main branch: `master`

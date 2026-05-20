@@ -283,6 +283,10 @@ See [full safety reference](references/full-reference.md) for the complete list.
 
 ---
 
+## Roadmap
+
+See [ROADMAP.md](ROADMAP.md) for planned development — v1.3.x quality & polish, v1.4 features, and future ideas.
+
 ## Contributing
 
 Pull requests welcome. Use `docs:`, `feat:`, or `fix:` prefix for commits.
