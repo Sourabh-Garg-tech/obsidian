@@ -30,7 +30,7 @@ Planned development for the Obsidian Skill Suite. Items are phased by version. C
 - [ ] **Add `.github/ISSUE_TEMPLATE/config.yml`** — issue template chooser
 - [ ] **Add `docs/architecture.md`** — architecture diagram and data flow
 - [ ] **Document `obsidian rename`, `diff`, `wordcount` in quick-reference** — present in command-reference but not in quick-reference
-- [ ] **Expand Obsidian Sync, Publish, History, Workspace command examples** — full-reference.md has them but sparse
+- [ ] **Cover 38 unused CLI commands in skill docs** — 38 commands from command-reference.md are never referenced in any skill/workflow file. Entire unused categories: Bookmarks (2), Publish (6), History (5), Workspace & Tabs (7). Partial gaps: Bases (`base:views`, `base:create`), CSS Snippets (`snippets`, `snippets:enabled`, `snippet:disable`), Developer (`devtools`, `dev:debug`, `dev:dom`, `dev:cdp`). Also unused: `folder`, `random`, `random:read`, `daily:prepend`, `search:open`, `template:read`, `plugins:restrict`, `plugin:disable`, `plugin:uninstall`, `theme`, `theme:install`, `theme:uninstall`, `web`, `unique`
 - [ ] **Add `search path=` Windows workaround to README** — currently only in SKILL.md safety rules
 - [ ] **Add setup script for Windows Git Bash wrapper** — auto-detect and create `~/bin/obsidian` wrapper
 - [ ] **Add GitHub topics/description** for discoverability
@@ -79,4 +79,4 @@ Unversioned and aspirational. Promote to a version when scoped.
 Found 21 issues across 3 priority levels:
 - P0 (4): Missing workflow keywords, dead scripts, Windows health failure, thinking commands lack skill loading
 - P1 (8): Array bug examples, hardcoded PowerShell, N+1 calls, safety/workaround conflation, sub-skill triggers, cp violation, script drift, manual dry-run
-- P2 (9): Changelog, CI, CONTRIBUTING, architecture docs, command coverage gaps, Windows setup, discoverability
+- P2 (9→10): Changelog, CI, CONTRIBUTING, architecture docs, command coverage gaps (38 unused CLI commands), Windows setup, discoverability
