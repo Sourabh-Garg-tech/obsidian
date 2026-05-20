@@ -59,6 +59,37 @@ description: Design spec for the Obsidian skill suite ROADMAP.md and future deve
 - Plugin contribution pipeline — community sub-skill submissions
 - Voice note transcription → vault ingestion pipeline
 
+## Integration & Friction Audit (2026-05-20)
+
+Full audit found 21 issues across 3 priority levels:
+
+### P0 — Broken Functionality (4 items)
+1. Missing workflow keywords in commands/obsidian.md — checkpoint, cache, cache:clear, ingest
+2. Thinking commands never load the obsidian skill — no liveness check, no safety rules
+3. Health workflow hardcodes .sh, not .ps1 — Windows health audits fail
+4. 5 of 6 scripts are dead code — never invoked by any workflow
+
+### P1 — Friction & Inconsistency (8 items)
+1. property:set array examples lack warnings — writes strings not YAML arrays
+2. Hardcoded powershell -c in cross-platform workflows — macOS/Linux breaks
+3. Intelligence workflows use N+1 subprocess pattern — should use single eval calls
+4. 58% of safety rules are CLI workarounds, not safety guidance
+5. 3 sub-skills have no keyword-driven load trigger
+6. project-onboarding.md uses raw cp — violates safety rule #1
+7. .sh and .ps1 scripts produce different results — diverged logic
+8. Dry-run pattern is manual echo trick — should use preview-gated confirmation
+
+### P2 — Missing Coverage (9 items)
+1. No CHANGELOG.md
+2. No CI for skill validation
+3. CONTRIBUTING.md needs expansion
+4. No issue template config
+5. No architecture doc
+6. Missing command coverage (rename, diff, wordcount in quick-reference)
+7. Sparse Sync/Publish/History/Workspace examples
+8. Windows Git Bash wrapper is always manual
+9. No GitHub topics/description
+
 ## Completed (as of v1.3.0)
 
 - All 7 sub-skills, 5 slash commands, 6 scripts (3x .sh + 3x .ps1)
