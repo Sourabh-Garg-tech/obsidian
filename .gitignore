@@ -3,3 +3,7 @@
 *.log
 .DS_Store
 Thumbs.db
+
+# Internal artifacts — not for public repo
+docs/superpowers/
+docs/stats-detail.json
