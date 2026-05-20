@@ -124,45 +124,53 @@ Priority fix: Add tags to 12 notes -- `obsidian property:set file="Note" name="t
 
 Enable the Obsidian CLI: Settings -> General -> Command line interface -> Enable + Register.
 
-### Installation Steps
+### Installation
 
-> **Platform note:** The Claude Code `/plugin install` command works on macOS and Linux, but **fails on Windows** with `Permission denied (publickey)`. This is a [Claude Code client bug](https://github.com/anthropics/claude-code/issues) — it forces SSH for all GitHub clones regardless of URL. On Windows, use the manual clone steps below.
+**Option A: Plugin install (macOS / Linux)**
 
-**Step 1:** Clone the plugin into Claude Code's plugins directory.
-
-**macOS / Linux:**
 ```bash
-git clone https://github.com/Sourabh-Garg-tech/obsidian.git "$HOME/.claude/plugins/obsidian"
+/plugin install obsidian
 ```
 
-**Windows (PowerShell):**
-```powershell
+This auto-discovers skills and commands from the plugin directory.
+
+> **Windows:** The `/plugin install` command fails with `Permission denied (publickey)` on Windows due to a [Claude Code client bug](https://github.com/anthropics/claude-code/issues) — it forces SSH for all GitHub clones. Use Option B on Windows.
+
+**Option B: Manual clone (all platforms)**
+
+```bash
+# macOS / Linux
+git clone https://github.com/Sourabh-Garg-tech/obsidian.git "$HOME/.claude/plugins/obsidian"
+
+# Windows (PowerShell) — do NOT use ~, git creates a literal ~ folder
 git clone https://github.com/Sourabh-Garg-tech/obsidian.git "$env:USERPROFILE\.claude\plugins\obsidian"
 ```
 
-> **Note:** On Windows, do **not** use `~` -- git creates a literal `~` folder instead of expanding it.
-
-**Step 2:** Copy the slash commands into your user commands directory.
-
-**macOS / Linux:**
-```bash
-cp "$HOME/.claude/plugins/obsidian/commands/"*.md "$HOME/.claude/commands/"
-```
-
-**Windows (PowerShell):**
-```powershell
-Copy-Item "$env:USERPROFILE\.claude\plugins\obsidian\commands\*.md" "$env:USERPROFILE\.claude\commands\"
-```
-
-**Step 3:** Reload plugins.
+Then reload:
 
 ```bash
 /reload-plugins
 ```
 
-What loads:
-- **8 skills** from `plugins/obsidian/skills/` — auto-discovered
-- **5 commands** from `~/.claude/commands/` — the obsidian slash commands
+### Slash commands
+
+Claude Code auto-discovers commands from the plugin's `commands/` directory. They appear as namespaced slash commands: `/obsidian`, `/obsidian-trace`, `/obsidian-challenge`, `/obsidian-connect`, `/obsidian-emerge`.
+
+If you prefer short-form commands (without the plugin prefix), copy them to your personal commands directory:
+
+```bash
+# macOS / Linux
+cp "$HOME/.claude/plugins/obsidian/commands/"*.md "$HOME/.claude/commands/"
+
+# Windows (PowerShell)
+Copy-Item "$env:USERPROFILE\.claude\plugins\obsidian\commands\*.md" "$env:USERPROFILE\.claude\commands\"
+```
+
+### What loads
+
+- **8 skills** from `skills/` — auto-discovered (obsidian, obsidian-cli, obsidian-markdown, obsidian-bases, json-canvas, defuddle, obsidian-workflows, obsidian-vault-architect)
+- **5 slash commands** from `commands/` — `/obsidian`, `/obsidian-trace`, `/obsidian-challenge`, `/obsidian-connect`, `/obsidian-emerge`
+- **3 scripts** — `vault-health.sh`/`.ps1`, `context-builder.sh`/`.ps1`, `validate-skills.sh`/`.ps1`
 - **Auto-trigger**: any message mentioning Obsidian, vaults, notes, or PKM
 
 ---
