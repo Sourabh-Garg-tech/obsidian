@@ -75,7 +75,10 @@ If `<project>/Intelligence/` does not exist → suggest `vault-project-init`.
 2. If set → ask: "Continue with `<last-project>`?"
 3. If not set → search vault for a folder matching CWD basename: `obsidian search query="path:<cwd-basename>" path="." limit=1`
 4. If match found → treat as PROJECT MODE, set `last-project` in cache
-5. If no match → stay in EXTERNAL MODE, show generic vault context
+5. If no match → scan CWD for project markers:
+   - Check for `.git/`, `README.md`, `CLAUDE.md`, `package.json`, `pyproject.toml`, `Cargo.toml`, `Makefile`, `go.mod`
+   - If 2+ markers found → suggest: "I detected you're in `<cwd-basename>` but it has no vault project yet. Run `/obsidian init` to set up `Projects/<cwd-basename>` in your vault?"
+   - If no markers → stay in EXTERNAL MODE, show generic vault context
 
 → Auto-context details, checkpoints, and time-aware behavior: `references/named-workflows.md`
 → Session hot cache: `references/session-cache-workflow.md`
@@ -100,7 +103,7 @@ If `<project>/Intelligence/` does not exist → suggest `vault-project-init`.
 | `canvas` | Auto-load `json-canvas` sub-skill |
 | `bases` | Auto-load `obsidian-bases` sub-skill |
 | `extract <url>` | Auto-load `defuddle` sub-skill |
-| `init <name>` | Run `vault-project-init` workflow |
+| `init <name>` | Run `vault-project-init` workflow — create vault project structure, scan CWD for context, seed notes |
 | `checkpoint <summary>` | Log checkpoint to project daily note |
 | `cache` | Read session hot cache |
 | `cache:clear` | Reset session cache |

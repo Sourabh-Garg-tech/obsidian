@@ -25,6 +25,7 @@ What do you need?
 ├─ Ingest a web page/URL ─────────────── extract <url>
 ├─ Ingest a file into vault ──────────── ingest <source>
 ├─ Start a new project ───────────────── init <name>
+│   (auto-detects CWD context if no name given)
 ├─ Log progress ──────────────────────── checkpoint <summary>
 │
 ├─ Check vault health ─────────────────── health
@@ -139,7 +140,7 @@ Every line actionable. Skip empty slots.
 | `canvas` | Auto-load `json-canvas` sub-skill | Delegate to canvas skill |
 | `bases` | Auto-load `obsidian-bases` sub-skill | Delegate to bases skill |
 | `extract <url>` | Auto-load `defuddle` sub-skill | URL → clean markdown extraction |
-| `init <name>` | Run `vault-project-init` workflow | See `skills/obsidian-workflows/references/project-onboarding.md` |
+| `init <name>` | Run `vault-project-init` workflow — detect project context from CWD, create 3-folder structure in vault, seed notes, link to global context | See `skills/obsidian-workflows/references/project-onboarding.md` |
 | `checkpoint <summary>` | Manually log a checkpoint to `<project>/Intelligence/daily/YYYY-MM-DD.md` | PROJECT MODE only |
 | `cache` | `obsidian read path="_context/session-cache.md"` | Read session hot cache |
 | `cache:clear` | Create empty session cache | Resets touch log and narrative |
@@ -160,7 +161,7 @@ Show 5 contextual suggestions adapted to mode, time, and project state:
 
 - PROJECT MODE → tasks, checkpoint, read, search, init
 - VAULT MODE → morning/evening, tasks, search, project, read
-- EXTERNAL MODE → morning, search, read, project, tasks
+- EXTERNAL MODE → morning, search, read, project, init (if no project detected)
 - Morning (6-11) → include `/obsidian morning`
 - Evening (18+) → include `/obsidian evening`
 - After write ops → hot cache auto-updates

@@ -45,7 +45,7 @@ Intelligence-first entry point for Obsidian vault operations.
 | `canvas` | Canvas operations |
 | `bases` | Bases queries |
 | `extract <url>` | Extract clean markdown from web URL |
-| `init <name>` | Initialize a new project |
+| `init <name>` | Initialize a new project — scans CWD for context, creates 3-folder vault structure, seeds notes |
 | `checkpoint <summary>` | Log progress to project daily note |
 | `cache` | Read session hot cache |
 | `cache:clear` | Reset session cache |
